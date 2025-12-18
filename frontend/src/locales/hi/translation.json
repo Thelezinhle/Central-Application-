@@ -1,0 +1,52 @@
+{
+    "common": {
+        "home": "होम",
+        "about": "परिचय",
+        "contact": "संपर्क",
+        "language": "भाषा",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "लोड हो रहा है...",
+        "error": "त्रुटि",
+        "success": "सफल",
+        "cancel": "रद्द करें",
+        "save": "सहेजें",
+        "delete": "हटाएँ",
+        "edit": "संपादित करें",
+        "back": "वापस",
+        "next": "अगला",
+        "previous": "पिछला",
+        "search": "खोज"
+    },
+    "pages": {
+        "home": {
+            "title": "स्वागत है",
+            "subtitle": "विश्वविद्यालयों के लिए आपका प्रवेश द्वार"
+        },
+        "browseUniversities": {
+            "title": "भागीदार विश्वविद्यालय",
+            "subtitle": "दुनिया भर से विश्वविद्यालय खोजें",
+            "searchPlaceholder": "नाम या देश से विश्वविद्यालय खोजें...",
+            "filterByCountry": "देश के अनुसार फ़िल्टर करें",
+            "viewCourses": "पाठ्यक्रम देखें",
+            "noUniversitiesFound": "कोई विश्वविद्यालय नहीं मिला",
+            "selectCountry": "एक देश चुनें",
+            "allCountries": "सभी देश",
+            "totalUniversities": "कुल विश्वविद्यालय",
+            "country": "देश",
+            "website": "वेबसाइट",
+            "email": "ईमेल",
+            "phone": "फोन",
+            "domains": "डोमेन",
+            "webPages": "वेबपेज",
+            "expandCourses": "पाठ्यक्रम देखने के लिए विस्तार करें",
+            "loading": "विश्वविद्यालय लोड हो रहे हैं...",
+            "noCoursesAvailable": "इस विश्वविद्यालय के लिए कोई पाठ्यक्रम उपलब्ध नहीं है"
+        }
+    }
+}

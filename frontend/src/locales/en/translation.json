@@ -1,0 +1,149 @@
+{
+    "common": {
+        "home": "Home",
+        "about": "About",
+        "contact": "Contact",
+        "language": "Language",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "search": "Search"
+    },
+    "navigation": {
+        "home": "Home",
+        "browseCourses": "Browse Courses",
+        "browseUniversities": "Browse Universities",
+        "recommendations": "Recommendations",
+        "myApplications": "My Applications",
+        "trackStatus": "Track Status",
+        "dashboard": "Dashboard",
+        "logout": "Logout"
+    },
+    "pages": {
+        "home": {
+            "title": "Welcome to CAO Global",
+            "subtitle": "Your gateway to universities worldwide",
+            "feature1Title": "Browse Courses",
+            "feature1Desc": "Explore thousands of courses from universities around the world",
+            "feature2Title": "Smart Recommendations",
+            "feature2Desc": "Get personalized course recommendations based on your profile",
+            "feature3Title": "Multiple Selections",
+            "feature3Desc": "Select up to 10 courses and apply to all at once",
+            "feature4Title": "Track Status",
+            "feature4Desc": "Monitor your applications in real-time"
+        },
+        "browseCourses": {
+            "title": "Browse Courses",
+            "selectCourses": "Select up to 10 courses",
+            "selected": "Selected",
+            "noCoursesFound": "No courses found",
+            "filterByUniversity": "Filter by University",
+            "filterByCountry": "Filter by Country",
+            "showSelectedOnly": "Show Selected Only",
+            "applyNow": "Apply Now"
+        },
+        "browseUniversities": {
+            "title": "Partner Universities",
+            "subtitle": "Find universities from around the world",
+            "searchPlaceholder": "Search universities by name or country...",
+            "filterByCountry": "Filter by Country",
+            "viewCourses": "View Courses",
+            "noUniversitiesFound": "No universities found",
+            "selectCountry": "Select a country",
+            "allCountries": "All Countries",
+            "totalUniversities": "Total Universities",
+            "country": "Country",
+            "website": "Website",
+            "email": "Email",
+            "phone": "Phone",
+            "domains": "Domains",
+            "webPages": "Web Pages",
+            "expandCourses": "Click to expand and see courses",
+            "loading": "Loading universities...",
+            "noCoursesAvailable": "No courses available for this university"
+        },
+        "recommendations": {
+            "title": "Get Recommendations",
+            "uploadResults": "Upload Your Matric Results",
+            "apsScore": "APS Score",
+            "subjects": "Subjects",
+            "excellent": "Excellent Match",
+            "good": "Good Match",
+            "borderline": "Borderline Match",
+            "noRecommendations": "No recommendations found. Please check your qualifications.",
+            "applyToSelected": "Apply to Selected Courses"
+        },
+        "trackStatus": {
+            "title": "Track Your Applications",
+            "totalApplications": "Total Applications",
+            "accepted": "Accepted",
+            "pending": "Pending",
+            "rejected": "Rejected",
+            "noApplications": "No applications yet",
+            "getRecommendations": "Get Recommendations",
+            "applyMoreCourses": "Apply to More Courses"
+        },
+        "login": {
+            "title": "Login",
+            "email": "Email",
+            "password": "Password",
+            "remember": "Remember me",
+            "login": "Login",
+            "noAccount": "Don't have an account?",
+            "register": "Register here",
+            "invalidCredentials": "Invalid email or password"
+        },
+        "register": {
+            "title": "Register",
+            "fullName": "Full Name",
+            "email": "Email",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "register": "Register",
+            "haveAccount": "Already have an account?",
+            "loginHere": "Login here",
+            "passwordMismatch": "Passwords do not match",
+            "registrationFailed": "Registration failed"
+        }
+    },
+    "buttons": {
+        "submit": "Submit",
+        "upload": "Upload",
+        "download": "Download",
+        "share": "Share",
+        "print": "Print",
+        "refresh": "Refresh"
+    },
+    "messages": {
+        "successfullyAdded": "Successfully added",
+        "successfullyDeleted": "Successfully deleted",
+        "successfullyUpdated": "Successfully updated",
+        "areYouSure": "Are you sure?",
+        "confirmDelete": "This action cannot be undone.",
+        "processingRequest": "Processing your request...",
+        "offline": "You are offline"
+    },
+    "accessibility": {
+        "speak": "Speak",
+        "stop": "Stop Speaking",
+        "highContrast": "High Contrast Mode",
+        "fontSize": "Font Size",
+        "textToSpeech": "Text-to-Speech",
+        "keyboardNavigation": "Keyboard Navigation",
+        "screenReaderSupport": "Screen Reader Support"
+    }
+}

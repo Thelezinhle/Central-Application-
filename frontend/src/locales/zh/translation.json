@@ -1,0 +1,52 @@
+{
+    "common": {
+        "home": "首页",
+        "about": "关于",
+        "contact": "联系",
+        "language": "语言",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "加载中...",
+        "error": "错误",
+        "success": "成功",
+        "cancel": "取消",
+        "save": "保存",
+        "delete": "删除",
+        "edit": "编辑",
+        "back": "返回",
+        "next": "下一个",
+        "previous": "上一个",
+        "search": "搜索"
+    },
+    "pages": {
+        "home": {
+            "title": "欢迎",
+            "subtitle": "您进入大学的门户"
+        },
+        "browseUniversities": {
+            "title": "合作大学",
+            "subtitle": "发现世界各地的大学",
+            "searchPlaceholder": "按名称或国家搜索大学...",
+            "filterByCountry": "按国家筛选",
+            "viewCourses": "查看课程",
+            "noUniversitiesFound": "未找到大学",
+            "selectCountry": "选择国家",
+            "allCountries": "所有国家",
+            "totalUniversities": "大学总数",
+            "country": "国家",
+            "website": "网站",
+            "email": "电子邮件",
+            "phone": "电话",
+            "domains": "域名",
+            "webPages": "网页",
+            "expandCourses": "点击展开并查看课程",
+            "loading": "正在加载大学...",
+            "noCoursesAvailable": "该大学没有可用课程"
+        }
+    }
+}

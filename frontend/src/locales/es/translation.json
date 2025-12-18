@@ -1,0 +1,149 @@
+{
+    "common": {
+        "home": "Inicio",
+        "about": "Acerca de",
+        "contact": "Contacto",
+        "language": "Idioma",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "Cargando...",
+        "error": "Error",
+        "success": "Éxito",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "back": "Atrás",
+        "next": "Siguiente",
+        "previous": "Anterior",
+        "search": "Buscar"
+    },
+    "navigation": {
+        "home": "Inicio",
+        "browseCourses": "Explorar Cursos",
+        "browseUniversities": "Explorar Universidades",
+        "recommendations": "Recomendaciones",
+        "myApplications": "Mis Solicitudes",
+        "trackStatus": "Seguimiento",
+        "dashboard": "Panel",
+        "logout": "Cerrar Sesión"
+    },
+    "pages": {
+        "home": {
+            "title": "Bienvenido a CAO Global",
+            "subtitle": "Tu puerta de entrada a universidades en todo el mundo",
+            "feature1Title": "Explorar Cursos",
+            "feature1Desc": "Explora miles de cursos de universidades alrededor del mundo",
+            "feature2Title": "Recomendaciones Inteligentes",
+            "feature2Desc": "Obtén recomendaciones personalizadas basadas en tu perfil",
+            "feature3Title": "Selecciones Múltiples",
+            "feature3Desc": "Selecciona hasta 10 cursos y solicita a todos a la vez",
+            "feature4Title": "Seguimiento",
+            "feature4Desc": "Monitorea tus solicitudes en tiempo real"
+        },
+        "browseCourses": {
+            "title": "Explorar Cursos",
+            "selectCourses": "Selecciona hasta 10 cursos",
+            "selected": "Seleccionados",
+            "noCoursesFound": "No se encontraron cursos",
+            "filterByUniversity": "Filtrar por Universidad",
+            "filterByCountry": "Filtrar por País",
+            "showSelectedOnly": "Mostrar Solo Seleccionados",
+            "applyNow": "Solicitar Ahora"
+        },
+        "browseUniversities": {
+            "title": "Universidades Asociadas",
+            "subtitle": "Encuentra universidades de todo el mundo",
+            "searchPlaceholder": "Buscar universidades por nombre o país...",
+            "filterByCountry": "Filtrar por País",
+            "viewCourses": "Ver Cursos",
+            "noUniversitiesFound": "No se encontraron universidades",
+            "selectCountry": "Selecciona un país",
+            "allCountries": "Todos los Países",
+            "totalUniversities": "Universidades Totales",
+            "country": "País",
+            "website": "Sitio Web",
+            "email": "Correo Electrónico",
+            "phone": "Teléfono",
+            "domains": "Dominios",
+            "webPages": "Páginas Web",
+            "expandCourses": "Haz clic para expandir y ver cursos",
+            "loading": "Cargando universidades...",
+            "noCoursesAvailable": "No hay cursos disponibles para esta universidad"
+        },
+        "recommendations": {
+            "title": "Obtener Recomendaciones",
+            "uploadResults": "Sube tus Resultados de Matricula",
+            "apsScore": "Puntuación APS",
+            "subjects": "Asignaturas",
+            "excellent": "Excelente Coincidencia",
+            "good": "Buena Coincidencia",
+            "borderline": "Coincidencia Limítrofe",
+            "noRecommendations": "No se encontraron recomendaciones. Por favor verifica tus calificaciones.",
+            "applyToSelected": "Solicitar Cursos Seleccionados"
+        },
+        "trackStatus": {
+            "title": "Seguimiento de Solicitudes",
+            "totalApplications": "Solicitudes Totales",
+            "accepted": "Aceptadas",
+            "pending": "Pendientes",
+            "rejected": "Rechazadas",
+            "noApplications": "Sin solicitudes aún",
+            "getRecommendations": "Obtener Recomendaciones",
+            "applyMoreCourses": "Solicitar Más Cursos"
+        },
+        "login": {
+            "title": "Iniciar Sesión",
+            "email": "Correo Electrónico",
+            "password": "Contraseña",
+            "remember": "Recuérdame",
+            "login": "Iniciar Sesión",
+            "noAccount": "¿No tienes cuenta?",
+            "register": "Regístrate aquí",
+            "invalidCredentials": "Correo o contraseña inválidos"
+        },
+        "register": {
+            "title": "Registrarse",
+            "fullName": "Nombre Completo",
+            "email": "Correo Electrónico",
+            "password": "Contraseña",
+            "confirmPassword": "Confirmar Contraseña",
+            "register": "Registrarse",
+            "haveAccount": "¿Ya tienes cuenta?",
+            "loginHere": "Inicia sesión aquí",
+            "passwordMismatch": "Las contraseñas no coinciden",
+            "registrationFailed": "Error en el registro"
+        }
+    },
+    "buttons": {
+        "submit": "Enviar",
+        "upload": "Cargar",
+        "download": "Descargar",
+        "share": "Compartir",
+        "print": "Imprimir",
+        "refresh": "Actualizar"
+    },
+    "messages": {
+        "successfullyAdded": "Agregado correctamente",
+        "successfullyDeleted": "Eliminado correctamente",
+        "successfullyUpdated": "Actualizado correctamente",
+        "areYouSure": "¿Estás seguro?",
+        "confirmDelete": "Esta acción no se puede deshacer.",
+        "processingRequest": "Procesando tu solicitud...",
+        "offline": "Estás sin conexión"
+    },
+    "accessibility": {
+        "speak": "Hablar",
+        "stop": "Detener Lectura",
+        "highContrast": "Modo de Alto Contraste",
+        "fontSize": "Tamaño de Fuente",
+        "textToSpeech": "Conversión de Texto a Voz",
+        "keyboardNavigation": "Navegación por Teclado",
+        "screenReaderSupport": "Soporte para Lectores de Pantalla"
+    }
+}

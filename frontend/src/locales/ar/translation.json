@@ -1,0 +1,52 @@
+{
+    "common": {
+        "home": "الرئيسية",
+        "about": "حول",
+        "contact": "اتصل",
+        "language": "اللغة",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "جارٍ التحميل...",
+        "error": "خطأ",
+        "success": "نجاح",
+        "cancel": "إلغاء",
+        "save": "حفظ",
+        "delete": "حذف",
+        "edit": "تحرير",
+        "back": "عودة",
+        "next": "التالي",
+        "previous": "السابق",
+        "search": "بحث"
+    },
+    "pages": {
+        "home": {
+            "title": "أهلا",
+            "subtitle": "بوابتك إلى الجامعات"
+        },
+        "browseUniversities": {
+            "title": "الجامعات الشريكة",
+            "subtitle": "اعثر على جامعات من جميع أنحاء العالم",
+            "searchPlaceholder": "ابحث عن جامعات حسب الاسم أو الدولة...",
+            "filterByCountry": "التصفية حسب الدولة",
+            "viewCourses": "عرض الدورات",
+            "noUniversitiesFound": "لم يتم العثور على جامعات",
+            "selectCountry": "اختر دولة",
+            "allCountries": "جميع الدول",
+            "totalUniversities": "إجمالي الجامعات",
+            "country": "الدولة",
+            "website": "الموقع",
+            "email": "البريد الإلكتروني",
+            "phone": "الهاتف",
+            "domains": "النطاقات",
+            "webPages": "صفحات الويب",
+            "expandCourses": "انقر للتوسيع ورؤية الدورات",
+            "loading": "جاري تحميل الجامعات...",
+            "noCoursesAvailable": "لا توجد دورات متاحة لهذه الجامعة"
+        }
+    }
+}

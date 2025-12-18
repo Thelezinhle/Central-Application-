@@ -1,0 +1,149 @@
+{
+    "common": {
+        "home": "Accueil",
+        "about": "À propos",
+        "contact": "Contact",
+        "language": "Langue",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "success": "Succès",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "back": "Retour",
+        "next": "Suivant",
+        "previous": "Précédent",
+        "search": "Rechercher"
+    },
+    "navigation": {
+        "home": "Accueil",
+        "browseCourses": "Explorer les Cours",
+        "browseUniversities": "Explorer les Universités",
+        "recommendations": "Recommandations",
+        "myApplications": "Mes Demandes",
+        "trackStatus": "Suivi",
+        "dashboard": "Tableau de Bord",
+        "logout": "Déconnexion"
+    },
+    "pages": {
+        "home": {
+            "title": "Bienvenue dans CAO Global",
+            "subtitle": "Votre passerelle vers les universités du monde entier",
+            "feature1Title": "Explorer les Cours",
+            "feature1Desc": "Explorez des milliers de cours d'universités du monde entier",
+            "feature2Title": "Recommandations Intelligentes",
+            "feature2Desc": "Obtenez des recommandations personnalisées basées sur votre profil",
+            "feature3Title": "Sélections Multiples",
+            "feature3Desc": "Sélectionnez jusqu'à 10 cours et postulez à tous à la fois",
+            "feature4Title": "Suivi",
+            "feature4Desc": "Suivez vos demandes en temps réel"
+        },
+        "browseCourses": {
+            "title": "Explorer les Cours",
+            "selectCourses": "Sélectionnez jusqu'à 10 cours",
+            "selected": "Sélectionnés",
+            "noCoursesFound": "Aucun cours trouvé",
+            "filterByUniversity": "Filtrer par Université",
+            "filterByCountry": "Filtrer par Pays",
+            "showSelectedOnly": "Afficher Uniquement les Sélectionnés",
+            "applyNow": "Postuler Maintenant"
+        },
+        "browseUniversities": {
+            "title": "Universités Partenaires",
+            "subtitle": "Trouvez des universités du monde entier",
+            "searchPlaceholder": "Rechercher des universités par nom ou pays...",
+            "filterByCountry": "Filtrer par Pays",
+            "viewCourses": "Voir les Cours",
+            "noUniversitiesFound": "Aucune université trouvée",
+            "selectCountry": "Sélectionnez un pays",
+            "allCountries": "Tous les Pays",
+            "totalUniversities": "Total des Universités",
+            "country": "Pays",
+            "website": "Site Web",
+            "email": "Courrier Électronique",
+            "phone": "Téléphone",
+            "domains": "Domaines",
+            "webPages": "Pages Web",
+            "expandCourses": "Cliquez pour développer et voir les cours",
+            "loading": "Chargement des universités...",
+            "noCoursesAvailable": "Aucun cours disponible pour cette université"
+        },
+        "recommendations": {
+            "title": "Obtenir les Recommandations",
+            "uploadResults": "Téléchargez Vos Résultats",
+            "apsScore": "Scores APS",
+            "subjects": "Matières",
+            "excellent": "Excellente Correspondance",
+            "good": "Bonne Correspondance",
+            "borderline": "Correspondance Borderline",
+            "noRecommendations": "Aucune recommandation trouvée. Veuillez vérifier vos qualifications.",
+            "applyToSelected": "Postuler aux Cours Sélectionnés"
+        },
+        "trackStatus": {
+            "title": "Suivre Vos Demandes",
+            "totalApplications": "Demandes Totales",
+            "accepted": "Acceptées",
+            "pending": "En Attente",
+            "rejected": "Rejetées",
+            "noApplications": "Aucune demande pour l'instant",
+            "getRecommendations": "Obtenir les Recommandations",
+            "applyMoreCourses": "Postuler à Plus de Cours"
+        },
+        "login": {
+            "title": "Connexion",
+            "email": "Email",
+            "password": "Mot de Passe",
+            "remember": "Se souvenir de moi",
+            "login": "Se Connecter",
+            "noAccount": "Vous n'avez pas de compte?",
+            "register": "Inscrivez-vous ici",
+            "invalidCredentials": "Email ou mot de passe invalide"
+        },
+        "register": {
+            "title": "Inscription",
+            "fullName": "Nom Complet",
+            "email": "Email",
+            "password": "Mot de Passe",
+            "confirmPassword": "Confirmer le Mot de Passe",
+            "register": "S'inscrire",
+            "haveAccount": "Vous avez déjà un compte?",
+            "loginHere": "Connectez-vous ici",
+            "passwordMismatch": "Les mots de passe ne correspondent pas",
+            "registrationFailed": "Échec de l'inscription"
+        }
+    },
+    "buttons": {
+        "submit": "Soumettre",
+        "upload": "Télécharger",
+        "download": "Télécharger",
+        "share": "Partager",
+        "print": "Imprimer",
+        "refresh": "Actualiser"
+    },
+    "messages": {
+        "successfullyAdded": "Ajouté avec succès",
+        "successfullyDeleted": "Supprimé avec succès",
+        "successfullyUpdated": "Mis à jour avec succès",
+        "areYouSure": "Êtes-vous sûr?",
+        "confirmDelete": "Cette action ne peut pas être annulée.",
+        "processingRequest": "Traitement de votre demande...",
+        "offline": "Vous êtes hors ligne"
+    },
+    "accessibility": {
+        "speak": "Parler",
+        "stop": "Arrêter la Lecture",
+        "highContrast": "Mode Contraste Élevé",
+        "fontSize": "Taille de Police",
+        "textToSpeech": "Synthèse Vocale",
+        "keyboardNavigation": "Navigation au Clavier",
+        "screenReaderSupport": "Support des Lecteurs d'Écran"
+    }
+}

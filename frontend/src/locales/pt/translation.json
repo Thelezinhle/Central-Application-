@@ -1,0 +1,52 @@
+{
+    "common": {
+        "home": "Início",
+        "about": "Sobre",
+        "contact": "Contato",
+        "language": "Idioma",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français",
+        "portuguese": "Português",
+        "arabic": "العربية",
+        "chinese": "中文",
+        "hindi": "हिन्दी",
+        "loading": "Carregando...",
+        "error": "Erro",
+        "success": "Sucesso",
+        "cancel": "Cancelar",
+        "save": "Salvar",
+        "delete": "Deletar",
+        "edit": "Editar",
+        "back": "Voltar",
+        "next": "Próximo",
+        "previous": "Anterior",
+        "search": "Pesquisar"
+    },
+    "pages": {
+        "home": {
+            "title": "Bem-vindo",
+            "subtitle": "Seu portal para universidades"
+        },
+        "browseUniversities": {
+            "title": "Universidades Parceiras",
+            "subtitle": "Encontre universidades de todo o mundo",
+            "searchPlaceholder": "Pesquisar universidades por nome ou país...",
+            "filterByCountry": "Filtrar por País",
+            "viewCourses": "Ver Cursos",
+            "noUniversitiesFound": "Nenhuma universidade encontrada",
+            "selectCountry": "Selecione um país",
+            "allCountries": "Todos os Países",
+            "totalUniversities": "Total de Universidades",
+            "country": "País",
+            "website": "Site",
+            "email": "Email",
+            "phone": "Telefone",
+            "domains": "Domínios",
+            "webPages": "Páginas da Web",
+            "expandCourses": "Clique para expandir e ver cursos",
+            "loading": "Carregando universidades...",
+            "noCoursesAvailable": "Nenhum curso disponível para esta universidade"
+        }
+    }
+}
