@@ -8,7 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
 import UniversitiesPage from './pages/UniversitiesPage';
 import CollegesPage from './pages/CollegesPage';
-import CoursesPage from './pages/CoursesPage';
+import CoursesPageV2 from './pages/CoursesPageV2';
 import APSCalculator from './pages/APSCalculator';
 import RecommendationsPage from './pages/RecommendationsPage';
 import TrackStatusPage from './pages/TrackStatusPage';
@@ -20,6 +20,7 @@ import { LiveRegion } from './components/LiveRegion';
 import { VoiceController } from './components/VoiceController';
 import { BlindUserOnboarding } from './components/BlindUserOnboarding';
 import VoiceAssistant from './components/VoiceAssistant';
+import ProductionVoiceWidget from './components/ProductionVoiceWidget';
 
 function App() {
     const { user } = useAuthStore();
@@ -67,7 +68,7 @@ function App() {
                         <Route path="/application/:id" element={user ? <ApplicationPage /> : <Navigate to="/login" />} />
                         <Route path="/universities" element={<UniversitiesPage />} />
                         <Route path="/colleges" element={<CollegesPage />} />
-                        <Route path="/courses" element={<CoursesPage />} />
+                        <Route path="/courses" element={<CoursesPageV2 />} />
                         <Route path="/aps-calculator" element={<APSCalculator />} />
                         <Route path="/recommendations" element={<RecommendationsPage />} />
                         <Route path="/track-status" element={<TrackStatusPage />} />
@@ -76,6 +77,7 @@ function App() {
                 </main>
 
                 <AccessibilityControls />
+                <ProductionVoiceWidget />
                 {blindUserMode && <VoiceController />}
                 <VoiceAssistant />
             </div>

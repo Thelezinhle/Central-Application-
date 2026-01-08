@@ -12,6 +12,7 @@ dotenv.config();
 import authRoutes from './routes/auth.js';
 import universityRoutes from './routes/universities.js';
 import courseRoutes from './routes/courses.js';
+import browseCourseRoutes from './routes/browseCourses.js';
 import applicationRoutes from './routes/applications.js';
 import paymentRoutes from './routes/payments.js';
 import documentRoutes from './routes/documents.js';
@@ -41,6 +42,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ica-app')
 app.use('/api/auth', authRoutes);
 app.use('/api/universities', universityRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/browse-courses', browseCourseRoutes);
 app.use('/api/colleges', collegeRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/payments', paymentRoutes);
