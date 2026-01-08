@@ -9,7 +9,7 @@ import ApplicationPage from './pages/ApplicationPage';
 import UniversitiesPage from './pages/UniversitiesPage';
 import CollegesPage from './pages/CollegesPage';
 import CoursesPageV2 from './pages/CoursesPageV2';
-import APSCalculator from './pages/APSCalculator';
+import APSCalculatorV2 from './pages/APSCalculatorV2';
 import RecommendationsPage from './pages/RecommendationsPage';
 import TrackStatusPage from './pages/TrackStatusPage';
 import AdminDashboard from './pages/AdminDashboard';
@@ -69,7 +69,7 @@ function App() {
                         <Route path="/universities" element={<UniversitiesPage />} />
                         <Route path="/colleges" element={<CollegesPage />} />
                         <Route path="/courses" element={<CoursesPageV2 />} />
-                        <Route path="/aps-calculator" element={<APSCalculator />} />
+                        <Route path="/aps-calculator" element={<APSCalculatorV2 />} />
                         <Route path="/recommendations" element={<RecommendationsPage />} />
                         <Route path="/track-status" element={<TrackStatusPage />} />
                         <Route path="/admin" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} />
