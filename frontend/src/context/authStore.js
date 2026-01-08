@@ -19,12 +19,19 @@ const useAuthStore = create((set) => ({
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
+            
             const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+            }
+            
             localStorage.setItem('token', data.token);
-            set({ user: data.user, token: data.token, isLoading: false });
+            set({ user: data.user, token: data.token, isLoading: false, error: null });
             return data;
         } catch (error) {
-            set({ error: error.message, isLoading: false });
+            const errorMsg = error.message || 'Login failed';
+            set({ error: errorMsg, isLoading: false });
             throw error;
         }
     },

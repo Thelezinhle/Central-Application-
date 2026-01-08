@@ -7,7 +7,9 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
 import UniversitiesPage from './pages/UniversitiesPage';
+import CollegesPage from './pages/CollegesPage';
 import CoursesPage from './pages/CoursesPage';
+import APSCalculator from './pages/APSCalculator';
 import RecommendationsPage from './pages/RecommendationsPage';
 import TrackStatusPage from './pages/TrackStatusPage';
 import AdminDashboard from './pages/AdminDashboard';
@@ -64,7 +66,9 @@ function App() {
                         <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/login" />} />
                         <Route path="/application/:id" element={user ? <ApplicationPage /> : <Navigate to="/login" />} />
                         <Route path="/universities" element={<UniversitiesPage />} />
+                        <Route path="/colleges" element={<CollegesPage />} />
                         <Route path="/courses" element={<CoursesPage />} />
+                        <Route path="/aps-calculator" element={<APSCalculator />} />
                         <Route path="/recommendations" element={<RecommendationsPage />} />
                         <Route path="/track-status" element={<TrackStatusPage />} />
                         <Route path="/admin" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} />

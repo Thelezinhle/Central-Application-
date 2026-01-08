@@ -10,7 +10,7 @@ function HomePage() {
     // Announce page on load
     useEffect(() => {
         if (voiceEnabled) {
-            speak('Welcome to Advanced CAO Application. Simplified university admissions with clear entry requirements and course listings. Browse courses, get recommendations, track your application status.');
+            speak('Welcome to International Central Application. Simplified university admissions with clear entry requirements and course listings. Browse courses, get recommendations, track your application status.');
         }
     }, [voiceEnabled, speak]);
     return (
@@ -24,7 +24,7 @@ function HomePage() {
                     <FaArrowLeft aria-hidden="true" /> Back
                 </button>
                 <div className="max-w-3xl">
-                    <h1 className="text-5xl font-bold mb-4">Advanced CAO Application</h1>
+                    <h1 className="text-5xl font-bold mb-4">International Central Application (ICA)</h1>
                     <p className="text-xl mb-8">
                         Simplified university admissions with clear entry requirements, course listings, and real-time updates.
                     </p>

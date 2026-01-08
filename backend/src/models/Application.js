@@ -95,7 +95,7 @@ applicationSchema.pre('save', async function (next) {
     if (!this.applicationNumber) {
         const count = await mongoose.model('Application').countDocuments();
         const year = new Date().getFullYear();
-        this.applicationNumber = `CAO-${year}-${String(count + 1).padStart(6, '0')}`;
+        this.applicationNumber = `ICA-${year}-${String(count + 1).padStart(6, '0')}`;
     }
     next();
 });

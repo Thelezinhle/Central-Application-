@@ -30,7 +30,12 @@ export const universityService = {
     getById: (id) => apiClient.get(`/universities/${id}`),
     create: (data) => apiClient.post('/universities', data),
     update: (id, data) => apiClient.put(`/universities/${id}`, data),
-    delete: (id) => apiClient.delete(`/universities/${id}`)
+    delete: (id) => apiClient.delete(`/universities/${id}`),
+    // New multi-source methods
+    searchGlobal: (query) => apiClient.get(`/universities/search/global?query=${query}`),
+    searchEnriched: (country) => apiClient.get(`/universities/search/enriched?country=${country}`),
+    getFromSource: (source, params = {}) => apiClient.get(`/universities/source/${source}`, { params }),
+    seedFromAPI: (countries) => apiClient.post('/universities/seed/from-api', { countries })
 };
 
 export const courseService = {

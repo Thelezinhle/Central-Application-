@@ -11,11 +11,12 @@ function Navbar() {
         <nav className="bg-white shadow-md">
             <div className="container flex justify-between items-center py-4">
                 <Link to="/" className="text-2xl font-bold text-green-700">
-                    CAO Advanced
+                    ICA Global
                 </Link>
 
                 <div className="hidden md:flex space-x-6">
                     <Link to="/universities" className="text-gray-700 hover:text-green-700">Universities</Link>
+                    <Link to="/colleges" className="text-gray-700 hover:text-green-700">Colleges</Link>
                     <Link to="/courses" className="text-gray-700 hover:text-green-700">Browse Courses</Link>
                     <Link to="/recommendations" className="text-gray-700 hover:text-green-700">Recommendations</Link>
                     <Link to="/track-status" className="text-gray-700 hover:text-green-700">Track Status</Link>
@@ -45,6 +46,7 @@ function Navbar() {
             {isOpen && (
                 <div className="md:hidden bg-gray-100 p-4">
                     <Link to="/universities" className="block py-2">Universities</Link>
+                    <Link to="/colleges" className="block py-2">Colleges</Link>
                     <Link to="/courses" className="block py-2">Browse Courses</Link>
                     <Link to="/recommendations" className="block py-2">Recommendations</Link>
                     <Link to="/track-status" className="block py-2">Track Status</Link>

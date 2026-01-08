@@ -4,62 +4,235 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/cao-app')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ica-app')
     .then(() => console.log('✅ MongoDB connected'))
     .catch((err) => {
         console.error('❌ MongoDB connection error:', err);
         process.exit(1);
     });
 
-// University Schema
-const universitySchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    country: String,
-    alpha_two_code: String,
-    web_pages: [String],
-    domains: [String],
-    createdAt: { type: Date, default: Date.now }
-});
-
-const University = mongoose.model('University', universitySchema);
+// Import the University model
+import University from './src/models/University.js';
 
 // High-quality sample universities data from around the world
 const sampleUniversities = [
-    // South Africa - Universities
-    { name: "University of Cape Town", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.uct.ac.za/"], domains: ["uct.ac.za"] },
-    { name: "University of the Witwatersrand", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.wits.ac.za/"], domains: ["wits.ac.za"] },
-    { name: "Stellenbosch University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.sun.ac.za/"], domains: ["sun.ac.za"] },
-    { name: "University of Pretoria", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.up.ac.za/"], domains: ["up.ac.za"] },
-    { name: "University of KwaZulu-Natal", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.ukzn.ac.za/"], domains: ["ukzn.ac.za"] },
-    { name: "University of South Africa", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.unisa.ac.za/"], domains: ["unisa.ac.za"] },
-    { name: "Nelson Mandela Metropolitan University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.mandela.ac.za/"], domains: ["mandela.ac.za"] },
-    { name: "Rhodes University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.ru.ac.za/"], domains: ["ru.ac.za"] },
-    { name: "University of Venda", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.univen.ac.za/"], domains: ["univen.ac.za"] },
-    { name: "University of Limpopo", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.ul.ac.za/"], domains: ["ul.ac.za"] },
-    { name: "Tshwane University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.tut.ac.za/"], domains: ["tut.ac.za"] },
-    { name: "University of Johannesburg", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.uj.ac.za/"], domains: ["uj.ac.za"] },
+    // ===== SOUTH AFRICA - KWAZULU-NATAL UNIVERSITIES (COMPREHENSIVE) =====
+    {
+        name: "University of KwaZulu-Natal",
+        code: "UKZN",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.ukzn.ac.za/"],
+        domains: ["ukzn.ac.za"],
+        address: {
+            city: "Durban & Pietermaritzburg",
+            province: "KwaZulu-Natal",
+            postalCode: "4041"
+        },
+        contact: {
+            email: "saisd@ukzn.ac.za",
+            admissionsEmail: "admissions@ukzn.ac.za"
+        },
+        type: "public",
+        established: 2004,
+        students: 47000,
+        description: "Merger of University of Natal and University of Durban-Westville",
+        campuses: [
+            { name: "Howard College", city: "Durban" },
+            { name: "Pietermaritzburg", city: "Pietermaritzburg" },
+            { name: "Westville", city: "Durban" },
+            { name: "Medical School", city: "Durban" },
+            { name: "Edgewood", city: "Durban" }
+        ]
+    },
+    {
+        name: "Durban University of Technology",
+        code: "DUT",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.dut.ac.za/"],
+        domains: ["dut.ac.za"],
+        address: {
+            city: "Durban",
+            province: "KwaZulu-Natal",
+            postalCode: "4001"
+        },
+        contact: {
+            email: "enquiries@dut.ac.za",
+            admissionsEmail: "admissions@dut.ac.za"
+        },
+        type: "public",
+        established: 2002,
+        students: 33000,
+        description: "University of Technology in Durban",
+        campuses: [
+            { name: "Steve Biko", city: "Durban" },
+            { name: "Ritson", city: "Durban" },
+            { name: "ML Sultan", city: "Durban" },
+            { name: "City Centre", city: "Durban" }
+        ]
+    },
+    {
+        name: "Mangosuthu University of Technology",
+        code: "MUT",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.mut.ac.za/"],
+        domains: ["mut.ac.za"],
+        address: {
+            city: "Umlazi",
+            province: "KwaZulu-Natal",
+            postalCode: "4067"
+        },
+        contact: {
+            email: "admissions@mut.ac.za"
+        },
+        type: "public",
+        established: 1979,
+        students: 12000,
+        description: "University of Technology in Umlazi, Durban"
+    },
+    {
+        name: "University of Zululand",
+        code: "UniZulu",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.unizulu.ac.za/"],
+        domains: ["unizulu.ac.za"],
+        address: {
+            city: "KwaDlangezwa",
+            province: "KwaZulu-Natal",
+            postalCode: "3886"
+        },
+        contact: {
+            email: "registrar@unizulu.ac.za"
+        },
+        type: "public",
+        established: 1960,
+        students: 16000,
+        description: "Comprehensive university in northern KZN",
+        campuses: [
+            { name: "KwaDlangezwa", city: "KwaDlangezwa" },
+            { name: "Richards Bay", city: "Richards Bay" }
+        ]
+    },
+    {
+        name: "Varsity College KZN",
+        code: "VarsityKZN",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.varsitycollege.co.za/"],
+        domains: ["varsitycollege.co.za"],
+        address: {
+            city: "Durban & Pietermaritzburg",
+            province: "KwaZulu-Natal"
+        },
+        type: "private college",
+        description: "Private higher education institution"
+    },
+    {
+        name: "Damelin College KZN",
+        code: "DamelinKZN",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.damelin.co.za/"],
+        domains: ["damelin.co.za"],
+        address: {
+            city: "Durban",
+            province: "KwaZulu-Natal"
+        },
+        type: "private college",
+        description: "Private college in Durban"
+    },
+    {
+        name: "Boston City Campus KZN",
+        code: "BostonKZN",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.boston.co.za/"],
+        domains: ["boston.co.za"],
+        address: {
+            city: "Durban",
+            province: "KwaZulu-Natal"
+        },
+        type: "private college",
+        description: "Private higher education"
+    },
+    {
+        name: "Esayidi TVET College",
+        code: "Esayidi",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.esayidifet.co.za/"],
+        domains: ["esayidifet.co.za"],
+        address: {
+            city: "Port Shepstone",
+            province: "KwaZulu-Natal"
+        },
+        type: "public TVET college",
+        description: "Public TVET college in Southern KZN",
+        campuses: [
+            { name: "Port Shepstone", city: "Port Shepstone" },
+            { name: "Umzimkhulu", city: "Umzimkhulu" },
+            { name: "Izingolweni", city: "Izingolweni" }
+        ]
+    },
+    {
+        name: "Mthashana TVET College",
+        code: "Mthashana",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.mthashanafet.edu.za/"],
+        domains: ["mthashanafet.edu.za"],
+        address: {
+            city: "Vryheid",
+            province: "KwaZulu-Natal"
+        },
+        type: "public TVET college",
+        description: "Public TVET college in Northern KZN"
+    },
+    {
+        name: "Umfolozi TVET College",
+        code: "Umfolozi",
+        country: "South Africa",
+        alpha_two_code: "ZA",
+        web_pages: ["http://www.umfolozicollege.co.za/"],
+        domains: ["umfolozicollege.co.za"],
+        address: {
+            city: "Richards Bay",
+            province: "KwaZulu-Natal"
+        },
+        type: "public TVET college",
+        description: "Public TVET college"
+    },
+
+    // ===== SOUTH AFRICA - OTHER PROVINCES =====
+    { name: "University of Cape Town", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.uct.ac.za/"], domains: ["uct.ac.za"], address: { city: "Cape Town", province: "Western Cape" } },
+    { name: "University of the Witwatersrand", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.wits.ac.za/"], domains: ["wits.ac.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Stellenbosch University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.sun.ac.za/"], domains: ["sun.ac.za"], address: { city: "Stellenbosch", province: "Western Cape" } },
+    { name: "University of Pretoria", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.up.ac.za/"], domains: ["up.ac.za"], address: { city: "Pretoria", province: "Gauteng" } },
+    { name: "University of South Africa", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.unisa.ac.za/"], domains: ["unisa.ac.za"], address: { city: "Pretoria", province: "Gauteng" } },
+    { name: "Nelson Mandela Metropolitan University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.mandela.ac.za/"], domains: ["mandela.ac.za"], address: { city: "Port Elizabeth", province: "Eastern Cape" } },
+    { name: "Rhodes University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.ru.ac.za/"], domains: ["ru.ac.za"], address: { city: "Grahamstown", province: "Eastern Cape" } },
+    { name: "University of Venda", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.univen.ac.za/"], domains: ["univen.ac.za"], address: { city: "Thohoyandou", province: "Limpopo" } },
+    { name: "University of Limpopo", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.ul.ac.za/"], domains: ["ul.ac.za"], address: { city: "Polokwane", province: "Limpopo" } },
+    { name: "Tshwane University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.tut.ac.za/"], domains: ["tut.ac.za"], address: { city: "Pretoria", province: "Gauteng" } },
+    { name: "University of Johannesburg", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.uj.ac.za/"], domains: ["uj.ac.za"], address: { city: "Johannesburg", province: "Gauteng" } },
 
     // South Africa - Technical Universities & Colleges
-    { name: "Cape Peninsula University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.cput.ac.za/"], domains: ["cput.ac.za"] },
-    { name: "Durban University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.dut.ac.za/"], domains: ["dut.ac.za"] },
-    { name: "Vaal University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.vut.ac.za/"], domains: ["vut.ac.za"] },
-    { name: "Central University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.cut.ac.za/"], domains: ["cut.ac.za"] },
-    { name: "Mangosuthu University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.mut.ac.za/"], domains: ["mut.ac.za"] },
-    { name: "Sefako Makgatho Health Sciences University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.smu.ac.za/"], domains: ["smu.ac.za"] },
-    { name: "Witwatersrand Technical College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.wtech.edu.za/"], domains: ["wtech.edu.za"] },
-    { name: "Midrand Graduate Institute", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.mgi.ac.za/"], domains: ["mgi.ac.za"] },
-    { name: "Rosebank College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.rosebankcollege.co.za/"], domains: ["rosebankcollege.co.za"] },
-    { name: "Pearson Institute of Higher Education", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.pearsoninstitute.ac.za/"], domains: ["pearsoninstitute.ac.za"] },
-    { name: "Boston City Campus", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.bostoncity.ac.za/"], domains: ["bostoncity.ac.za"] },
-    { name: "Varsity College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.varsitycollege.co.za/"], domains: ["varsitycollege.co.za"] },
-    { name: "Westford University College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.westford.ac.za/"], domains: ["westford.ac.za"] },
-    { name: "Regenesys Business School", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.regenesys.ac.za/"], domains: ["regenesys.ac.za"] },
-    { name: "Damelin College of Accounting", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.damelin.co.za/"], domains: ["damelin.co.za"] },
+    { name: "Cape Peninsula University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.cput.ac.za/"], domains: ["cput.ac.za"], address: { city: "Cape Town", province: "Western Cape" } },
+    { name: "Vaal University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.vut.ac.za/"], domains: ["vut.ac.za"], address: { city: "Vanderbijlpark", province: "Gauteng" } },
+    { name: "Central University of Technology", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.cut.ac.za/"], domains: ["cut.ac.za"], address: { city: "Bloemfontein", province: "Free State" } },
+    { name: "Sefako Makgatho Health Sciences University", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.smu.ac.za/"], domains: ["smu.ac.za"], address: { city: "Pretoria", province: "Gauteng" } },
+    { name: "Witwatersrand Technical College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.wtech.edu.za/"], domains: ["wtech.edu.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Midrand Graduate Institute", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.mgi.ac.za/"], domains: ["mgi.ac.za"], address: { city: "Midrand", province: "Gauteng" } },
+    { name: "Rosebank College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.rosebankcollege.co.za/"], domains: ["rosebankcollege.co.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Pearson Institute of Higher Education", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.pearsoninstitute.ac.za/"], domains: ["pearsoninstitute.ac.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Boston City Campus", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.bostoncity.ac.za/"], domains: ["bostoncity.ac.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Varsity College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.varsitycollege.co.za/"], domains: ["varsitycollege.co.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Westford University College", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.westford.ac.za/"], domains: ["westford.ac.za"], address: { city: "Cape Town", province: "Western Cape" } },
+    { name: "Regenesys Business School", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.regenesys.ac.za/"], domains: ["regenesys.ac.za"], address: { city: "Johannesburg", province: "Gauteng" } },
+    { name: "Damelin College of Accounting", country: "South Africa", alpha_two_code: "ZA", web_pages: ["http://www.damelin.co.za/"], domains: ["damelin.co.za"], address: { city: "Johannesburg", province: "Gauteng" } },
 
     // United States
     { name: "Harvard University", country: "United States", alpha_two_code: "US", web_pages: ["http://www.harvard.edu/"], domains: ["harvard.edu"] },

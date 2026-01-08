@@ -1,7 +1,7 @@
 {
-    "name": "cao-advanced-backend",
-    "version": "1.0.0",
-    "description": "Advanced CAO Application Backend - Node.js with Express",
+    "name": "ica-backend",
+    "version": "2.0.0",
+    "description": "International Central Application Backend - Node.js with Express & Global Universities API",
     "main": "src/index.js",
     "type": "module",
     "scripts": {

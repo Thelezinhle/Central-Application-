@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import University from './src/models/University.js';
 import Course from './src/models/Course.js';
 
-mongoose.connect('mongodb://localhost:27017/cao-app', {
+mongoose.connect('mongodb://localhost:27017/ica-app', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

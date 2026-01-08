@@ -78,9 +78,14 @@ const courseSchema = new mongoose.Schema({
     modules: [{
         code: String,
         name: String,
+        description: String,
         credits: Number,
         year: Number,
-        semester: Number
+        semester: Number,
+        prerequisites: [String],
+        learningOutcomes: [String],
+        assessmentMethod: String,
+        recommendedReadings: [String]
     }],
     campus: String,
     isActive: {

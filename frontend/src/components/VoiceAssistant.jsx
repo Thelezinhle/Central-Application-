@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { speak } from '../utils/accessibility';
-import { processVoiceCommand, CAO_VOICE_COMMANDS } from '../utils/voiceCommands';
+import { processVoiceCommand, ICA_VOICE_COMMANDS } from '../utils/voiceCommands';
 
 const VoiceAssistant = () => {
     const [isActive, setIsActive] = useState(false);
@@ -68,7 +68,7 @@ const VoiceAssistant = () => {
     // Initial greeting on mount
     useEffect(() => {
         setTimeout(() => {
-            const greeting = "Hello! I'm your CAO voice assistant. Can I help you navigate the application? Say 'yes' to continue or 'no' to dismiss me.";
+            const greeting = "Hello! I'm your ICA voice assistant. Can I help you navigate the application? Say 'yes' to continue or 'no' to dismiss me.";
             speak(greeting);
             setConversation([{
                 speaker: 'assistant',
@@ -300,7 +300,7 @@ const VoiceAssistant = () => {
     };
 
     const speakDeadline = () => {
-        addAssistantMessage("The standard CAO application deadline is February 1st for applications and February 15th for payment.");
+        addAssistantMessage("The standard ICA application deadline is February 1st for applications and February 15th for payment.");
     };
 
     const showHelp = () => {
@@ -367,7 +367,7 @@ const VoiceAssistant = () => {
             {isActive && (
                 <div className="voice-assistant-panel">
                     <div className="voice-assistant-header">
-                        <h3>CAO Voice Assistant</h3>
+                        <h3>ICA Voice Assistant</h3>
                         <div className="flex items-center space-x-2">
                             <div className={`listening-indicator ${listening ? 'listening' : ''}`}>
                                 <span className="pulse"></span>

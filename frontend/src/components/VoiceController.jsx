@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { speak } from '../utils/accessibility';
 import VoiceRecognitionManager from '../utils/voiceRecognition';
+import { executeVoiceCommand, ICA_VOICE_COMMANDS } from '../utils/voiceCommands';
 
 /**
  * VoiceController Component
- * Manages voice commands for blind users
- * Listens for voice input and responds accordingly
+ * Enhanced voice command system for full app control
+ * Listens for voice input and executes commands or navigates the app
  */
 export function VoiceController() {
     const [voiceEnabled, setVoiceEnabled] = useState(true);
@@ -14,6 +15,7 @@ export function VoiceController() {
     const [feedback, setFeedback] = useState('');
     const voiceRecRef = useRef(null);
     const listeningTimeoutRef = useRef(null);
+    const [commandHistory, setCommandHistory] = useState([]);
 
     // Initialize voice recognition when component mounts
     useEffect(() => {
@@ -78,16 +80,28 @@ export function VoiceController() {
     const handleVoiceResult = (result) => {
         const input = result.transcript.toLowerCase().trim();
         setTranscript(input);
-        setFeedback('Processing...');
+        setFeedback('Processing command...');
 
-        processVoiceCommand(input);
+        // Execute the enhanced voice command system
+        executeVoiceCommand(
+            input,
+            (message) => {
+                setFeedback(message);
+                speak(message);
+                setCommandHistory([...commandHistory, { command: input, result: message, timestamp: new Date() }]);
+            },
+            (error) => {
+                setFeedback(`Error: ${error.message}`);
+                speak(`Error: ${error.message}`);
+            }
+        );
 
-        // Resume listening
+        // Resume listening after a delay
         setTimeout(() => {
             if (voiceEnabled) {
                 startListening();
             }
-        }, 500);
+        }, 1000);
     };
 
     const handleVoiceError = (error) => {
@@ -102,93 +116,7 @@ export function VoiceController() {
         }, 1000);
     };
 
-    const processVoiceCommand = (input) => {
-        // Navigation commands
-        if (input.includes('home') || input.includes('go home')) {
-            window.location.href = '/';
-            speak('Going to home page');
-            return;
-        }
 
-        if (input.includes('courses') || input.includes('browse courses')) {
-            window.location.href = '/courses';
-            speak('Going to courses page');
-            return;
-        }
-
-        if (input.includes('universities') || input.includes('browse universities')) {
-            window.location.href = '/universities';
-            speak('Going to universities page');
-            return;
-        }
-
-        if (input.includes('recommendations') || input.includes('get recommendations')) {
-            window.location.href = '/recommendations';
-            speak('Going to recommendations page');
-            return;
-        }
-
-        if (input.includes('dashboard') || input.includes('my dashboard')) {
-            window.location.href = '/dashboard';
-            speak('Going to dashboard');
-            return;
-        }
-
-        if (input.includes('track') || input.includes('track status')) {
-            window.location.href = '/track-status';
-            speak('Going to track status page');
-            return;
-        }
-
-        if (input.includes('login') || input.includes('sign in')) {
-            window.location.href = '/login';
-            speak('Going to login page');
-            return;
-        }
-
-        if (input.includes('register') || input.includes('sign up')) {
-            window.location.href = '/register';
-            speak('Going to register page');
-            return;
-        }
-
-        // Help command
-        if (input.includes('help') || input.includes('what can i do')) {
-            const helpText = `Available commands: Say home, courses, universities, recommendations, dashboard, track status, login, register. Say help to hear this again.`;
-            speak(helpText);
-            setFeedback(helpText);
-            return;
-        }
-
-        // Page reading commands
-        if (input.includes('read') || input.includes('read page')) {
-            const mainContent = document.querySelector('main');
-            if (mainContent) {
-                const heading = mainContent.querySelector('h1')?.textContent || 'Current page';
-                const text = mainContent.textContent.substring(0, 200);
-                speak(`${heading}. ${text}`);
-                setFeedback('Reading page content');
-            }
-            return;
-        }
-
-        // Voice mode toggle
-        if (input.includes('stop') || input.includes('disable voice')) {
-            disableVoiceMode();
-            return;
-        }
-
-        // Repeat command
-        if (input.includes('repeat') || input.includes('say that again')) {
-            speak('Please say another command. Or say help for available commands.');
-            setFeedback('Waiting for command');
-            return;
-        }
-
-        // Unknown command
-        speak('Command not recognized. Say help for available commands.');
-        setFeedback('Command not recognized');
-    };
 
     const disableVoiceMode = () => {
         setVoiceEnabled(false);
@@ -233,13 +161,15 @@ export function VoiceController() {
 
                 {/* Quick help */}
                 <div className="text-xs text-gray-700 bg-white p-2 rounded border border-[#228B22]">
-                    <p className="font-medium mb-1">Say any of these:</p>
+                    <p className="font-medium mb-1">Try saying:</p>
                     <ul className="space-y-1">
-                        <li>- help: for all commands</li>
-                        <li>- home, courses, universities</li>
-                        <li>- recommendations, dashboard</li>
-                        <li>- read page: to read current page</li>
-                        <li>- stop: to disable voice</li>
+                        <li>✓ Go to [page]: navigate to any page</li>
+                        <li>✓ Search for [term]: find courses</li>
+                        <li>✓ Fill [field] with [value]: fill forms</li>
+                        <li>✓ Click [button]: click buttons</li>
+                        <li>✓ Scroll [direction]: scroll page</li>
+                        <li>✓ Help: see all commands</li>
+                        <li>✓ Read page: hear page content</li>
                     </ul>
                 </div>
 

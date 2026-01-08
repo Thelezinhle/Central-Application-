@@ -135,14 +135,15 @@ function CoursesPage() {
     };
 
     return (
-        <div className="container py-12" id="main-content" role="main" aria-label="Browse and apply for university courses from South African institutions">
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 mb-4 bg-green-700 hover:bg-green-800 text-white px-3 py-2 rounded transition"
-                aria-label="Go to previous page"
-            >
-                <FaArrowLeft aria-hidden="true" /> Back
-            </button>
+        <div className="min-h-screen bg-[#228B22] py-12">
+            <div className="container mx-auto px-4" id="main-content" role="main" aria-label="Browse and apply for university courses from South African institutions">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-2 mb-4 bg-white hover:bg-gray-100 text-[#228B22] px-3 py-2 rounded transition font-semibold"
+                    aria-label="Go to previous page"
+                >
+                    <FaArrowLeft aria-hidden="true" /> Back
+                </button>
             <h1 className="text-4xl font-bold mb-2">Browse Courses</h1>
             <p className="text-gray-600 mb-8">Browse courses from all South African universities and apply directly</p>
 
@@ -341,6 +342,7 @@ function CoursesPage() {
                     ))}
                 </div>
             )}
+            </div>
         </div>
 
     );

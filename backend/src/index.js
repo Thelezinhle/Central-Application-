@@ -17,6 +17,7 @@ import paymentRoutes from './routes/payments.js';
 import documentRoutes from './routes/documents.js';
 import adminRoutes from './routes/admin.js';
 import globalUniversitiesRoutes from './routes/globalUniversities.js';
+import collegeRoutes from './routes/colleges.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,7 +25,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(helmet());
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
     credentials: true
 }));
 app.use(morgan('dev'));
@@ -32,7 +33,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/cao-app')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ica-app')
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log('MongoDB connection error:', err));
 
@@ -40,6 +41,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/cao-app')
 app.use('/api/auth', authRoutes);
 app.use('/api/universities', universityRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/colleges', collegeRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/documents', documentRoutes);

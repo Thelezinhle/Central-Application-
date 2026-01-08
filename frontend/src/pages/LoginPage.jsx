@@ -41,52 +41,54 @@ function LoginPage() {
     };
 
     return (
-        <div className="container py-20" role="main" aria-label="Login page">
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 mb-4 bg-green-700 hover:bg-green-800 text-white px-3 py-2 rounded transition"
-                aria-label="Go to previous page"
-            >
-                <FaArrowLeft aria-hidden="true" /> Back
-            </button>
-            <div className="max-w-md mx-auto card">
-                <h1 className="text-3xl font-bold mb-6">Login to CAO</h1>
-                <form onSubmit={handleSubmit(onSubmit)} aria-label="Login form">
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="email">Email</label>
-                        <input
-                            id="email"
-                            {...register('email', { required: 'Email is required' })}
-                            type="email"
-                            className="input"
-                            aria-required="true"
-                            aria-invalid={errors.email ? 'true' : 'false'}
-                        />
-                        {errors.email && <span className="text-red-600" role="alert">{errors.email.message}</span>}
-                    </div>
+        <div className="min-h-screen bg-[#228B22] py-20 flex items-center justify-center" role="main" aria-label="Login page">
+            <div className="w-full max-w-md px-4">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-2 mb-4 bg-white hover:bg-gray-100 text-[#228B22] px-3 py-2 rounded transition font-semibold"
+                    aria-label="Go to previous page"
+                >
+                    <FaArrowLeft aria-hidden="true" /> Back
+                </button>
+                <div className="card">
+                    <h1 className="text-3xl font-bold mb-6">Login to ICA</h1>
+                    <form onSubmit={handleSubmit(onSubmit)} aria-label="Login form">
+                        <div className="form-group">
+                            <label className="form-label" htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                {...register('email', { required: 'Email is required' })}
+                                type="email"
+                                className="input"
+                                aria-required="true"
+                                aria-invalid={errors.email ? 'true' : 'false'}
+                            />
+                            {errors.email && <span className="text-red-600" role="alert">{errors.email.message}</span>}
+                        </div>
 
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="password">Password</label>
-                        <input
-                            id="password"
-                            {...register('password', { required: 'Password is required' })}
-                            type="password"
-                            className="input"
-                            aria-required="true"
-                            aria-invalid={errors.password ? 'true' : 'false'}
-                        />
-                        {errors.password && <span className="text-red-600" role="alert">{errors.password.message}</span>}
-                    </div>
+                        <div className="form-group">
+                            <label className="form-label" htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                {...register('password', { required: 'Password is required' })}
+                                type="password"
+                                className="input"
+                                aria-required="true"
+                                aria-invalid={errors.password ? 'true' : 'false'}
+                            />
+                            {errors.password && <span className="text-red-600" role="alert">{errors.password.message}</span>}
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="btn-primary w-full"
-                    >
-                        {isLoading ? 'Logging in...' : 'Login'}
-                    </button>
-                </form>
-                <p className="mt-4 text-center text-gray-600">Don't have an account? <Link to="/register" className="text-green-700 font-bold hover:underline">Register here</Link></p>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="btn-primary w-full"
+                        >
+                            {isLoading ? 'Logging in...' : 'Login'}
+                        </button>
+                    </form>
+                    <p className="mt-4 text-center text-gray-600">Don't have an account? <Link to="/register" className="text-green-700 font-bold hover:underline">Register here</Link></p>
+                </div>
             </div>
         </div>
     );

@@ -6,13 +6,22 @@ export const register = async (req, res) => {
     try {
         const { firstName, lastName, email, phone, idNumber, password, confirmPassword } = req.body;
 
+        // Validation
+        if (!firstName || !lastName || !email || !phone || !idNumber || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
         if (password !== confirmPassword) {
             return res.status(400).json({ message: 'Passwords do not match' });
         }
 
+        if (password.length < 6) {
+            return res.status(400).json({ message: 'Password must be at least 6 characters' });
+        }
+
         const existingUser = await User.findOne({ $or: [{ email }, { idNumber }] });
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'Email or ID number already registered' });
         }
 
         const user = new User({
@@ -41,7 +50,12 @@ export const register = async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Registration error:', error);
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            return res.status(400).json({ message: `${field} is already registered` });
+        }
+        res.status(500).json({ message: error.message || 'Registration failed' });
     }
 };
 
@@ -50,7 +64,7 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ message: 'Email and password required' });
+            return res.status(400).json({ message: 'Email and password are required' });
         }
 
         const user = await User.findOne({ email }).select('+password');
@@ -77,7 +91,8 @@ export const login = async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Login error:', error);
+        res.status(500).json({ message: error.message || 'Login failed' });
     }
 };
 

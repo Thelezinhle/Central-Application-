@@ -169,16 +169,17 @@ function RecommendationsPage() {
     };
 
     return (
-        <div className="container py-12" role="main" aria-label="Smart course recommendations page">
-            <button
-                onClick={() => navigate(-1)}
-                className="flex items-center gap-2 mb-4 bg-green-700 hover:bg-green-800 text-white px-3 py-2 rounded transition"
-                aria-label="Go to previous page"
-            >
-                <FaArrowLeft aria-hidden="true" /> Back
-            </button>
-            <h1 className="text-4xl font-bold mb-2">Smart Recommendations</h1>
-            <p className="text-gray-600 mb-8">Upload your matric results or enter your APS scores to get AI-powered course recommendations</p>
+        <div className="min-h-screen bg-[#228B22] py-12" role="main" aria-label="Smart course recommendations page">
+            <div className="container mx-auto px-4">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-2 mb-4 bg-white hover:bg-gray-100 text-[#228B22] px-3 py-2 rounded transition font-semibold"
+                    aria-label="Go to previous page"
+                >
+                    <FaArrowLeft aria-hidden="true" /> Back
+                </button>
+                <h1 className="text-4xl font-bold mb-2 text-white">Smart Recommendations</h1>
+                <p className="text-white mb-8">Upload your matric results or enter your APS scores to get AI-powered course recommendations</p>
 
             {!submitted ? (
                 <div className="max-w-2xl mx-auto card">
@@ -379,6 +380,7 @@ function RecommendationsPage() {
                     </div>
                 </>
             )}
+            </div>
         </div>
     );
 }
