@@ -3,6 +3,12 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+// Import models to register schemas
+import './models/Course.js';
+import './models/University.js';
+import './models/User.js';
+import './models/Application.js';
+
 dotenv.config();
 
 const app = express();
