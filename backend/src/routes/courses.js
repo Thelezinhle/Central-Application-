@@ -13,10 +13,15 @@ import {
     getSampleCourses,
     calculateAPSDetailed,
     searchCoursesAdvanced,
-    getUniversityDetails
+    getUniversityDetails,
+    seedCAOData,
+    checkDatabaseStatus
 } from '../controllers/courseController.js';
 
 const router = express.Router();
+
+// Debug: Seed CAO data endpoint
+router.post('/seed-cao', seedCAOData);
 
 // APS Calculator - must be before generic routes
 router.post('/aps/calculate', calculateAPS);

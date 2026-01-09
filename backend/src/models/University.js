@@ -16,6 +16,23 @@ const universitySchema = new mongoose.Schema({
     web_pages: [String],
     domains: [String],
 
+    // Institution type classification
+    type: {
+        type: String,
+        required: true,
+        enum: ['public_university', 'tvet_college', 'private_college', 'cao_partner_college'],
+        default: 'public_university',
+        index: true
+    },
+    // Application system classification
+    applicationSystem: {
+        type: String,
+        required: true,
+        enum: ['CAO', 'direct_college', 'direct_university'],
+        default: 'CAO',
+        index: true
+    },
+
     // Additional fields for CAO
     code: {
         type: String,
@@ -39,6 +56,36 @@ const universitySchema = new mongoose.Schema({
         city: String,
         address: String
     }],
+    // TVET-specific fields
+    tvetInfo: {
+        dhetRegistered: Boolean,
+        campus_locations: [{
+            name: String,
+            city: String,
+            province: String
+        }],
+        programmes: [{
+            name: String,
+            nqfLevel: String, // N1-N6 for TVET
+            category: String // Engineering, Business, etc.
+        }]
+    },
+    // College-specific fields
+    collegeInfo: {
+        accreditationBodies: [String], // CHE, DHET, SETA
+        cheAccredited: Boolean,
+        dhetAccredited: Boolean,
+        setaAccredited: Boolean,
+        accreditationNumber: String,
+        registeredProgrammes: Number
+    },
+    // Direct application link (for non-CAO institutions)
+    applicationUrl: String,
+    // CAO-specific link (for CAO universities/colleges)
+    caoApplicationUrl: {
+        type: String,
+        default: 'https://www.cao.ac.za/apply'
+    },
     accreditation: {
         body: String,
         status: String,

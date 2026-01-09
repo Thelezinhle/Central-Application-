@@ -13,6 +13,47 @@ const courseSchema = new mongoose.Schema({
         trim: true
     },
     description: String,
+    // Application system type
+    applicationSystem: {
+        type: String,
+        enum: ['CAO', 'direct_college', 'direct_university'],
+        default: 'CAO',
+        index: true
+    },
+    // CAO-specific fields
+    cao: {
+        programmeCode: {
+            type: String,
+            sparse: true,
+            uppercase: true
+        },
+        institution: String,
+        handbookPage: Number,
+        source: {
+            type: String,
+            default: 'cao_handbook_2026'
+        },
+        verified: {
+            type: Boolean,
+            default: false
+        }
+    },
+    // TVET-specific fields
+    tvet: {
+        nqfLevel: String, // N1-N6
+        subject: String,
+        moduleCode: String,
+        credits: Number,
+        sectorEducationType: String // SETA assigned
+    },
+    // Direct university/college fields
+    directApplication: {
+        applicationUrl: String,
+        requiresAPS: Boolean,
+        requiresMatric: Boolean,
+        contactPerson: String,
+        contactEmail: String
+    },
     university: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'University',

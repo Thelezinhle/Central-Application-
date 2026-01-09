@@ -1,4 +1,5 @@
 import University from '../models/University.js';
+import Course from '../models/Course.js';
 import User from '../models/User.js';
 
 // Get all courses from all universities
@@ -7,36 +8,43 @@ export const getCourses = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
+        const hasCAO = req.query.hasCAO === 'true';
 
-        // Get universities with courses
-        const universities = await University.find({ isActive: true })
-            .select('name code courses')
+        // Simple filter
+        let courseFilter = {};
+        
+        if (hasCAO) {
+            // Get universities with CAO
+            const caoUniversities = await University.find({ applicationSystem: 'CAO' }).select('_id').lean();
+            const caoIds = caoUniversities.map(u => u._id.toString());
+            courseFilter.university = { $in: caoIds };
+        }
+
+        // Get courses with pagination
+        const courses = await Course.find(courseFilter)
+            .populate('university', 'name code')
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .lean();
 
-        const total = await University.countDocuments({ isActive: true });
+        const total = await Course.countDocuments(courseFilter);
 
-        // Flatten courses with university info
-        const coursesWithUni = [];
-        universities.forEach(uni => {
-            if (uni.courses && uni.courses.length > 0) {
-                uni.courses.forEach(course => {
-                    coursesWithUni.push({
-                        ...course.toObject(),
-                        universityId: uni._id,
-                        universityName: uni.name,
-                        universityCode: uni.code
-                    });
-                });
-            }
-        });
+        // Format response
+        const data = courses.map(c => ({
+            _id: c._id,
+            code: c.code,
+            name: c.name,
+            university: c.university,
+            cao: c.cao
+        }));
 
         res.json({
             success: true,
-            courses: coursesWithUni,
+            data,
             pagination: { page, limit, total, pages: Math.ceil(total / limit) }
         });
     } catch (error) {
+        console.error('GetCourses Error:', error.message);
         res.status(500).json({ success: false, message: error.message });
     }
 };
@@ -699,5 +707,197 @@ export const getUniversityDetails = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+
+// Debug: Seed CAO data
+export const seedCAOData = async (req, res) => {
+    try {
+        // Clear existing universities
+        await University.deleteMany({});
+
+        const CAO_INSTITUTIONS = [
+            {
+                name: 'University of KwaZulu-Natal',
+                code: 'UKZN',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Durban', province: 'KwaZulu-Natal' },
+                contact: { email: 'admissions@ukzn.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'BAS', name: 'Bachelor of Accounting Sciences', level: 'Bachelor', faculty: 'Commerce', department: 'Accounting', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 24 }, isActive: true },
+                    { code: 'BCM', name: 'Bachelor of Commerce', level: 'Bachelor', faculty: 'Commerce', department: 'Business Administration', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 20 }, isActive: true },
+                    { code: 'BSC', name: 'Bachelor of Science', level: 'Bachelor', faculty: 'Science', department: 'Physics', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 26 }, isActive: true },
+                    { code: 'ENG', name: 'Bachelor of Engineering: Civil', level: 'Bachelor', faculty: 'Engineering', department: 'Civil Engineering', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 28 }, isActive: true },
+                    { code: 'LAW', name: 'Bachelor of Laws', level: 'Bachelor', faculty: 'Law', department: 'Law', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 30 }, isActive: true },
+                    { code: 'MED', name: 'Bachelor of Medicine', level: 'Bachelor', faculty: 'Health Sciences', department: 'Medicine', studyMode: 'Full-time', duration: { value: 6, unit: 'years' }, aps: { minimumAPS: 32 }, isActive: true },
+                ]
+            },
+            {
+                name: 'Durban University of Technology',
+                code: 'DUT',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Durban', province: 'KwaZulu-Natal' },
+                contact: { email: 'admissions@dut.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'ENG', name: 'Bachelor of Engineering: Electrical', level: 'Bachelor', faculty: 'Engineering', department: 'Electrical Engineering', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 29 }, isActive: true },
+                    { code: 'BIT', name: 'Bachelor of Information Technology', level: 'Bachelor', faculty: 'IT', department: 'Software Development', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 24 }, isActive: true },
+                    { code: 'ENG2', name: 'Bachelor of Engineering: Mechanical', level: 'Bachelor', faculty: 'Engineering', department: 'Mechanical Engineering', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 28 }, isActive: true },
+                    { code: 'BUS', name: 'Bachelor of Business Administration', level: 'Bachelor', faculty: 'Business', department: 'Business Administration', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 22 }, isActive: true },
+                ]
+            },
+            {
+                name: 'University of Johannesburg',
+                code: 'UJ',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Johannesburg', province: 'Gauteng' },
+                contact: { email: 'admissions@uj.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'LAW', name: 'Bachelor of Laws', level: 'Bachelor', faculty: 'Law', department: 'Law', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 31 }, isActive: true },
+                    { code: 'ARC', name: 'Bachelor of Architecture', level: 'Bachelor', faculty: 'Built Environment', department: 'Architecture', studyMode: 'Full-time', duration: { value: 5, unit: 'years' }, aps: { minimumAPS: 26 }, isActive: true },
+                    { code: 'ENG', name: 'Bachelor of Engineering: Electronic', level: 'Bachelor', faculty: 'Engineering', department: 'Electronic Engineering', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 30 }, isActive: true },
+                ]
+            },
+            {
+                name: 'University of Cape Town',
+                code: 'UCT',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Cape Town', province: 'Western Cape' },
+                contact: { email: 'admissions@uct.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'COM', name: 'Bachelor of Commerce', level: 'Bachelor', faculty: 'Commerce', department: 'Economics', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 23 }, isActive: true },
+                    { code: 'SCI', name: 'Bachelor of Science', level: 'Bachelor', faculty: 'Science', department: 'Biochemistry', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 27 }, isActive: true },
+                ]
+            },
+            {
+                name: 'Stellenbosch University',
+                code: 'SUN',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Stellenbosch', province: 'Western Cape' },
+                contact: { email: 'admissions@sun.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'AGR', name: 'Bachelor of Agricultural Sciences', level: 'Bachelor', faculty: 'Agriculture', department: 'Agronomy', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 23 }, isActive: true },
+                    { code: 'VET', name: 'Bachelor of Veterinary Science', level: 'Bachelor', faculty: 'Agriculture', department: 'Veterinary Science', studyMode: 'Full-time', duration: { value: 5, unit: 'years' }, aps: { minimumAPS: 32 }, isActive: true },
+                ]
+            },
+            {
+                name: 'University of Pretoria',
+                code: 'UP',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Pretoria', province: 'Gauteng' },
+                contact: { email: 'admissions@up.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'PSY', name: 'Bachelor of Psychology', level: 'Bachelor', faculty: 'Humanities', department: 'Psychology', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 20 }, isActive: true },
+                    { code: 'EDU', name: 'Bachelor of Education', level: 'Bachelor', faculty: 'Education', department: 'Teacher Education', studyMode: 'Full-time', duration: { value: 4, unit: 'years' }, aps: { minimumAPS: 18 }, isActive: true },
+                ]
+            },
+            {
+                name: 'Wits University',
+                code: 'WITS',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Johannesburg', province: 'Gauteng' },
+                contact: { email: 'admissions@wits.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'MUS', name: 'Bachelor of Music', level: 'Bachelor', faculty: 'Humanities', department: 'Music', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 19 }, isActive: true },
+                    { code: 'ART', name: 'Bachelor of Fine Arts', level: 'Bachelor', faculty: 'Humanities', department: 'Visual Arts', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 18 }, isActive: true },
+                ]
+            },
+            {
+                name: 'Rhodes University',
+                code: 'RU',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Grahamstown', province: 'Eastern Cape' },
+                contact: { email: 'admissions@ru.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'ENG', name: 'Bachelor of English', level: 'Bachelor', faculty: 'Humanities', department: 'English', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 17 }, isActive: true },
+                    { code: 'HST', name: 'Bachelor of History', level: 'Bachelor', faculty: 'Humanities', department: 'History', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 16 }, isActive: true },
+                ]
+            },
+            {
+                name: 'University of the Free State',
+                code: 'UFS',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Bloemfontein', province: 'Free State' },
+                contact: { email: 'admissions@ufs.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'BIO', name: 'Bachelor of Biological Sciences', level: 'Bachelor', faculty: 'Science', department: 'Biology', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 25 }, isActive: true },
+                    { code: 'GEO', name: 'Bachelor of Geology', level: 'Bachelor', faculty: 'Science', department: 'Geology', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 26 }, isActive: true },
+                ]
+            },
+            {
+                name: 'North-West University',
+                code: 'NWU',
+                country: 'South Africa',
+                type: 'public_university',
+                applicationSystem: 'CAO',
+                address: { city: 'Potchefstroom', province: 'North West' },
+                contact: { email: 'admissions@nwu.ac.za' },
+                isActive: true,
+                courses: [
+                    { code: 'MAT', name: 'Bachelor of Mathematics', level: 'Bachelor', faculty: 'Science', department: 'Mathematics', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 28 }, isActive: true },
+                    { code: 'STA', name: 'Bachelor of Statistics', level: 'Bachelor', faculty: 'Science', department: 'Statistics', studyMode: 'Full-time', duration: { value: 3, unit: 'years' }, aps: { minimumAPS: 27 }, isActive: true },
+                ]
+            },
+        ];
+
+        const result = await University.insertMany(CAO_INSTITUTIONS);
+
+        res.json({
+            success: true,
+            message: `Seeded ${result.length} CAO institutions successfully`,
+            data: result
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Debug: Check database status
+export const checkDatabaseStatus = async (req, res) => {
+    try {
+        const totalUniversities = await University.countDocuments({});
+        const caoUniversities = await University.countDocuments({ applicationSystem: 'CAO' });
+        const totalCourses = await University.aggregate([
+            { $unwind: '$courses' },
+            { $count: 'total' }
+        ]);
+
+        res.json({
+            success: true,
+            database: {
+                totalUniversities,
+                caoUniversities,
+                totalCourses: totalCourses[0]?.total || 0,
+                status: caoUniversities > 0 ? 'Data Present' : 'Database Empty - Needs Seeding'
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 };

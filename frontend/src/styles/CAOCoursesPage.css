@@ -1,0 +1,540 @@
+/* CAO Courses Page Styles */
+
+.cao-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.cao-page.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cao-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.cao-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cao-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cao-header h1 svg {
+    font-size: 2.2rem;
+}
+
+.cao-subtitle {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+/* Controls */
+.cao-controls {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.search-section {
+    width: 100%;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: #667eea;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-section {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    min-height: 44px;
+}
+
+.toggle-btn:hover {
+    background: #e8e8e8;
+    border-color: #667eea;
+}
+
+.toggle-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.download-btn {
+    padding: 10px 20px;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    min-height: 44px;
+}
+
+.download-btn:hover:not(:disabled) {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.download-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Results Summary */
+.results-summary {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #666;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Programmes Container */
+.cao-programmes-container {
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+.institution-group {
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.institution-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.institution-header:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #6a3f99 100%);
+}
+
+.institution-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.institution-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.institution-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.programme-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-left: auto;
+}
+
+.expand-icon {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+    transition: transform 0.3s ease;
+}
+
+.programmes-list {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fafafa;
+}
+
+.programme-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.programme-card:hover {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    transform: translateX(4px);
+}
+
+.programme-card.selected {
+    background: #f0f4ff;
+    border-left-color: #764ba2;
+}
+
+.programme-checkbox {
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+    flex-shrink: 0;
+}
+
+.programme-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.programme-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.programme-code-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.cao-code {
+    background: #f0f0f0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    color: #667eea;
+    font-size: 0.9rem;
+}
+
+.verified-badge {
+    background: #10b981;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.programme-details h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    color: #333;
+    word-break: break-word;
+}
+
+.handbook-page {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.programme-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.info-btn {
+    padding: 8px 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.info-btn:hover {
+    background: #764ba2;
+    transform: scale(1.05);
+}
+
+/* No Results */
+.no-results {
+    background: white;
+    padding: 60px 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #999;
+}
+
+.no-results svg {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.no-results p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Footer */
+.cao-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cao-footer p {
+    margin: 5px 0;
+}
+
+.cao-footer strong {
+    color: #333;
+}
+
+/* Spinner */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cao-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .cao-subtitle {
+        font-size: 1rem;
+    }
+
+    .cao-controls {
+        padding: 20px 15px;
+    }
+
+    .filter-section {
+        flex-direction: column;
+    }
+
+    .filter-group {
+        min-width: 100%;
+    }
+
+    .programme-card {
+        flex-direction: column;
+    }
+
+    .programme-code-section {
+        flex-wrap: wrap;
+    }
+
+    .institution-title {
+        flex-wrap: wrap;
+    }
+
+    .programme-count {
+        order: 3;
+        flex-basis: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .action-buttons {
+        width: 100%;
+    }
+
+    .download-btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cao-page {
+        padding: 10px;
+    }
+
+    .cao-header {
+        padding: 25px 15px;
+    }
+
+    .cao-header h1 {
+        font-size: 1.5rem;
+        gap: 10px;
+    }
+
+    .cao-header h1 svg {
+        font-size: 1.5rem;
+    }
+
+    .institution-header {
+        padding: 15px;
+    }
+
+    .institution-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .institution-title {
+        gap: 10px;
+    }
+
+    .programme-card {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .cao-code {
+        font-size: 0.8rem;
+    }
+
+    .programme-details h3 {
+        font-size: 0.95rem;
+    }
+}
