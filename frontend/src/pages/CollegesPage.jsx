@@ -3,7 +3,7 @@ import axios from 'axios';
 import CollegeCard from '../components/CollegeCard';
 import CollegeDetailModal from '../components/CollegeDetailModal';
 import CollegeComparisonModal from '../components/CollegeComparisonModal';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, ExternalLink } from 'lucide-react';
 
 function CollegesPage() {
     const [colleges, setColleges] = useState([]);
@@ -14,6 +14,7 @@ function CollegesPage() {
     const [country, setCountry] = useState('South Africa');
     const [category, setCategory] = useState('');
     const [minAPS, setMinAPS] = useState('');
+    const [displayMode, setDisplayMode] = useState('cards'); // 'cards' or 'list'
     
     // Modal states
     const [selectedCollege, setSelectedCollege] = useState(null);
@@ -26,44 +27,42 @@ function CollegesPage() {
         const saved = localStorage.getItem('favoriteColleges');
         return saved ? JSON.parse(saved) : [];
     });
+    
+    // Available countries from colleges data
+    const [availableCountries, setAvailableCountries] = useState([]);
 
     useEffect(() => {
-        fetchColleges();
-    }, [country, category]);
+        fetchAllColleges();
+    }, []);
+
+    useEffect(() => {
+        if (colleges.length > 0) {
+            const countries = [...new Set(colleges.map(c => c.country))].sort();
+            setAvailableCountries(countries);
+        }
+    }, [colleges]);
 
     useEffect(() => {
         filterColleges();
-    }, [colleges, search, minAPS]);
+    }, [colleges, search, minAPS, country, category]);
 
     useEffect(() => {
         localStorage.setItem('favoriteColleges', JSON.stringify(favorites));
     }, [favorites]);
 
-    const fetchColleges = async () => {
+    const fetchAllColleges = async () => {
         try {
             setLoading(true);
             setError(null);
             
-            let url = 'http://localhost:5000/api/colleges';
-            const params = [];
-            
-            if (country && country.toLowerCase() === 'south africa') {
-                url = 'http://localhost:5000/api/colleges/south-africa/all';
-            } else if (country) {
-                params.push(`country=${encodeURIComponent(country)}`);
-            }
-            
-            if (category) {
-                params.push(`category=${encodeURIComponent(category)}`);
-            }
-            
-            const query = params.length > 0 ? `?${params.join('&')}` : '';
-            const response = await axios.get(url + query);
+            const response = await axios.get('http://localhost:5000/api/colleges');
             setColleges(response.data.colleges || []);
             setFilteredColleges(response.data.colleges || []);
         } catch (err) {
             console.error('Error fetching colleges:', err);
             setError('Failed to load colleges. Please try again.');
+            setColleges([]);
+            setFilteredColleges([]);
         } finally {
             setLoading(false);
         }
@@ -72,6 +71,20 @@ function CollegesPage() {
     const filterColleges = () => {
         let filtered = [...colleges];
         
+        // Country filter
+        if (country) {
+            filtered = filtered.filter(college =>
+                college.country?.toLowerCase() === country.toLowerCase()
+            );
+        }
+        
+        // Category filter
+        if (category) {
+            filtered = filtered.filter(college =>
+                college.category?.toLowerCase() === category.toLowerCase()
+            );
+        }
+        
         // Search filter
         if (search) {
             filtered = filtered.filter(college =>
@@ -79,16 +92,6 @@ function CollegesPage() {
                 college.location?.toLowerCase().includes(search.toLowerCase()) ||
                 college.type?.toLowerCase().includes(search.toLowerCase())
             );
-        }
-        
-        // APS filter
-        if (minAPS) {
-            const apsValue = parseInt(minAPS);
-            // Filter colleges that have courses matching the APS requirement
-            filtered = filtered.filter(college => {
-                // For now, we'll show colleges with lower requirements
-                return true; // Simplified - full implementation would check course APS
-            });
         }
         
         setFilteredColleges(filtered);
@@ -134,7 +137,7 @@ function CollegesPage() {
                     <div>
                         <h1 className="text-4xl font-bold text-white mb-2">Find Colleges</h1>
                         <p className="text-xl text-white">
-                            Browse colleges and TVET institutions in South Africa and worldwide
+                            Browse colleges and TVET institutions worldwide
                         </p>
                     </div>
                     {favorites.length > 0 && (
@@ -163,14 +166,10 @@ function CollegesPage() {
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
                         >
-                            <option value="South Africa">South Africa</option>
-                            <option value="USA">USA</option>
-                            <option value="UK">UK</option>
-                            <option value="Canada">Canada</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Kenya">Kenya</option>
-                            <option value="Nigeria">Nigeria</option>
                             <option value="">All Countries</option>
+                            {availableCountries.map(c => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
                         </select>
                         <select
                             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -178,67 +177,24 @@ function CollegesPage() {
                             onChange={(e) => setCategory(e.target.value)}
                         >
                             <option value="">All Types</option>
+                            <option value="public">Public Colleges</option>
                             <option value="private">Private Colleges</option>
-                            <option value="tvet">TVET Colleges</option>
                             <option value="international">International</option>
-                            <option value="african">African Universities</option>
+                            <option value="african">African Colleges</option>
                         </select>
                         <select
                             className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                            value={minAPS}
-                            onChange={(e) => setMinAPS(e.target.value)}
+                            value={displayMode}
+                            onChange={(e) => setDisplayMode(e.target.value)}
                         >
-                            <option value="">Min APS Score</option>
-                            <option value="15">15+</option>
-                            <option value="20">20+</option>
-                            <option value="25">25+</option>
-                            <option value="30">30+</option>
-                            <option value="35">35+</option>
-                            <option value="40">40+</option>
+                            <option value="cards">Card View</option>
+                            <option value="list">List View</option>
                         </select>
                         <button
                             onClick={handleClearFilters}
                             className="bg-gray-200 text-gray-800 rounded-lg p-3 hover:bg-gray-300 transition-colors font-medium"
                         >
                             Clear All
-                        </button>
-                    </div>
-
-                    {/* Quick Filter Buttons */}
-                    <div className="flex flex-wrap gap-2">
-                        <button
-                            onClick={() => { setCountry('South Africa'); setCategory(''); }}
-                            className="bg-blue-100 text-blue-800 px-3 py-1 rounded text-sm hover:bg-blue-200 transition-colors"
-                        >
-                            South Africa
-                        </button>
-                        <button
-                            onClick={() => { setCategory('private'); setSearch(''); }}
-                            className="bg-green-100 text-green-800 px-3 py-1 rounded text-sm hover:bg-green-200 transition-colors"
-                        >
-                            Private Colleges
-                        </button>
-                        <button
-                            onClick={() => { setCategory('tvet'); setSearch(''); }}
-                            className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded text-sm hover:bg-yellow-200 transition-colors"
-                        >
-                            TVET Colleges
-                        </button>
-                        <button
-                            onClick={() => { setCountry(''); setCategory('international'); setSearch(''); }}
-                            className="bg-purple-100 text-purple-800 px-3 py-1 rounded text-sm hover:bg-purple-200 transition-colors"
-                        >
-                            International
-                        </button>
-                        <button
-                            onClick={() => {
-                                handleClearFilters();
-                                setFilteredColleges(favorites);
-                            }}
-                            className="bg-red-100 text-red-800 px-3 py-1 rounded text-sm hover:bg-red-200 transition-colors flex items-center gap-1"
-                        >
-                            <Bookmark size={16} fill="currentColor" />
-                            My Bookmarks ({favorites.length})
                         </button>
                     </div>
 
@@ -281,9 +237,9 @@ function CollegesPage() {
                     <div className="text-center py-12">
                         <p className="text-gray-500 text-lg">No colleges found. Try different search criteria.</p>
                     </div>
-                ) : (
+                ) : displayMode === 'cards' ? (
                     <>
-                        <div className="mb-4 text-gray-600 font-medium">
+                        <div className="mb-4 text-white font-medium">
                             Found {filteredColleges.length} colleges
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -299,6 +255,76 @@ function CollegesPage() {
                             ))}
                         </div>
                     </>
+                ) : (
+                    // List View - Clickable rows with website links
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div className="mb-4 p-4 bg-gray-50 font-medium text-gray-700">
+                            Found {filteredColleges.length} colleges
+                        </div>
+                        <div className="divide-y">
+                            {filteredColleges.map((college) => (
+                                <a
+                                    key={college.id}
+                                    href={college.website || '#'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => {
+                                        if (!college.website) {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                    className="flex items-center justify-between p-4 hover:bg-blue-50 transition-colors group"
+                                >
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                                                {college.name}
+                                            </h3>
+                                            {college.website && (
+                                                <ExternalLink size={18} className="text-gray-400 group-hover:text-blue-600 transition-colors" />
+                                            )}
+                                        </div>
+                                        <div className="text-sm text-gray-600 mt-1">
+                                            {college.location}
+                                        </div>
+                                        <div className="flex gap-2 mt-2">
+                                            <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                                                {college.country}
+                                            </span>
+                                            <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                                                {college.type}
+                                            </span>
+                                            {college.category && (
+                                                <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                                                    {college.category}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3 ml-4">
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleToggleFavorite(college);
+                                            }}
+                                            className={`p-2 rounded ${isFavorite(college.id) ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                        >
+                                            <Bookmark size={18} fill={isFavorite(college.id) ? 'currentColor' : 'none'} />
+                                        </button>
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleAddToComparison(college);
+                                            }}
+                                            className={`p-2 rounded ${comparisonColleges.find(c => c.id === college.id) ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                 )}
             </div>
 

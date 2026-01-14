@@ -9,8 +9,7 @@ import ApplicationPage from './pages/ApplicationPage';
 import UniversitiesPage from './pages/UniversitiesPage';
 import CollegesPage from './pages/CollegesPage';
 import AllInstitutionsPage from './pages/AllInstitutionsPage';
-import CoursesPageV2 from './pages/CoursesPageV2';
-import CAOCoursesPage from './pages/CAOCoursesPage';
+import CAOUniversitiesCodesPage from './pages/CAOUniversitiesCodesPage';
 import APSCalculatorV2 from './pages/APSCalculatorV2';
 import RecommendationsPage from './pages/RecommendationsPage';
 import TrackStatusPage from './pages/TrackStatusPage';
@@ -85,9 +84,9 @@ function App() {
                         <Route path="/application/:id" element={user ? <ApplicationPage /> : <Navigate to="/login" />} />
                         <Route path="/all-institutions" element={<AllInstitutionsPage />} />
                         <Route path="/universities" element={<UniversitiesPage />} />
+                        <Route path="/cao-universities" element={<CAOUniversitiesCodesPage />} />
                         <Route path="/colleges" element={<CollegesPage />} />
-                        <Route path="/courses" element={<CoursesPageV2 />} />
-                        <Route path="/cao-programmes" element={<CAOCoursesPage />} />
+                        <Route path="/cao-programmes" element={<CAOUniversitiesCodesPage />} />
                         <Route path="/aps-calculator" element={<APSCalculatorV2 />} />
                         <Route path="/recommendations" element={<RecommendationsPage />} />
                         <Route path="/track-status" element={<TrackStatusPage />} />

@@ -86,7 +86,7 @@ const CAO_INSTITUTIONS = [
         ]
     },
     {
-        name: 'Wits University',
+        name: 'University of the Witwatersrand',
         code: 'WITS',
         country: 'South Africa',
         type: 'public_university',

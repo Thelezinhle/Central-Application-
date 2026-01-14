@@ -132,7 +132,7 @@ function AllInstitutionsPage() {
                             </label>
                             <input
                                 type="text"
-                                placeholder="Example: UNIZULU, Wits, False Bay..."
+                                placeholder="Example: University of Zululand, University of the Witwatersrand, False Bay..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -181,7 +181,7 @@ function AllInstitutionsPage() {
                     </div>
 
                     {/* Results counter */}
-                    <div className="mt-6 text-center bg-green-50 p-4 rounded-lg border-2 border-green-200">
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between bg-green-50 p-4 rounded-lg border-2 border-green-200">
                         <p className="text-lg font-bold text-green-900">
                             ✅ Found <span className="text-2xl text-green-600">{filteredInstitutions.length}</span> school(s) for you
                         </p>

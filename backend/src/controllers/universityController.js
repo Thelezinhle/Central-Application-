@@ -1,4 +1,5 @@
 import University from '../models/University.js';
+import { REAL_UNIVERSITIES } from '../data/universitiesData.js';
 import { 
     searchUniversitiesGlobal, 
     seedUniversitiesFromAPI,
@@ -16,25 +17,45 @@ export const getUniversities = async (req, res) => {
         const skip = (page - 1) * limit;
         const country = req.query.country;
 
-        let query = { isActive: true };
-        
-        // Filter by country if provided
-        if (country) {
-            query.country = { $regex: country, $options: 'i' };
+        try {
+            let query = { isActive: true };
+            
+            // Filter by country if provided
+            if (country) {
+                query.country = { $regex: country, $options: 'i' };
+            }
+
+            const universities = await University.find(query)
+                .skip(skip)
+                .limit(limit)
+                .sort({ name: 1 });
+
+            const total = await University.countDocuments(query);
+
+            res.json({
+                success: true,
+                universities,
+                pagination: { page, limit, total, pages: Math.ceil(total / limit) }
+            });
+        } catch (dbError) {
+            // Fallback to local data if MongoDB fails
+            console.log('MongoDB failed, using local data');
+            let universities = [...REAL_UNIVERSITIES];
+            
+            if (country) {
+                universities = universities.filter(u => 
+                    u.location?.toLowerCase().includes(country.toLowerCase())
+                );
+            }
+            
+            const paged = universities.slice(skip, skip + limit);
+            
+            res.json({
+                success: true,
+                universities: paged,
+                pagination: { page, limit, total: universities.length, pages: Math.ceil(universities.length / limit) }
+            });
         }
-
-        const universities = await University.find(query)
-            .skip(skip)
-            .limit(limit)
-            .sort({ name: 1 });
-
-        const total = await University.countDocuments(query);
-
-        res.json({
-            success: true,
-            universities,
-            pagination: { page, limit, total, pages: Math.ceil(total / limit) }
-        });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

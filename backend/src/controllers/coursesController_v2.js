@@ -11,6 +11,21 @@ import {
   COMPREHENSIVE_COURSES_DATA
 } from '../data/southAfricanCourses.js';
 
+// University name mapping
+const UNIVERSITY_NAMES = {
+  'uct': 'University of Cape Town',
+  'wits': 'University of the Witwatersrand',
+  'up': 'University of Pretoria',
+  'uj': 'University of Johannesburg',
+  'su': 'Stellenbosch University',
+  'ukzn': 'University of KwaZulu-Natal',
+  'unisa': 'UNISA',
+  'vut': 'Vaal University of Technology',
+  'nmmu': 'Nelson Mandela University',
+  'cput': 'Cape Peninsula University of Technology',
+  'tut': 'Tshwane University of Technology'
+};
+
 /**
  * Get all courses across all universities
  * Supports filtering by: faculty, minAPS, maxAPS, search, duration, studyMode
@@ -80,19 +95,31 @@ export const getAllCourses = async (req, res) => {
       courses.sort((a, b) => a.durationYears - b.durationYears);
     }
 
-    // Count by university
+    // Count by university and add university names
     const coursesByUniversity = {};
-    courses.forEach(course => {
+    const coursesWithUniversityNames = courses.map(course => ({
+      ...course,
+      universityName: UNIVERSITY_NAMES[course.universityId] || course.universityId
+    }));
+
+    coursesWithUniversityNames.forEach(course => {
       if (!coursesByUniversity[course.universityId]) {
-        coursesByUniversity[course.universityId] = 0;
+        coursesByUniversity[course.universityId] = {
+          name: course.universityName,
+          count: 0
+        };
       }
-      coursesByUniversity[course.universityId]++;
+      coursesByUniversity[course.universityId].count++;
     });
 
     res.json({
       success: true,
-      count: courses.length,
+      count: coursesWithUniversityNames.length,
       coursesByUniversity,
+      universities: Object.entries(UNIVERSITY_NAMES).map(([id, name]) => ({
+        id,
+        name
+      })),
       filters: {
         search,
         faculty,
@@ -102,7 +129,7 @@ export const getAllCourses = async (req, res) => {
         studyMode,
         university
       },
-      data: courses
+      data: coursesWithUniversityNames
     });
 
   } catch (error) {
@@ -147,11 +174,17 @@ export const getCoursesByUni = async (req, res) => {
       courses = courses.filter(c => c.minAPS <= parseInt(maxAPS));
     }
 
+    const coursesWithUniversityName = courses.map(course => ({
+      ...course,
+      universityName: UNIVERSITY_NAMES[universityId] || universityId
+    }));
+
     res.json({
       success: true,
       universityId,
-      count: courses.length,
-      data: courses
+      universityName: UNIVERSITY_NAMES[universityId] || universityId,
+      count: coursesWithUniversityName.length,
+      data: coursesWithUniversityName
     });
 
   } catch (error) {
@@ -178,12 +211,16 @@ export const searchCourses = async (req, res) => {
     }
 
     const results = searchAllCourses(q);
+    const resultsWithNames = results.map(course => ({
+      ...course,
+      universityName: UNIVERSITY_NAMES[course.universityId] || course.universityId
+    }));
 
     res.json({
       success: true,
       query: q,
-      count: results.length,
-      data: results
+      count: resultsWithNames.length,
+      data: resultsWithNames
     });
 
   } catch (error) {
@@ -207,6 +244,7 @@ export const getFilterOptions = async (req, res) => {
     Object.entries(COMPREHENSIVE_COURSES_DATA).forEach(([uniId, courses]) => {
       universities[uniId] = {
         id: uniId,
+        name: UNIVERSITY_NAMES[uniId] || uniId,
         courseCount: courses.length
       };
 
@@ -220,10 +258,7 @@ export const getFilterOptions = async (req, res) => {
       success: true,
       filters: {
         faculties: Array.from(faculties).sort(),
-        universities: Object.entries(universities).map(([id, data]) => ({
-          id,
-          ...data
-        })),
+        universities: Object.values(universities).sort((a, b) => a.name.localeCompare(b.name)),
         durations: Array.from(durations).sort((a, b) => a - b),
         apsRange: { min: 30, max: 50 },
         studyModes: ["Full-time"]
@@ -260,7 +295,8 @@ export const getCourseDetails = async (req, res) => {
       success: true,
       data: {
         ...course,
-        universityId
+        universityId,
+        universityName: UNIVERSITY_NAMES[universityId] || universityId
       }
     });
 

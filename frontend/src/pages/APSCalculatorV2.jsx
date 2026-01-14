@@ -435,6 +435,7 @@ function APSCalculatorV2() {
                     <div key={index} className="bg-green-50 p-4 rounded-lg border border-green-200">
                       <div className="flex justify-between items-start">
                         <div>
+                          <p className="font-bold text-[#228B22] text-sm mb-1">{course.universityName || 'University'}</p>
                           <p className="font-bold text-gray-900">{course.name}</p>
                           <p className="text-sm text-gray-600">{course.faculty} · {course.durationYears} years</p>
                         </div>
