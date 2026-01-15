@@ -186,7 +186,7 @@ function TrackStatusPage() {
     const filteredApps = filterStatus === 'all' ? applications : applications.filter(a => a.status === filterStatus);
 
     return (
-        <div className="min-h-screen bg-[#228B22] py-12" role="main" aria-label="Track application status page">
+        <div className="min-h-screen bg-black py-12" role="main" aria-label="Track application status page">
             <div className="container mx-auto px-4">
                 <button
                     onClick={() => navigate(-1)}
@@ -196,7 +196,7 @@ function TrackStatusPage() {
                     <FaArrowLeft aria-hidden="true" /> Back
                 </button>
                 <h1 className="text-4xl font-bold mb-2 text-white">Track Application Status</h1>
-                <p className="text-white mb-8">Monitor the status of all your course applications in real-time</p>
+                <p className="text-gray-300 mb-8">Monitor the status of all your course applications in real-time</p>
 
             {loading ? (
                 <p className="text-center text-gray-600">Loading applications...</p>
@@ -274,7 +274,7 @@ function TrackStatusPage() {
 
                     {/* Recommendations if rejected */}
                     {applications.some(a => a.status === 'rejected') && (
-                        <div className="card mt-8 bg-gradient-to-r from-white to-green-50 border-2 border-green-700">
+                        <div className="card mt-8 bg-white border-2 border-green-700">
                             <div className="flex items-start gap-4">
                                 <FaLightbulb className="text-green-700 text-2xl mt-1" />
                                 <div className="flex-1">
@@ -295,10 +295,10 @@ function TrackStatusPage() {
 
                     {/* Apply to More Courses */}
                     {applications.length > 0 && (
-                        <div className="card mt-8 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300">
+                        <div className="card mt-8 bg-white border-2 border-green-700">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="text-lg font-bold text-purple-900 mb-2">📚 Apply to More Courses</h3>
+                                    <h3 className="text-lg font-bold text-green-900 mb-2">📚 Apply to More Courses</h3>
                                     <p className="text-gray-700">You can apply to up to 10 programs. You currently have {applications.length} application(s).</p>
                                 </div>
                                 <button

@@ -1,4 +1,4 @@
-/* CAO UNIVERSITIES & CODES PAGE - Clear Green & White Theme */
+/* CAO UNIVERSITIES & CODES PAGE - Clean Green & White Theme */
 
 * {
     box-sizing: border-box;
@@ -42,7 +42,7 @@
 .header-text p {
     margin: 0;
     font-size: 15px;
-    color: #e8f5e9;
+    color: #ffffff;
 }
 
 /* === FILTERS & SEARCH === */
@@ -102,7 +102,8 @@
 }
 
 .filter-btn:hover {
-    background: #e8f5e9;
+    background: #d4edda;
+    border-color: #228B22;
 }
 
 .filter-btn.active {
@@ -184,19 +185,20 @@
     gap: 10px;
     margin-top: 5px;
     flex-wrap: wrap;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .uni-type,
 .code-count {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
     color: #ffffff;
-    padding: 3px 7px;
+    padding: 4px 8px;
     border-radius: 3px;
+    font-weight: 600;
 }
 
 .uni-location {
-    color: #e8f5e9;
+    color: #ffffff;
 }
 
 .expand-icon {
@@ -208,7 +210,7 @@
 .codes-section {
     padding: 20px;
     background: #ffffff;
-    border-top: 1px solid #e8f5e9;
+    border-top: 2px solid #2d8f2d;
 }
 
 .codes-header {
@@ -262,10 +264,12 @@
 
 .code-entry-points {
     margin: 0 0 6px 0;
-    color: #555;
+    color: #000000;
     font-size: 12px;
+    font-weight: 600;
     padding: 4px 6px;
-    background: #e8f5e9;
+    background: #d4edda;
+    border-left: 3px solid #2d8f2d;
     border-radius: 3px;
     display: inline-block;
 }
@@ -288,7 +292,8 @@
 .code-explanation {
     margin-top: 8px;
     padding: 10px;
-    background: #e8f5e9;
+    background: #d4edda;
+    border-left: 3px solid #2d8f2d;
     border-radius: 4px;
 }
 
@@ -321,8 +326,9 @@
 
 /* === HOW TO READ === */
 .how-to-read {
-    background: #e8f5e9;
+    background: #d4edda;
     padding: 16px;
+    border-left: 4px solid #2d8f2d;
     border-radius: 5px;
     margin-top: 15px;
 }

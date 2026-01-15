@@ -192,11 +192,11 @@ a:focus-visible {
     }
 
     .card {
-        @apply bg-gray-800;
+        @apply bg-white text-gray-900 border-l-4 border-[#228B22];
     }
 
     .input {
-        @apply bg-gray-800 text-white border-gray-600;
+        @apply bg-white text-gray-900 border-gray-300;
     }
 }
 

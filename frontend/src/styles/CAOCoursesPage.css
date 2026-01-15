@@ -359,7 +359,7 @@
 .handbook-page {
     margin: 0;
     font-size: 0.85rem;
-    color: #999;
+    color: #555555;
 }
 
 .programme-actions {
@@ -394,7 +394,7 @@
     padding: 60px 20px;
     border-radius: 12px;
     text-align: center;
-    color: #999;
+    color: #555555;
 }
 
 .no-results svg {
