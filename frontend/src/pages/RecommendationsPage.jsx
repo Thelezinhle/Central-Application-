@@ -101,9 +101,9 @@ function RecommendationsPage() {
         const isSelected = selectedRecommendations.includes(course._id);
 
         const statusConfig = {
-            eligible: { icon: FaCheckCircle, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-300', label: '✓ ELIGIBLE' },
-            caution: { icon: FaExclamationTriangle, color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-300', label: '⚠ BORDERLINE' },
-            notEligible: { icon: FaTimesCircle, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-300', label: '✗ NOT ELIGIBLE' }
+            eligible: { icon: FaCheckCircle, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-300', label: 'ELIGIBLE' },
+            caution: { icon: FaExclamationTriangle, color: 'text-yellow-600', bg: 'bg-yellow-50', border: 'border-yellow-300', label: 'BORDERLINE' },
+            notEligible: { icon: FaTimesCircle, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-300', label: 'NOT ELIGIBLE' }
         };
 
         const config = statusConfig[status];
@@ -119,8 +119,8 @@ function RecommendationsPage() {
                                 {config.label}
                             </span>
                         </div>
-                        <p className="text-sm text-gray-600"><strong>📍 University:</strong> {uni?.name}</p>
-                        <p className="text-sm text-gray-600"><strong>📚 Code:</strong> {course.code} | <strong>📊 Level:</strong> {course.level} | <strong>⏱️ Duration:</strong> {course.duration}</p>
+                        <p className="text-sm text-gray-600"><strong>University:</strong> {uni?.name}</p>
+                        <p className="text-sm text-gray-600"><strong>Code:</strong> {course.code} | <strong>Level:</strong> {course.level} | <strong>Duration:</strong> {course.duration}</p>
 
                         <div className="mt-3 p-3 bg-white rounded border-l-4 border-blue-600 text-sm space-y-2">
                             <div className="grid grid-cols-2 gap-4">
@@ -136,13 +136,13 @@ function RecommendationsPage() {
                             <p className={`text-sm font-bold ${recommendations.totalAPS >= (course.aps?.minimumAPS || 20) ? 'text-green-700' : 'text-orange-700'}`}>
                                 <strong>Gap:</strong> {
                                     recommendations.totalAPS >= (course.aps?.minimumAPS || 20)
-                                        ? `✓ ${recommendations.totalAPS - (course.aps?.minimumAPS || 20)} points above requirement`
-                                        : `⚠ ${(course.aps?.minimumAPS || 20) - recommendations.totalAPS} points below requirement`
+                                        ? `${recommendations.totalAPS - (course.aps?.minimumAPS || 20)} points above requirement`
+                                        : `${(course.aps?.minimumAPS || 20) - recommendations.totalAPS} points below requirement`
                                 }
                             </p>
                         </div>
 
-                        <p className="text-sm text-gray-600 mt-2"><strong>💰 Fee:</strong> R{course.tuitionFee?.toLocaleString()}/year</p>
+                        <p className="text-sm text-gray-600 mt-2"><strong>Fee:</strong> R{course.tuitionFee?.toLocaleString()}/year</p>
                     </div>
                     <div className="ml-4">
                         <input
@@ -161,7 +161,7 @@ function RecommendationsPage() {
                             : 'bg-green-600 text-white hover:bg-green-700'
                             }`}
                     >
-                        {isSelected ? '✓ Selected' : 'Select Course'}
+                        {isSelected ? 'Selected' : 'Select Course'}
                     </button>
                 )}
             </div>
@@ -199,7 +199,7 @@ function RecommendationsPage() {
                                 />
                                 <p className="text-xs text-gray-500 mt-2">Supported: PDF, JPG, PNG (We'll use AI to extract your APS scores)</p>
                                 {formData.uploadedFile && (
-                                    <p className="text-xs text-green-600 mt-2">✓ File uploaded: {formData.uploadedFile}</p>
+                                    <p className="text-xs text-green-600 mt-2">File uploaded: {formData.uploadedFile}</p>
                                 )}
                             </div>
                         </div>
@@ -259,13 +259,14 @@ function RecommendationsPage() {
                             <select
                                 name="province"
                                 className="input"
+                                style={{backgroundColor: 'white', color: 'black'}}
                                 value={formData.province}
                                 onChange={handleInputChange}
                             >
-                                <option value="">All Provinces</option>
-                                <option value="Gauteng">Gauteng</option>
-                                <option value="Western Cape">Western Cape</option>
-                                <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                                <option value="" style={{backgroundColor: 'white', color: 'black'}}>All Provinces</option>
+                                <option value="Gauteng" style={{backgroundColor: 'white', color: 'black'}}>Gauteng</option>
+                                <option value="Western Cape" style={{backgroundColor: 'white', color: 'black'}}>Western Cape</option>
+                                <option value="KwaZulu-Natal" style={{backgroundColor: 'white', color: 'black'}}>KwaZulu-Natal</option>
                             </select>
                         </div>
                     </div>
@@ -293,7 +294,7 @@ function RecommendationsPage() {
 
                         {selectedRecommendations.length > 0 && (
                             <div className="bg-green-50 border-2 border-green-500 p-4 rounded-lg mb-6">
-                                <p className="text-sm font-bold text-gray-900">✓ Selected: {selectedRecommendations.length}/10 courses</p>
+                                <p className="text-sm font-bold text-gray-900">Selected: {selectedRecommendations.length}/10 courses</p>
                                 <button
                                     onClick={applyToRecommended}
                                     className="btn-primary mt-2"
@@ -309,7 +310,7 @@ function RecommendationsPage() {
                                 <h2 className="text-2xl font-bold text-green-700 mb-4">
                                     🎯 Excellent Matches ({recommendations.excellent.length})
                                 </h2>
-                                <p className="text-gray-600 mb-4">You significantly exceed the requirements for these courses. These are your safest bets! ✓</p>
+                                <p className="text-gray-600 mb-4">You significantly exceed the requirements for these courses. These are your safest bets!</p>
                                 {recommendations.excellent.map(course => (
                                     <CourseRecommendation key={course._id} course={course} status="eligible" />
                                 ))}
@@ -322,7 +323,7 @@ function RecommendationsPage() {
                                 <h2 className="text-2xl font-bold text-green-700 mb-4">
                                     Good Matches ({recommendations.good.length})
                                 </h2>
-                                <p className="text-gray-600 mb-4">You meet the exact requirements for these courses. Strong options! ✓</p>
+                                <p className="text-gray-600 mb-4">You meet the exact requirements for these courses. Strong options!</p>
                                 {recommendations.good.map(course => (
                                     <CourseRecommendation key={course._id} course={course} status="eligible" />
                                 ))}

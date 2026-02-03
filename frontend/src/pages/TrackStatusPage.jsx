@@ -175,10 +175,74 @@ function TrackStatusPage() {
 
     if (!user) {
         return (
-            <div className="container py-12 text-center">
-                <h1 className="text-4xl font-bold mb-4">📊 Track Application Status</h1>
-                <p className="text-gray-600 mb-6">Please login to view your application status</p>
-                <a href="/login" className="btn-primary">Go to Login</a>
+            <div className="min-h-screen bg-white py-12">
+                <div className="container mx-auto px-4 max-w-2xl">
+                    <div className="text-center mb-12">
+                        <h1 className="text-4xl font-bold mb-4 text-black">Track Application Status</h1>
+                        <p className="text-gray-700 text-lg mb-8">To view your application status and manage your CAO applications, you'll need to login to the official CAO platform.</p>
+                    </div>
+
+                    <div className="bg-blue-50 border-l-4 border-blue-500 p-8 mb-8 rounded">
+                        <h2 className="text-2xl font-bold text-blue-900 mb-6">How to Get Started</h2>
+                        
+                        <div className="space-y-6">
+                            <div className="flex gap-4">
+                                <div className="flex-shrink-0">
+                                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white font-bold">1</div>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">Create Your CAO Account</h3>
+                                    <p className="text-gray-700">If you don't have a CAO account yet, you'll need to register on the CAO platform. Click the "Go to Login" button below to access the registration page.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="flex-shrink-0">
+                                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white font-bold">2</div>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">Login to Your Account</h3>
+                                    <p className="text-gray-700">Enter your CAO credentials (email and password) to access your personal application portal.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="flex-shrink-0">
+                                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white font-bold">3</div>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">View Your Applications</h3>
+                                    <p className="text-gray-700">Once logged in, you can track all your applications, view acceptance/rejection status, accept or decline offers, and manage your choices.</p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="flex-shrink-0">
+                                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white font-bold">4</div>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">Download Your Results</h3>
+                                    <p className="text-gray-700">You can print or download your acceptance letters and other official documents directly from the CAO platform.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-green-50 border-l-4 border-green-500 p-6 mb-8 rounded">
+                        <h3 className="text-lg font-bold text-green-900 mb-3">Important Notes</h3>
+                        <ul className="text-gray-700 space-y-2">
+                            <li>• Your CAO registration must be completed during the official application period</li>
+                            <li>• Keep your login credentials safe and secure</li>
+                            <li>• Check the CAO platform regularly for updates and new application rounds</li>
+                            <li>• The CAO platform is the official source for all application status information</li>
+                        </ul>
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-gray-700 mb-6">Ready to login and check your application status?</p>
+                        <a href="https://www.cao.ac.za/login.aspx" target="_blank" rel="noopener noreferrer" className="btn-primary inline-block">Go to Login</a>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -186,24 +250,24 @@ function TrackStatusPage() {
     const filteredApps = filterStatus === 'all' ? applications : applications.filter(a => a.status === filterStatus);
 
     return (
-        <div className="min-h-screen bg-black py-12" role="main" aria-label="Track application status page">
+        <div className="min-h-screen bg-white py-12" role="main" aria-label="Track application status page">
             <div className="container mx-auto px-4">
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-2 mb-4 bg-white hover:bg-gray-100 text-[#228B22] px-3 py-2 rounded transition font-semibold"
+                    className="flex items-center gap-2 mb-4 bg-white hover:bg-gray-100 text-[#228B22] px-3 py-2 rounded transition font-semibold border border-gray-300"
                     aria-label="Go to previous page"
                 >
                     <FaArrowLeft aria-hidden="true" /> Back
                 </button>
-                <h1 className="text-4xl font-bold mb-2 text-white">Track Application Status</h1>
-                <p className="text-gray-300 mb-8">Monitor the status of all your course applications in real-time</p>
+                <h1 className="text-4xl font-bold mb-2 text-black">Track Application Status</h1>
+                <p className="text-gray-800 mb-8">Monitor the status of all your course applications in real-time</p>
 
             {loading ? (
-                <p className="text-center text-gray-600">Loading applications...</p>
+                <p className="text-center text-black">Loading applications...</p>
             ) : applications.length === 0 ? (
                 <div className="card text-center py-12">
-                    <p className="text-gray-600 mb-4">You haven't submitted any applications yet.</p>
-                    <p className="text-sm text-gray-500 mb-6">Start by browsing courses or getting smart recommendations based on your APS scores.</p>
+                    <p className="text-black mb-4">You haven't submitted any applications yet.</p>
+                    <p className="text-sm text-gray-700 mb-6">Start by browsing courses or getting smart recommendations based on your APS scores.</p>
                     <div className="flex gap-4 justify-center flex-wrap">
                         <a href="/courses" className="btn-primary">Browse Courses</a>
                         <a href="/recommendations" className="btn-secondary">Get Recommendations</a>
@@ -262,7 +326,7 @@ function TrackStatusPage() {
                     {/* Application List */}
                     {filteredApps.length === 0 ? (
                         <div className="card text-center py-8">
-                            <p className="text-gray-600">No {filterStatus} applications found</p>
+                            <p className="text-black">No {filterStatus} applications found</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
@@ -278,8 +342,8 @@ function TrackStatusPage() {
                             <div className="flex items-start gap-4">
                                 <FaLightbulb className="text-green-700 text-2xl mt-1" />
                                 <div className="flex-1">
-                                    <h3 className="text-lg font-bold text-green-900 mb-2">Get Smart Recommendations</h3>
-                                    <p className="text-gray-700 mb-4">
+                                    <h3 className="text-lg font-bold text-black mb-2">Get Smart Recommendations</h3>
+                                    <p className="text-black mb-4">
                                         Some applications didn't go as planned. Get AI-powered recommendations for courses that better match your APS scores and qualifications.
                                     </p>
                                     <button
@@ -298,8 +362,8 @@ function TrackStatusPage() {
                         <div className="card mt-8 bg-white border-2 border-green-700">
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h3 className="text-lg font-bold text-green-900 mb-2">📚 Apply to More Courses</h3>
-                                    <p className="text-gray-700">You can apply to up to 10 programs. You currently have {applications.length} application(s).</p>
+                                    <h3 className="text-lg font-bold text-black mb-2">📚 Apply to More Courses</h3>
+                                    <p className="text-black">You can apply to up to 10 programs. You currently have {applications.length} application(s).</p>
                                 </div>
                                 <button
                                     onClick={() => navigate('/courses')}

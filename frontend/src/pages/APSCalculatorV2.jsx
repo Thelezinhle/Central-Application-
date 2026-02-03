@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaCalculator, FaPlus, FaTrash, FaArrowRight, FaCheckCircle, FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { cachedGet, apiPost } from '../utils/apiClient';
 import { announceToScreenReader } from '../utils/accessibility';
 
 // APS Conversion Table (South African Standard)
@@ -124,15 +124,11 @@ function APSCalculatorV2() {
   const fetchMatchingCourses = async (apsScore) => {
     try {
       setLoadingCourses(true);
-      const response = await axios.get('http://localhost:5000/api/browse-courses', {
-        params: {
-          maxAPS: apsScore
-        }
-      });
+      const data = await cachedGet(`http://localhost:5000/api/browse-courses?maxAPS=${apsScore}`);
 
-      if (response.data.success) {
+      if (data.success) {
         // Filter to only courses where user APS >= minimum required
-        const matching = response.data.data.filter(course => apsScore >= course.minAPS);
+        const matching = data.data.filter(course => apsScore >= course.minAPS);
         setMatchingCourses(matching);
         announceToScreenReader(`Found ${matching.length} courses you can apply for`, 'polite');
       }
@@ -224,12 +220,12 @@ function APSCalculatorV2() {
                       <select
                         value={subject.name}
                         onChange={(e) => updateSubject(index, 'name', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22]"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22] bg-white text-black"
                         aria-label={`Subject ${index + 1}`}
                       >
-                        <option value="">Select subject...</option>
+                        <option value="" className="bg-white text-black">Select subject...</option>
                         {AVAILABLE_SUBJECTS.map(s => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} className="bg-white text-black">{s}</option>
                         ))}
                       </select>
                     </div>
@@ -259,11 +255,11 @@ function APSCalculatorV2() {
                       <select
                         value={subject.level}
                         onChange={(e) => updateSubject(index, 'level', e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22]"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22] bg-white text-black"
                         aria-label={`${subject.name || 'Subject'} level`}
                       >
-                        <option value="HL">Home Language</option>
-                        <option value="SL">Other</option>
+                        <option value="HL" className="bg-white text-black">Home Language</option>
+                        <option value="SL" className="bg-white text-black">Other</option>
                       </select>
                     </div>
 
@@ -303,7 +299,7 @@ function APSCalculatorV2() {
               {/* Info Box */}
               <div className="mt-8 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
                 <p className="text-sm text-blue-900">
-                  <strong>💡 Tip:</strong> Enter at least 6 subjects for an accurate APS score. Home Language subjects are weighted the same as other subjects in the APS calculation.
+                  <strong>Tip:</strong> Enter at least 6 subjects for an accurate APS score. Home Language subjects are weighted the same as other subjects in the APS calculation.
                 </p>
               </div>
             </div>
@@ -442,7 +438,7 @@ function APSCalculatorV2() {
                         <div className="text-right text-sm">
                           <p className="font-semibold text-[#228B22]">Min APS: {course.minAPS}</p>
                           <p className={`text-xs ${result.totalAPS - course.minAPS >= 5 ? 'text-green-600' : 'text-gray-600'}`}>
-                            {result.totalAPS - course.minAPS >= 0 ? '✓ You qualify!' : 'Just short'}
+                            {result.totalAPS - course.minAPS >= 0 ? 'You qualify!' : 'Just short'}
                           </p>
                         </div>
                       </div>

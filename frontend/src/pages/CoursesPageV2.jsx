@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { cachedGet } from '../utils/apiClient';
 import { FaCheckCircle, FaStar, FaArrowLeft, FaGraduationCap, FaMoneyBillWave, FaBook, FaClock } from 'react-icons/fa';
 import useAuthStore from '../context/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -46,9 +46,9 @@ function CoursesPageV2() {
 
     const fetchFilterOptions = async () => {
         try {
-            const response = await axios.get(`${apiBase}/filters`);
-            if (response.data.success) {
-                setFilterOptions(response.data.filters);
+            const data = await cachedGet(`${apiBase}/filters`);
+            if (data.success) {
+                setFilterOptions(data.filters);
             }
         } catch (error) {
             console.error('Failed to fetch filter options:', error);
@@ -59,10 +59,10 @@ function CoursesPageV2() {
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(apiBase);
-            if (response.data.success) {
-                setCourses(response.data.data || []);
-                announceToScreenReader(`Loaded ${response.data.count} courses from South African universities`, 'polite');
+            const data = await cachedGet(apiBase);
+            if (data.success) {
+                setCourses(data.data || []);
+                announceToScreenReader(`Loaded ${data.count} courses from South African universities`, 'polite');
             }
         } catch (error) {
             console.error('Failed to fetch courses:', error);
@@ -229,12 +229,12 @@ function CoursesPageV2() {
                             <select
                                 value={filters.university}
                                 onChange={(e) => handleFilterChange('university', e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22]"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22] bg-white text-black"
                                 aria-label="Filter by university"
                             >
-                                <option value="">All Universities</option>
+                                <option value="" className="bg-white text-black">All Universities</option>
                                 {filterOptions.universities.map(uni => (
-                                    <option key={uni.id} value={uni.id}>
+                                    <option key={uni.id} value={uni.id} className="bg-white text-black">
                                         {getUniversityName(uni.id)} ({uni.courseCount})
                                     </option>
                                 ))}
@@ -249,12 +249,12 @@ function CoursesPageV2() {
                             <select
                                 value={filters.faculty}
                                 onChange={(e) => handleFilterChange('faculty', e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22]"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22] bg-white text-black"
                                 aria-label="Filter by faculty or field of study"
                             >
-                                <option value="">All Faculties</option>
+                                <option value="" className="bg-white text-black">All Faculties</option>
                                 {filterOptions.faculties.map(faculty => (
-                                    <option key={faculty} value={faculty}>
+                                    <option key={faculty} value={faculty} className="bg-white text-black">
                                         {faculty}
                                     </option>
                                 ))}
@@ -466,7 +466,7 @@ function CoursesPageV2() {
                                                     aria-label={isSelected ? 'Remove from selection' : 'Add to selection'}
                                                     aria-pressed={isSelected}
                                                 >
-                                                    {isSelected ? '✓ Selected' : 'Select'}
+                                                    {isSelected ? 'Selected' : 'Select'}
                                                 </button>
                                                 <button
                                                     onClick={() => handleApplySingle(course)}

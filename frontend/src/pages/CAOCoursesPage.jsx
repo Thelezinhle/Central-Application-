@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { cachedGet } from '../utils/apiClient';
 import { 
     FaSearch, FaFilter, FaCheckCircle, FaTimesCircle, 
     FaChevronDown, FaChevronUp, FaMapMarkerAlt, FaBook,
@@ -39,10 +39,10 @@ function CAOCoursesPage() {
         try {
             setLoading(true);
             // Fetch courses with CAO data
-            const response = await axios.get(`${apiBase}?hasCAO=true&limit=5000`);
+            const data = await cachedGet(`${apiBase}?hasCAO=true&limit=5000`);
             
-            if (response.data && response.data.data) {
-                const caoProgrammes = response.data.data.filter(course => 
+            if (data && data.data) {
+                const caoProgrammes = data.data.filter(course => 
                     course.cao && course.cao.programmeCode
                 );
                 
@@ -197,13 +197,13 @@ function CAOCoursesPage() {
             <div className="cao-header" style={{background: 'linear-gradient(135deg, #228B22 0%, #1a6b1a 100%)', color: 'white', padding: '40px 20px'}}>
                 <div className="cao-header-content" style={{maxWidth: '1200px', margin: '0 auto'}}>
                     <h1 style={{fontSize: '32px', fontWeight: 'bold', marginBottom: '10px'}}>
-                        📚 CAO Handbook {programmes.length > 0 ? '2026' : 'Loading...'}
+                        CAO Handbook {programmes.length > 0 ? '2026' : 'Loading...'}
                     </h1>
                     <p className="cao-subtitle" style={{fontSize: '18px', marginBottom: '15px', opacity: 0.95}}>
                         All {programmes.length} official programmes from {institutions.length} South African institutions
                     </p>
                     <p style={{fontSize: '16px', marginBottom: '0', opacity: 0.9}}>
-                        🎓 Search for your course • 📍 Find your institution • ✓ Save your choices
+                        Search for your course • Find your institution • Save your choices
                     </p>
                 </div>
             </div>
@@ -243,26 +243,26 @@ function CAOCoursesPage() {
                             style={{flex: 1, border: 'none', outline: 'none', fontSize: '16px'}}
                         />
                     </div>
-                    <p style={{fontSize: '13px', color: '#6b7280', marginTop: '5px'}}>💡 Type a code, programme name, or institution name</p>
+                    <p style={{fontSize: '13px', color: '#6b7280', marginTop: '5px'}}>Type a code, programme name, or institution name</p>
                 </div>
 
                 <div className="filter-section" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '15px', marginTop: '20px'}}>
                     <div className="filter-group">
                         <label htmlFor="institution-filter" style={{fontSize: '16px', fontWeight: 'bold', color: '#1f2937', display: 'block', marginBottom: '8px'}}>
-                            🏫 Which school?
+                            Which school?
                         </label>
                         <select
                             id="institution-filter"
                             value={selectedInstitution}
                             onChange={(e) => setSelectedInstitution(e.target.value)}
                             className="filter-select"
-                            style={{width: '100%', fontSize: '16px', padding: '10px', borderRadius: '8px', border: '2px solid #ddd', cursor: 'pointer'}}
+                            style={{width: '100%', fontSize: '16px', padding: '10px', borderRadius: '8px', border: '2px solid #ddd', cursor: 'pointer', backgroundColor: 'white', color: 'black'}}
                         >
-                            <option value="all">All Schools ({programmes.length})</option>
+                            <option value="all" style={{backgroundColor: 'white', color: 'black'}}>All Schools ({programmes.length})</option>
                             {institutions.map(inst => {
                                 const count = programmes.filter(p => p.cao.institution === inst).length;
                                 return (
-                                    <option key={inst} value={inst}>
+                                    <option key={inst} value={inst} style={{backgroundColor: 'white', color: 'black'}}>
                                         {inst} ({count} courses)
                                     </option>
                                 );
@@ -272,7 +272,7 @@ function CAOCoursesPage() {
 
                     <div className="selection-group">
                         <label style={{fontSize: '16px', fontWeight: 'bold', color: '#1f2937', display: 'block', marginBottom: '8px'}}>
-                            ⭐ Your Picks
+                            Your Picks
                         </label>
                         <button
                             className={`toggle-btn ${showSelectedOnly ? 'active' : ''}`}
@@ -312,7 +312,7 @@ function CAOCoursesPage() {
             {/* Results Summary */}
             <div className="results-summary" style={{maxWidth: '1200px', margin: '20px auto', padding: '15px 20px', backgroundColor: '#f0f9ff', borderLeft: '4px solid #16a34a', borderRadius: '8px'}}>
                 <p style={{fontSize: '16px', margin: 0}}>
-                    📊 Found <strong style={{color: '#16a34a', fontSize: '18px'}}>{filteredProgrammes.length}</strong> of{' '}
+                    Found <strong style={{color: '#16a34a', fontSize: '18px'}}>{filteredProgrammes.length}</strong> of{' '}
                     <strong style={{color: '#1f2937', fontSize: '18px'}}>{programmes.length}</strong> total courses
                     {selectedProgrammes.length > 0 && (
                         <span> • You've saved <strong style={{color: '#16a34a', fontSize: '18px'}}>{selectedProgrammes.length}</strong> to your list</span>
@@ -344,26 +344,15 @@ function CAOCoursesPage() {
                                 )}
                                 role="button"
                                 tabIndex={0}
-                                style={{backgroundColor: '#f9fafb', padding: '15px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', hover: {backgroundColor: '#f3f4f6'}}}
+                                style={{backgroundColor: '#16a34a', padding: '20px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', hover: {backgroundColor: '#15803d'}}}
                             >
                                 <div className="institution-title" style={{display: 'flex', alignItems: 'center', gap: '12px', flex: 1}}>
-                                    <div className="checkbox-wrapper">
-                                        <input
-                                            type="checkbox"
-                                            checked={progs.every(p =>
-                                                selectedProgrammes.some(s => s._id === p._id)
-                                            )}
-                                            onChange={() => toggleAllInInstitution(institution)}
-                                            onClick={(e) => e.stopPropagation()}
-                                            style={{width: '20px', height: '20px', cursor: 'pointer'}}
-                                        />
-                                    </div>
-                                    <h2 style={{fontSize: '18px', fontWeight: 'bold', color: '#1f2937', margin: 0}}>
-                                        🏫 {institution}
+                                    <h2 style={{fontSize: '22px', fontWeight: 'bold', color: 'white', margin: 0}}>
+                                        {institution}
                                     </h2>
-                                    <span className="programme-count" style={{backgroundColor: '#dcfce7', color: '#166534', padding: '4px 8px', borderRadius: '12px', fontSize: '14px', fontWeight: 'bold'}}>{progs.length} courses</span>
+                                    <span className="programme-count" style={{backgroundColor: 'white', color: '#16a34a', padding: '6px 12px', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold'}}>{progs.length} programmes</span>
                                 </div>
-                                <div className="expand-icon" style={{color: '#16a34a', fontSize: '18px'}}>
+                                <div className="expand-icon" style={{color: 'white', fontSize: '18px'}}>
                                     {expandedInstitution === institution ? 
                                         <FaChevronUp /> : <FaChevronDown />
                                     }
@@ -407,7 +396,7 @@ function CAOCoursesPage() {
                                                     </code>
                                                     {programme.cao.verified && (
                                                         <span className="verified-badge" title="Verified by CAO" style={{backgroundColor: '#dcfce7', color: '#15803d', padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold'}}>
-                                                            ✓ Official
+                                                            Official
                                                         </span>
                                                     )}
                                                 </div>

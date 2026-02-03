@@ -151,7 +151,7 @@ function CAOUniversitiesCodesPage() {
                             >
                                 <div className="uni-info">
                                     <div className="uni-icon">
-                                        📚
+                                        
                                     </div>
                                     <div className="uni-details">
                                         <h2 className="uni-name">{inst.name}</h2>
@@ -218,7 +218,7 @@ function CAOUniversitiesCodesPage() {
 
                                     {/* How to Read Codes */}
                                     <div className="how-to-read">
-                                        <h4>💡 Understanding Codes</h4>
+                                        <h4>Understanding Codes</h4>
                                         <div className="code-format-example">
                                             <p className="format-desc">
                                                 Programme codes help identify the institution, level, and field of study. Example: <strong>ZU-M-BAS</strong>
@@ -240,7 +240,7 @@ function CAOUniversitiesCodesPage() {
 
             {/* Quick Reference */}
             <div className="quick-reference">
-                <h3>📊 Statistics</h3>
+                <h3>Statistics</h3>
                 <div className="reference-grid">
                     <div className="reference-item">
                         <span className="ref-code">{institutionsList.length}</span>

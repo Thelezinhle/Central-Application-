@@ -124,7 +124,7 @@ export function VoiceCommandBar({ isListening, feedback, onToggle }) {
             <div className="flex items-center justify-between">
                 <div>
                     <p className={`font-bold text-lg ${isListening ? 'text-red-700' : 'text-blue-700'}`}>
-                        {isListening ? '🎤 Listening...' : '🎤 Voice Mode'}
+                        {isListening ? 'Listening...' : 'Voice Mode'}
                     </p>
                     <p className="text-sm text-gray-700 mt-1">{feedback}</p>
                 </div>

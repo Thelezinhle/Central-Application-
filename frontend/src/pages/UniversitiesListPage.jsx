@@ -72,18 +72,18 @@ function UniversitiesListPage() {
                             <select
                                 value={selectedCountry}
                                 onChange={handleCountryChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#228B22] focus:border-transparent"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#228B22] focus:border-transparent bg-white text-black"
                             >
-                                <option value="south africa">South Africa</option>
-                                <option value="nigeria">Nigeria</option>
-                                <option value="kenya">Kenya</option>
-                                <option value="ghana">Ghana</option>
-                                <option value="ethiopia">Ethiopia</option>
-                                <option value="united states">United States</option>
-                                <option value="united kingdom">United Kingdom</option>
-                                <option value="canada">Canada</option>
-                                <option value="australia">Australia</option>
-                                <option value="india">India</option>
+                                <option value="south africa" className="bg-white text-black">South Africa</option>
+                                <option value="nigeria" className="bg-white text-black">Nigeria</option>
+                                <option value="kenya" className="bg-white text-black">Kenya</option>
+                                <option value="ghana" className="bg-white text-black">Ghana</option>
+                                <option value="ethiopia" className="bg-white text-black">Ethiopia</option>
+                                <option value="united states" className="bg-white text-black">United States</option>
+                                <option value="united kingdom" className="bg-white text-black">United Kingdom</option>
+                                <option value="canada" className="bg-white text-black">Canada</option>
+                                <option value="australia" className="bg-white text-black">Australia</option>
+                                <option value="india" className="bg-white text-black">India</option>
                             </select>
                         </div>
 

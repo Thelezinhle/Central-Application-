@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import compression from 'compression';
 import { REAL_UNIVERSITIES } from './data/expandedUniversities.js';
 import collegesData from './data/colleges.js';
 import globalUniversitiesRouter from './routes/globalUniversities.js';
@@ -32,8 +33,42 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // ===== MIDDLEWARE =====
 app.use(cors());
+app.use(compression()); // Enable gzip compression
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
+// Simple in-memory cache
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Cache middleware
+const cacheMiddleware = (req, res, next) => {
+    // Only cache GET requests
+    if (req.method !== 'GET') {
+        return next();
+    }
+
+    const cacheKey = `${req.originalUrl}`;
+    const cachedData = cache.get(cacheKey);
+
+    if (cachedData && Date.now() - cachedData.timestamp < CACHE_DURATION) {
+        return res.json(cachedData.data);
+    }
+
+    // Store original json method
+    const originalJson = res.json.bind(res);
+
+    // Override json method to cache responses
+    res.json = function(data) {
+        cache.set(cacheKey, { data, timestamp: Date.now() });
+        return originalJson(data);
+    };
+
+    next();
+};
+
+// Apply cache middleware to API routes
+app.use('/api', cacheMiddleware);
 
 // ===== HEALTH CHECK =====
 app.get('/api/health', (req, res) => {

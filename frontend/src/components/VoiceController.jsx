@@ -163,12 +163,12 @@ export function VoiceController() {
                 <div className="text-xs text-gray-700 bg-white p-2 rounded border border-[#228B22]">
                     <p className="font-medium mb-1">Try saying:</p>
                     <ul className="space-y-1">
-                        <li>✓ Go to [page]: navigate to any page</li>
-                        <li>✓ Search for [term]: find courses</li>
-                        <li>✓ Fill [field] with [value]: fill forms</li>
-                        <li>✓ Click [button]: click buttons</li>
-                        <li>✓ Scroll [direction]: scroll page</li>
-                        <li>✓ Help: see all commands</li>
+                        <li>Go to [page]: navigate to any page</li>
+                        <li>Search for [term]: find courses</li>
+                        <li>Fill [field] with [value]: fill forms</li>
+                        <li>Click [button]: click buttons</li>
+                        <li>Scroll [direction]: scroll page</li>
+                        <li>Help: see all commands</li>
                         <li>✓ Read page: hear page content</li>
                     </ul>
                 </div>

@@ -78,10 +78,10 @@ function App() {
                 <main id="main-content" className="min-h-screen">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
-                        <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <RegisterPage />} />
-                        <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/login" />} />
-                        <Route path="/application/:id" element={user ? <ApplicationPage /> : <Navigate to="/login" />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route path="/application/:id" element={<ApplicationPage />} />
                         <Route path="/all-institutions" element={<AllInstitutionsPage />} />
                         <Route path="/universities" element={<UniversitiesPage />} />
                         <Route path="/cao-universities" element={<CAOUniversitiesCodesPage />} />

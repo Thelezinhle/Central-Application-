@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaUniversity, FaExternalLinkAlt, FaSpinner, FaSearch } from 'react-icons/fa';
-import axios from 'axios';
+import { cachedGet } from '../utils/apiClient';
 
 function UniversitiesPage() {
     const [universities, setUniversities] = useState([]);
@@ -16,20 +16,18 @@ function UniversitiesPage() {
             setLoading(true);
             setError(null);
             
-            const response = await axios.get(
-                'http://localhost:5000/api/universities',
-                { params: { limit: 500 } }
+            const response = await cachedGet(
+                'http://localhost:5000/api/universities?limit=500'
             );
             
-            const unis = response.data.universities || [];
+            const unis = response.universities || [];
 
             // Get all global universities
             try {
-                const globalResponse = await axios.get(
-                    'http://localhost:5000/api/global-universities',
-                    { params: { limit: 500 } }
+                const globalResponse = await cachedGet(
+                    'http://localhost:5000/api/global-universities?limit=500'
                 );
-                const allUnis = [...unis, ...(globalResponse.data.universities || [])];
+                const allUnis = [...unis, ...(globalResponse.universities || [])];
                 setUniversities(allUnis);
 
                 // Extract unique countries
@@ -114,10 +112,10 @@ function UniversitiesPage() {
                             <select
                                 value={selectedCountry || ''}
                                 onChange={(e) => setSelectedCountry(e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#228B22] focus:border-transparent"
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#228B22] focus:border-transparent bg-white text-black"
                             >
                                 {countries.map((country) => (
-                                    <option key={country} value={country}>
+                                    <option key={country} value={country} className="bg-white text-black">
                                         {country}
                                     </option>
                                 ))}

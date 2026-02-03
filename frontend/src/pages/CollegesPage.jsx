@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { cachedGet } from '../utils/apiClient';
 import CollegeCard from '../components/CollegeCard';
 import CollegeDetailModal from '../components/CollegeDetailModal';
 import CollegeComparisonModal from '../components/CollegeComparisonModal';
@@ -55,9 +55,9 @@ function CollegesPage() {
             setLoading(true);
             setError(null);
             
-            const response = await axios.get('http://localhost:5000/api/colleges');
-            setColleges(response.data.colleges || []);
-            setFilteredColleges(response.data.colleges || []);
+            const data = await cachedGet('http://localhost:5000/api/colleges');
+            setColleges(data.colleges || []);
+            setFilteredColleges(data.colleges || []);
         } catch (err) {
             console.error('Error fetching colleges:', err);
             setError('Failed to load colleges. Please try again.');
@@ -162,33 +162,33 @@ function CollegesPage() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
                         <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
                         >
-                            <option value="">All Countries</option>
+                            <option value="" className="bg-white text-black">All Countries</option>
                             {availableCountries.map(c => (
-                                <option key={c} value={c}>{c}</option>
+                                <option key={c} value={c} className="bg-white text-black">{c}</option>
                             ))}
                         </select>
                         <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                         >
-                            <option value="">All Types</option>
-                            <option value="public">Public Colleges</option>
-                            <option value="private">Private Colleges</option>
-                            <option value="international">International</option>
-                            <option value="african">African Colleges</option>
+                            <option value="" className="bg-white text-black">All Types</option>
+                            <option value="public" className="bg-white text-black">Public Colleges</option>
+                            <option value="private" className="bg-white text-black">Private Colleges</option>
+                            <option value="international" className="bg-white text-black">International</option>
+                            <option value="african" className="bg-white text-black">African Colleges</option>
                         </select>
                         <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
                             value={displayMode}
                             onChange={(e) => setDisplayMode(e.target.value)}
                         >
-                            <option value="cards">Card View</option>
-                            <option value="list">List View</option>
+                            <option value="cards" className="bg-white text-black">Card View</option>
+                            <option value="list" className="bg-white text-black">List View</option>
                         </select>
                         <button
                             onClick={handleClearFilters}

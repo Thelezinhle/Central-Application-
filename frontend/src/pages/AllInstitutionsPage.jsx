@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaUniversity, FaGraduationCap, FaFilter, FaSearch, FaExternalLinkAlt, FaBook } from 'react-icons/fa';
-import axios from 'axios';
+import { cachedGet } from '../utils/apiClient';
 import BeginnerGuide from '../components/BeginnerGuide';
 
 function AllInstitutionsPage() {
@@ -20,8 +20,8 @@ function AllInstitutionsPage() {
     const fetchInstitutions = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${API_URL}/universities`);
-            setInstitutions(response.data.universities || []);
+            const data = await cachedGet(`${API_URL}/universities`);
+            setInstitutions(data.universities || []);
         } catch (error) {
             console.error('Error fetching institutions:', error);
         } finally {
@@ -74,17 +74,17 @@ function AllInstitutionsPage() {
 
     const getTypeLabel = (type) => {
         const labels = {
-            'public_university': '🎓 University',
-            'tvet_college': '🔧 Training College',
-            'cao_partner_college': '🏫 College (CAO)',
-            'private_college': '💼 Private College'
+            'public_university': 'University',
+            'tvet_college': 'Training College',
+            'cao_partner_college': 'College (CAO)',
+            'private_college': 'Private College'
         };
         return labels[type] || type;
     };
 
     const getApplicationLabel = (appSystem) => {
         const labels = {
-            'CAO': '✓ CAO System',
+            'CAO': 'CAO System',
             'direct_college': '→ Direct Application',
             'direct_university': '→ Direct Application'
         };
@@ -109,7 +109,7 @@ function AllInstitutionsPage() {
                 {/* Header - Beginner Friendly */}
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                        🎓 Find Your School
+                        Find Your School
                     </h1>
                     <p className="text-lg text-gray-700 mb-4">
                         Search for universities, colleges, and training schools. Pick one and apply!
@@ -137,7 +137,7 @@ function AllInstitutionsPage() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
-                            <p className="text-sm text-gray-600 mt-1">💡 Type a few letters - we'll find it</p>
+                            <p className="text-sm text-gray-600 mt-1">Type a few letters - we'll find it</p>
                         </div>
 
                         {/* Type Filter */}
@@ -149,13 +149,13 @@ function AllInstitutionsPage() {
                             <select
                                 value={selectedType}
                                 onChange={(e) => setSelectedType(e.target.value)}
-                                className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-black"
                             >
-                                <option value="all">📚 All Types</option>
-                                <option value="public_university">🎓 University</option>
-                                <option value="cao_partner_college">🏫 College (CAO)</option>
-                                <option value="tvet_college">🔧 Training College</option>
-                                <option value="private_college">💼 Private College</option>
+                                <option value="all" className="bg-white text-black">All Types</option>
+                                <option value="public_university" className="bg-white text-black">University</option>
+                                <option value="cao_partner_college" className="bg-white text-black">College (CAO)</option>
+                                <option value="tvet_college" className="bg-white text-black">Training College</option>
+                                <option value="private_college" className="bg-white text-black">Private College</option>
                             </select>
                             <p className="text-sm text-gray-600 mt-1">Not sure? Leave as "All Types"</p>
                         </div>
@@ -171,7 +171,7 @@ function AllInstitutionsPage() {
                                 onChange={(e) => setSelectedProvince(e.target.value)}
                                 className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="all">📍 All Provinces</option>
+                                <option value="all">All Provinces</option>
                                 {provinces.map(province => (
                                     <option key={province} value={province}>{province}</option>
                                 ))}
@@ -183,7 +183,7 @@ function AllInstitutionsPage() {
                     {/* Results counter */}
                     <div className="mt-6 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between bg-green-50 p-4 rounded-lg border-2 border-green-200">
                         <p className="text-lg font-bold text-green-900">
-                            ✅ Found <span className="text-2xl text-green-600">{filteredInstitutions.length}</span> school(s) for you
+                            Found <span className="text-2xl text-green-600">{filteredInstitutions.length}</span> school(s) for you
                         </p>
                     </div>
                 </div>
@@ -257,7 +257,7 @@ function AllInstitutionsPage() {
                                     {/* Location */}
                                     {institution.address?.city && (
                                         <div className="text-base text-gray-700 font-semibold">
-                                            📍 {institution.address.city}, {institution.address.province}
+                                            {institution.address.city}, {institution.address.province}
                                         </div>
                                     )}
 
@@ -286,16 +286,16 @@ function AllInstitutionsPage() {
                                     {/* College accreditation */}
                                     {institution.collegeInfo && (
                                         <div className="text-sm bg-green-50 p-3 rounded">
-                                            <div className="font-bold text-gray-900 mb-2">✓ Government Approved:</div>
+                                            <div className="font-bold text-gray-900 mb-2">Government Approved:</div>
                                             <div className="flex flex-wrap gap-2">
                                                 {institution.collegeInfo.cheAccredited && (
-                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">✓ CHE</span>
+                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">CHE</span>
                                                 )}
                                                 {institution.collegeInfo.dhetAccredited && (
-                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">✓ DHET</span>
+                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">DHET</span>
                                                 )}
                                                 {institution.collegeInfo.setaAccredited && (
-                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">✓ SETA</span>
+                                                    <span className="inline-block px-3 py-1 text-xs font-bold bg-green-200 text-green-800 rounded">SETA</span>
                                                 )}
                                             </div>
                                         </div>
@@ -311,7 +311,7 @@ function AllInstitutionsPage() {
                                         className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2 text-base font-bold"
                                         title={`Click to apply to ${institution.name}`}
                                     >
-                                        {institution.applicationSystem === 'CAO' ? '✓ Apply via CAO' : '✓ Apply Now'}
+                                        {institution.applicationSystem === 'CAO' ? 'Apply via CAO' : 'Apply Now'}
                                         <FaExternalLinkAlt size={14} />
                                     </a>
                                     {institution.web_pages?.[0] && (
@@ -341,10 +341,10 @@ function AllInstitutionsPage() {
                             Try these ideas:
                         </p>
                         <ul className="text-left inline-block bg-gray-50 p-6 rounded-lg mb-6">
-                            <li className="mb-3">✓ Check the spelling</li>
-                            <li className="mb-3">✓ Remove the province filter</li>
-                            <li className="mb-3">✓ Try a different school name</li>
-                            <li className="mb-3">✓ Use "All Types" instead</li>
+                            <li className="mb-3">Check the spelling</li>
+                            <li className="mb-3">Remove the province filter</li>
+                            <li className="mb-3">Try a different school name</li>
+                            <li className="mb-3">Use "All Types" instead</li>
                         </ul>
                         <button
                             onClick={() => {

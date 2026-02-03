@@ -28,7 +28,7 @@ function CollegeCard({ college, onViewDetails, isFavorite, onToggleFavorite, onC
         <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden border-l-4 border-[#228B22]">
             <div className="p-6">
                 {/* College Name */}
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-bold text-black mb-4">
                     {college.name}
                 </h3>
 

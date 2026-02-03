@@ -165,6 +165,7 @@ function CoursesPage() {
                 <div id="search-help" className="sr-only">Type to filter courses. Results update automatically as you type.</div>
                 <select
                     className="input"
+                    style={{backgroundColor: 'white', color: 'black'}}
                     value={filters.level}
                     onChange={(e) => {
                         setFilters({ ...filters, level: e.target.value });
@@ -172,15 +173,16 @@ function CoursesPage() {
                     }}
                     aria-label="Filter courses by qualification level. Options: All Levels, Diploma, Bachelor, Honors, Masters, PhD"
                 >
-                    <option value="">All Levels</option>
-                    <option value="Diploma">Diploma</option>
-                    <option value="Bachelor">Bachelor</option>
-                    <option value="Honors">Honors</option>
-                    <option value="Masters">Masters</option>
-                    <option value="PhD">PhD</option>
+                    <option value="" style={{backgroundColor: 'white', color: 'black'}}>All Levels</option>
+                    <option value="Diploma" style={{backgroundColor: 'white', color: 'black'}}>Diploma</option>
+                    <option value="Bachelor" style={{backgroundColor: 'white', color: 'black'}}>Bachelor</option>
+                    <option value="Honors" style={{backgroundColor: 'white', color: 'black'}}>Honors</option>
+                    <option value="Masters" style={{backgroundColor: 'white', color: 'black'}}>Masters</option>
+                    <option value="PhD" style={{backgroundColor: 'white', color: 'black'}}>PhD</option>
                 </select>
                 <select
                     className="input"
+                    style={{backgroundColor: 'white', color: 'black'}}
                     value={filters.studyMode}
                     onChange={(e) => {
                         setFilters({ ...filters, studyMode: e.target.value });
@@ -188,11 +190,11 @@ function CoursesPage() {
                     }}
                     aria-label="Filter courses by study mode. Options: All Study Modes, Full-time, Part-time, Distance, Hybrid"
                 >
-                    <option value="">All Study Modes</option>
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Distance">Distance</option>
-                    <option value="Hybrid">Hybrid</option>
+                    <option value="" style={{backgroundColor: 'white', color: 'black'}}>All Study Modes</option>
+                    <option value="Full-time" style={{backgroundColor: 'white', color: 'black'}}>Full-time</option>
+                    <option value="Part-time" style={{backgroundColor: 'white', color: 'black'}}>Part-time</option>
+                    <option value="Distance" style={{backgroundColor: 'white', color: 'black'}}>Distance</option>
+                    <option value="Hybrid" style={{backgroundColor: 'white', color: 'black'}}>Hybrid</option>
                 </select>
             </div>
 
@@ -330,7 +332,7 @@ function CoursesPage() {
                                                         aria-label={isSelected ? `Remove ${course.name} from selection` : `Add ${course.name} to selection`}
                                                         aria-pressed={isSelected}
                                                     >
-                                                        {isSelected ? 'Selected ✓' : 'Add to List'}
+                                                        {isSelected ? 'Selected' : 'Add to List'}
                                                     </button>
                                                 </div>
                                             </div>
