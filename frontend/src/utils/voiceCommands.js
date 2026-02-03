@@ -1,3 +1,5 @@
+import { buildUniversitiesUrl, fetchWithErrorHandling } from '../config/api.js';
+
 /**
  * VOICE CONTEXT - The "Brain" of the Accessibility Assistant
  * Tracks conversation state so blind users get natural, contextual responses
@@ -260,7 +262,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Display all universities',
         action: async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/universities?limit=100');
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const universityList = data.universities.map(u => u.name).join(', ');
                 const message = `Here are all universities: ${universityList}`;
@@ -278,7 +280,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'List all universities',
         action: async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/universities?limit=100');
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const universityList = data.universities.map(u => u.name).join(', ');
                 const message = `Available universities: ${universityList}`;
@@ -296,7 +298,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Apply to a specific university',
         action: async (universityName) => {
             try {
-                const response = await fetch(`http://localhost:5000/api/universities?limit=100`);
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const university = data.universities.find(u => u.name.toLowerCase().includes(universityName.toLowerCase()));
 
@@ -323,7 +325,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Apply to a university',
         action: async (universityName) => {
             try {
-                const response = await fetch(`http://localhost:5000/api/universities?limit=100`);
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const university = data.universities.find(u => u.name.toLowerCase().includes(universityName.toLowerCase()));
 
@@ -350,7 +352,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Get information about a university',
         action: async (universityName) => {
             try {
-                const response = await fetch(`http://localhost:5000/api/universities?limit=100`);
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const university = data.universities.find(u => u.name.toLowerCase().includes(universityName.toLowerCase()));
 
@@ -379,7 +381,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Find universities in a specific location',
         action: async (location) => {
             try {
-                const response = await fetch(`http://localhost:5000/api/universities?limit=100`);
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
                 const foundUniversities = data.universities.filter(u =>
                     u.address && u.address.city && u.address.city.toLowerCase().includes(location.toLowerCase()) ||
@@ -408,7 +410,7 @@ export const ICA_VOICE_COMMANDS = [
         description: 'Compare two universities',
         action: async (uni1Name, uni2Name) => {
             try {
-                const response = await fetch(`http://localhost:5000/api/universities?limit=100`);
+                const response = await fetch(buildUniversitiesUrl({ limit: 100 }));
                 const data = await response.json();
 
                 const uni1 = data.universities.find(u => u.name.toLowerCase().includes(uni1Name.toLowerCase()));
