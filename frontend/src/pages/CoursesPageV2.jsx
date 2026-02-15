@@ -4,6 +4,7 @@ import { FaCheckCircle, FaStar, FaArrowLeft, FaGraduationCap, FaMoneyBillWave, F
 import useAuthStore from '../context/authStore';
 import { useNavigate } from 'react-router-dom';
 import { announceToScreenReader, announceCourseInfo, announceAction } from '../utils/accessibility';
+import { API_BASE_URL } from '../config/api';
 
 function CoursesPageV2() {
     const { user } = useAuthStore();
@@ -33,7 +34,7 @@ function CoursesPageV2() {
         sortBy: 'name'
     });
 
-    const apiBase = 'http://localhost:5000/api/browse-courses';
+    const apiBase = `${API_BASE_URL}/api/browse-courses`;
 
     useEffect(() => {
         fetchFilterOptions();

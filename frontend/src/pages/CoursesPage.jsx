@@ -4,6 +4,7 @@ import { FaCheckCircle, FaTimesCircle, FaStar, FaCheck, FaChevronDown, FaChevron
 import useAuthStore from '../context/authStore';
 import { useNavigate } from 'react-router-dom';
 import { announceToScreenReader, announceCourseInfo, announceAction, announceFormStatus, createAriaDescription } from '../utils/accessibility';
+import { API_BASE_URL } from '../config/api';
 
 function CoursesPage() {
     const { user } = useAuthStore();
@@ -16,8 +17,8 @@ function CoursesPage() {
     const [showSelectedOnly, setShowSelectedOnly] = useState(false);
     const [expandedUni, setExpandedUni] = useState(null);
 
-    const apiBase = 'http://localhost:5000/api/global-universities';
-    const coursesApiBase = 'http://localhost:5000/api/courses';
+    const apiBase = `${API_BASE_URL}/api/global-universities`;
+    const coursesApiBase = `${API_BASE_URL}/api/courses`;
 
     useEffect(() => {
         fetchCourses();

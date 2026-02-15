@@ -10,6 +10,7 @@ import UniversitiesPage from './pages/UniversitiesPage';
 import CollegesPage from './pages/CollegesPage';
 import AllInstitutionsPage from './pages/AllInstitutionsPage';
 import CAOUniversitiesCodesPage from './pages/CAOUniversitiesCodesPage';
+import BursarySourcesPage from './pages/BursarySourcesPage';
 import APSCalculatorV2 from './pages/APSCalculatorV2';
 import RecommendationsPage from './pages/RecommendationsPage';
 import TrackStatusPage from './pages/TrackStatusPage';
@@ -22,6 +23,7 @@ import { VoiceController } from './components/VoiceController';
 import { BlindUserOnboarding } from './components/BlindUserOnboarding';
 import VoiceAssistant from './components/VoiceAssistant';
 import ProductionVoiceWidget from './components/ProductionVoiceWidget';
+import ScreenReader from './components/ScreenReader';
 
 function App() {
     const { user } = useAuthStore();
@@ -71,6 +73,7 @@ function App() {
             ) : null}
 
             <LiveRegion message={liveMessage} />
+            <ScreenReader />
 
             <div className="min-h-screen bg-gray-50">
                 <Navbar />
@@ -87,6 +90,7 @@ function App() {
                         <Route path="/cao-universities" element={<CAOUniversitiesCodesPage />} />
                         <Route path="/colleges" element={<CollegesPage />} />
                         <Route path="/cao-programmes" element={<CAOUniversitiesCodesPage />} />
+                        <Route path="/bursaries" element={<BursarySourcesPage />} />
                         <Route path="/aps-calculator" element={<APSCalculatorV2 />} />
                         <Route path="/recommendations" element={<RecommendationsPage />} />
                         <Route path="/track-status" element={<TrackStatusPage />} />
@@ -97,10 +101,10 @@ function App() {
                 {/* Accessibility Controls - Only show when toggled, hidden by default */}
                 {showAccessibilityControls && <AccessibilityControls />}
                 
-                {/* Accessibility Toggle Button - Always visible for easy access */}
+                {/* Accessibility Toggle Button - Positioned left to avoid overlap with voice widget */}
                 <button
                     onClick={() => setShowAccessibilityControls(!showAccessibilityControls)}
-                    className="fixed bottom-4 right-4 bg-[#228B22] text-white p-3 rounded-full shadow-lg hover:bg-[#1a6b1a] z-40 transition-all duration-200"
+                    className="fixed bottom-4 left-4 bg-[#228B22] text-white p-3 rounded-full shadow-lg hover:bg-[#1a6b1a] z-40 transition-all duration-200"
                     title="Toggle accessibility settings (Alt+Shift+A)"
                     aria-label="Toggle accessibility controls"
                 >

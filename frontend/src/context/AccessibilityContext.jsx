@@ -1,8 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 /**
  * AccessibilityContext
- * Manages accessibility preferences like high contrast, font size, and reduced motion
+ * Manages accessibility preferences like high contrast, font size, reduced motion,
+ * and screen reader mode for blind users
  * Persists settings to localStorage
  */
 const AccessibilityContext = createContext();
@@ -11,6 +12,8 @@ export function AccessibilityProvider({ children }) {
     const [highContrast, setHighContrast] = useState(false);
     const [fontSize, setFontSize] = useState('medium');
     const [reducedMotion, setReducedMotion] = useState(false);
+    const [screenReaderMode, setScreenReaderMode] = useState(false);
+    const [voiceSpeed, setVoiceSpeed] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
     // Load preferences from localStorage on mount
@@ -22,6 +25,15 @@ export function AccessibilityProvider({ children }) {
                 setHighContrast(prefs.highContrast || false);
                 setFontSize(prefs.fontSize || 'medium');
                 setReducedMotion(prefs.reducedMotion || false);
+                setScreenReaderMode(prefs.screenReaderMode || false);
+                setVoiceSpeed(prefs.voiceSpeed || 1);
+            }
+            
+            // Also check blindUserMode from localStorage
+            const blindMode = localStorage.getItem('blindUserMode') === 'true';
+            const voiceEnabled = localStorage.getItem('voiceEnabled') === 'true';
+            if (blindMode || voiceEnabled) {
+                setScreenReaderMode(true);
             }
         } catch (error) {
             console.error('Failed to load accessibility preferences:', error);
@@ -37,13 +49,17 @@ export function AccessibilityProvider({ children }) {
                 localStorage.setItem('a11y-preferences', JSON.stringify({
                     highContrast,
                     fontSize,
-                    reducedMotion
+                    reducedMotion,
+                    screenReaderMode,
+                    voiceSpeed
                 }));
+                // Also sync with blindUserMode for compatibility
+                localStorage.setItem('voiceEnabled', screenReaderMode ? 'true' : 'false');
             } catch (error) {
                 console.error('Failed to save accessibility preferences:', error);
             }
         }
-    }, [highContrast, fontSize, reducedMotion, isLoading]);
+    }, [highContrast, fontSize, reducedMotion, screenReaderMode, voiceSpeed, isLoading]);
 
     // Check for system preference for reduced motion
     useEffect(() => {
@@ -58,6 +74,61 @@ export function AccessibilityProvider({ children }) {
         return () => mediaQuery.removeEventListener('change', handleChange);
     }, []);
 
+    // Text-to-speech function for screen reader mode
+    const speak = useCallback((text, priority = 'normal') => {
+        if (!text) return;
+        
+        // Allow speaking even if screenReaderMode is off for direct calls
+        if ('speechSynthesis' in window) {
+            // Cancel previous speech if high priority
+            if (priority === 'high') {
+                window.speechSynthesis.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = voiceSpeed;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+            utterance.lang = 'en-ZA'; // South African English
+            
+            // Use a good voice if available
+            const voices = window.speechSynthesis.getVoices();
+            const englishVoice = voices.find(v => v.lang.includes('en')) || voices[0];
+            if (englishVoice) {
+                utterance.voice = englishVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+        }
+    }, [voiceSpeed]);
+    
+    // Direct speak function that works regardless of screenReaderMode
+    const directSpeak = useCallback((text) => {
+        if (!text || !('speechSynthesis' in window)) return;
+        
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = voiceSpeed;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        utterance.lang = 'en-ZA';
+        
+        const voices = window.speechSynthesis.getVoices();
+        const englishVoice = voices.find(v => v.lang.includes('en')) || voices[0];
+        if (englishVoice) {
+            utterance.voice = englishVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+    }, [voiceSpeed]);
+
+    // Stop speaking
+    const stopSpeaking = useCallback(() => {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    }, []);
+
     const value = {
         highContrast,
         setHighContrast,
@@ -65,6 +136,13 @@ export function AccessibilityProvider({ children }) {
         setFontSize,
         reducedMotion,
         setReducedMotion,
+        screenReaderMode,
+        setScreenReaderMode,
+        voiceSpeed,
+        setVoiceSpeed,
+        speak,
+        directSpeak,
+        stopSpeaking,
         isLoading
     };
 

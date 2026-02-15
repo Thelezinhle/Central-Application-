@@ -32,7 +32,16 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // ===== MIDDLEWARE =====
-app.use(cors());
+// Configure CORS for production
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' 
+        ? [process.env.FRONTEND_URL, 'https://cao-frontend.onrender.com'].filter(Boolean)
+        : '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 app.use(compression()); // Enable gzip compression
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -103,18 +112,48 @@ app.get('/api/universities', (req, res) => {
     }
 });
 
-// ===== COLLEGES ENDPOINT =====
+// ===== COLLEGES ENDPOINT (South Africa Only) =====
+// Helper to extract province from location string
+const extractProvince = (location) => {
+    if (!location) return null;
+    const parts = location.split(',').map(p => p.trim());
+    if (parts.length >= 2) {
+        const province = parts[parts.length - 1];
+        const normalizedProvinces = {
+            'KZN': 'KwaZulu-Natal',
+            'KwaZulu-Natal': 'KwaZulu-Natal',
+            'Gauteng': 'Gauteng',
+            'Western Cape': 'Western Cape',
+            'Eastern Cape': 'Eastern Cape',
+            'Free State': 'Free State',
+            'Limpopo': 'Limpopo',
+            'Mpumalanga': 'Mpumalanga',
+            'North West': 'North West',
+            'Northern Cape': 'Northern Cape'
+        };
+        return normalizedProvinces[province] || null;
+    }
+    return null;
+};
+
+// Get SA-only colleges
+const getSAColleges = () => {
+    return collegesData.filter(college => 
+        college.country === 'South Africa'
+    );
+};
+
 app.get('/api/colleges', (req, res) => {
     try {
-        const { country, category } = req.query;
+        const { province, category } = req.query;
         
-        let filtered = [...collegesData];
+        let filtered = getSAColleges();
         
-        if (country) {
-            filtered = filtered.filter(college => 
-                college.country?.toLowerCase().includes(country.toLowerCase()) ||
-                college.location?.toLowerCase().includes(country.toLowerCase())
-            );
+        if (province) {
+            filtered = filtered.filter(college => {
+                const collegeProvince = extractProvince(college.location);
+                return collegeProvince?.toLowerCase() === province.toLowerCase();
+            });
         }
         
         if (category) {
@@ -128,6 +167,23 @@ app.get('/api/colleges', (req, res) => {
         });
     } catch (error) {
         console.error('Colleges error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Get available provinces for colleges
+app.get('/api/colleges/provinces', (req, res) => {
+    try {
+        const saColleges = getSAColleges();
+        const provinces = [...new Set(saColleges.map(c => extractProvince(c.location)).filter(p => p !== null))].sort();
+        
+        res.json({
+            success: true,
+            count: provinces.length,
+            provinces: provinces
+        });
+    } catch (error) {
+        console.error('Provinces error:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });

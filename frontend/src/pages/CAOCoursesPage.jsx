@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../context/authStore';
 import '../styles/CAOCoursesPage.css';
+import { API_BASE_URL } from '../config/api';
 
 function CAOCoursesPage() {
     const { user } = useAuthStore();
@@ -25,7 +26,7 @@ function CAOCoursesPage() {
     const [expandedInstitution, setExpandedInstitution] = useState(null);
     const [showSelectedOnly, setShowSelectedOnly] = useState(false);
     
-    const apiBase = 'http://localhost:5000/api/courses';
+    const apiBase = `${API_BASE_URL}/api/courses`;
 
     useEffect(() => {
         fetchCAOProgrammes();

@@ -6,7 +6,7 @@ import { useAccessibility } from '../context/AccessibilityContext';
  * Provides UI controls for accessibility settings
  * Can be placed in a fixed position, header, or settings page
  */
-export function AccessibilityControls({ className = 'fixed bottom-4 left-4' }) {
+export function AccessibilityControls({ className = 'fixed bottom-20 left-4' }) {
     const {
         highContrast,
         setHighContrast,
@@ -14,6 +14,11 @@ export function AccessibilityControls({ className = 'fixed bottom-4 left-4' }) {
         setFontSize,
         reducedMotion,
         setReducedMotion,
+        screenReaderMode,
+        setScreenReaderMode,
+        voiceSpeed,
+        setVoiceSpeed,
+        speak,
         isLoading
     } = useAccessibility();
 
@@ -136,6 +141,56 @@ export function AccessibilityControls({ className = 'fixed bottom-4 left-4' }) {
                     >
                         Reduce Motion {reducedMotion ? 'Off' : 'On'}
                     </button>
+
+                    {/* Screen Reader Mode Toggle */}
+                    <button
+                        onClick={() => {
+                            const newMode = !screenReaderMode;
+                            setScreenReaderMode(newMode);
+                            if (newMode) {
+                                setTimeout(() => {
+                                    speak('Screen reader mode enabled. I will read all content aloud for you.', 'high');
+                                }, 100);
+                            }
+                        }}
+                        aria-pressed={screenReaderMode}
+                        className={`
+            w-full px-4 py-2 rounded-lg font-medium transition-colors
+            focus:outline-none focus:ring-2 focus:ring-[#228B22] focus:ring-offset-2
+            ${screenReaderMode
+                                ? 'bg-blue-600 text-white border-2 border-blue-700'
+                                : 'bg-gray-200 text-gray-800 border-2 border-gray-300 hover:bg-gray-300'
+                            }
+          `}
+                        title={screenReaderMode ? 'Disable screen reader' : 'Enable screen reader for blind users'}
+                    >
+                        🔊 Screen Reader {screenReaderMode ? 'On' : 'Off'}
+                    </button>
+
+                    {/* Voice Speed Selector (only shown when screen reader is on) */}
+                    {screenReaderMode && (
+                        <div>
+                            <label
+                                htmlFor="voice-speed-select"
+                                className="block text-sm font-medium text-gray-700 mb-1"
+                            >
+                                Voice Speed:
+                            </label>
+                            <select
+                                id="voice-speed-select"
+                                value={voiceSpeed}
+                                onChange={(e) => setVoiceSpeed(parseFloat(e.target.value))}
+                                aria-label="Choose voice speed"
+                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#228B22] bg-white border-gray-300"
+                            >
+                                <option value="0.5">Slow (0.5x)</option>
+                                <option value="0.75">Slower (0.75x)</option>
+                                <option value="1">Normal (1x)</option>
+                                <option value="1.25">Faster (1.25x)</option>
+                                <option value="1.5">Fast (1.5x)</option>
+                            </select>
+                        </div>
+                    )}
 
                     {/* Info Text */}
                     <p className="text-xs text-gray-600 text-center mt-2">

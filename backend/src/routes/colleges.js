@@ -4,17 +4,54 @@ import collegeCoursesData from '../data/collegeCourses.js';
 
 const router = express.Router();
 
-// Get all colleges with filters
+// Helper to extract province from location string
+const extractProvince = (location) => {
+    if (!location) return null;
+    const parts = location.split(',').map(p => p.trim());
+    if (parts.length >= 2) {
+        const province = parts[parts.length - 1];
+        // Normalize province names
+        const normalizedProvinces = {
+            'KZN': 'KwaZulu-Natal',
+            'KwaZulu-Natal': 'KwaZulu-Natal',
+            'Gauteng': 'Gauteng',
+            'Western Cape': 'Western Cape',
+            'Eastern Cape': 'Eastern Cape',
+            'Free State': 'Free State',
+            'Limpopo': 'Limpopo',
+            'Mpumalanga': 'Mpumalanga',
+            'North West': 'North West',
+            'Northern Cape': 'Northern Cape'
+        };
+        return normalizedProvinces[province] || null;
+    }
+    return null;
+};
+
+// Filter to only South African colleges
+const getSAColleges = () => {
+    return collegesData.filter(college => {
+        // Must be from South Africa
+        if (college.country !== 'South Africa') return false;
+        
+        // Must be public or private (not international or african)
+        if (college.category === 'international' || college.category === 'african') return false;
+        
+        return true;
+    });
+};
+
+// Get all colleges with filters (South Africa only)
 router.get('/', (req, res) => {
-    const { country, category, type } = req.query;
+    const { province, category, type } = req.query;
     
-    let filtered = [...collegesData];
+    let filtered = getSAColleges();
     
-    if (country) {
-        filtered = filtered.filter(college => 
-            college.country?.toLowerCase().includes(country.toLowerCase()) ||
-            college.location?.toLowerCase().includes(country.toLowerCase())
-        );
+    if (province) {
+        filtered = filtered.filter(college => {
+            const collegeProvince = extractProvince(college.location);
+            return collegeProvince?.toLowerCase() === province.toLowerCase();
+        });
     }
     
     if (category) {
@@ -28,6 +65,17 @@ router.get('/', (req, res) => {
     res.json({
         count: filtered.length,
         colleges: filtered.sort((a, b) => a.name.localeCompare(b.name))
+    });
+});
+
+// Get available provinces
+router.get('/provinces', (req, res) => {
+    const saColleges = getSAColleges();
+    const provinces = [...new Set(saColleges.map(c => extractProvince(c.location)).filter(p => p !== null))].sort();
+    
+    res.json({
+        count: provinces.length,
+        provinces: provinces
     });
 });
 

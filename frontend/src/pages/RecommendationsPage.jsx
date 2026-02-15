@@ -65,8 +65,19 @@ function RecommendationsPage() {
         const englishAPS = parseInt(formData.englishAPS) || 0;
         const mathAPS = parseInt(formData.mathAPS) || 0;
 
+        // Filter courses based on province first if selected
+        let coursesToCheck = mockCourses;
+        if (formData.province) {
+            const universitiesInProvince = mockUniversities
+                .filter(u => u.province === formData.province)
+                .map(u => u._id);
+            coursesToCheck = mockCourses.filter(course => 
+                universitiesInProvince.includes(course.university)
+            );
+        }
+
         // Filter courses based on APS requirements
-        const eligible = mockCourses.filter(course => {
+        const eligible = coursesToCheck.filter(course => {
             return (
                 totalAPS >= (course.aps?.minimumAPS || 20) &&
                 englishAPS >= (course.aps?.englishAPS || 2) &&
@@ -80,7 +91,7 @@ function RecommendationsPage() {
             totalAPS >= (c.aps?.minimumAPS || 20) &&
             totalAPS < ((c.aps?.minimumAPS || 20) + 5)
         );
-        const borderline = mockCourses.filter(c =>
+        const borderline = coursesToCheck.filter(c =>
             totalAPS >= ((c.aps?.minimumAPS || 20) - 3) &&
             totalAPS < (c.aps?.minimumAPS || 20)
         );
@@ -91,7 +102,8 @@ function RecommendationsPage() {
             borderline,
             totalAPS,
             englishAPS,
-            mathAPS
+            mathAPS,
+            province: formData.province
         });
         setSubmitted(true);
     };
@@ -267,6 +279,12 @@ function RecommendationsPage() {
                                 <option value="Gauteng" style={{backgroundColor: 'white', color: 'black'}}>Gauteng</option>
                                 <option value="Western Cape" style={{backgroundColor: 'white', color: 'black'}}>Western Cape</option>
                                 <option value="KwaZulu-Natal" style={{backgroundColor: 'white', color: 'black'}}>KwaZulu-Natal</option>
+                                <option value="Eastern Cape" style={{backgroundColor: 'white', color: 'black'}}>Eastern Cape</option>
+                                <option value="Free State" style={{backgroundColor: 'white', color: 'black'}}>Free State</option>
+                                <option value="Limpopo" style={{backgroundColor: 'white', color: 'black'}}>Limpopo</option>
+                                <option value="Mpumalanga" style={{backgroundColor: 'white', color: 'black'}}>Mpumalanga</option>
+                                <option value="North West" style={{backgroundColor: 'white', color: 'black'}}>North West</option>
+                                <option value="Northern Cape" style={{backgroundColor: 'white', color: 'black'}}>Northern Cape</option>
                             </select>
                         </div>
                     </div>
@@ -284,6 +302,11 @@ function RecommendationsPage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="bg-gradient-to-r from-white to-green-50 p-4 rounded-lg mb-6 border-2 border-green-700">
                             <p className="text-sm font-bold text-gray-900"><strong>Your APS Scores:</strong> Total <span className="text-green-700 text-lg">{recommendations.totalAPS}</span> | Math <span className="text-green-700">{recommendations.mathAPS}</span> | English <span className="text-green-700">{recommendations.englishAPS}</span></p>
+                            {recommendations.province && (
+                                <p className="text-sm font-bold text-blue-700 mt-1">
+                                    📍 Showing courses from: <span className="text-blue-800">{recommendations.province}</span>
+                                </p>
+                            )}
                             <button
                                 onClick={() => setSubmitted(false)}
                                 className="text-green-700 hover:underline text-sm mt-2 font-bold"

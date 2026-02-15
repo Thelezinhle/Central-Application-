@@ -1,50 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FaUniversity, FaExternalLinkAlt, FaSpinner, FaSearch } from 'react-icons/fa';
 import { cachedGet } from '../utils/apiClient';
+import CustomSelectDropdown from '../components/CustomSelectDropdown';
+import { API_BASE_URL } from '../config/api';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 function UniversitiesPage() {
     const [universities, setUniversities] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedProvince, setSelectedProvince] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [countries, setCountries] = useState([]);
+    const [provinces, setProvinces] = useState([]);
+    
+    const { directSpeak, screenReaderMode, speak } = useAccessibility();
+    const lastAnnouncedRef = useRef('');
 
-    // Fetch all universities and group by country
+    // Fetch all universities
     const fetchUniversities = async () => {
         try {
             setLoading(true);
             setError(null);
             
+            // Use global-universities API which has proper SA data with regions
             const response = await cachedGet(
-                'http://localhost:5000/api/universities?limit=500'
+                `${API_BASE_URL}/api/global-universities?limit=500`
             );
             
             const unis = response.universities || [];
+            setUniversities(unis);
 
-            // Get all global universities
-            try {
-                const globalResponse = await cachedGet(
-                    'http://localhost:5000/api/global-universities?limit=500'
-                );
-                const allUnis = [...unis, ...(globalResponse.universities || [])];
-                setUniversities(allUnis);
-
-                // Extract unique countries
-                const countryList = [...new Set(allUnis.map(uni => uni.country))].sort();
-                setCountries(countryList);
-                if (countryList.length > 0 && !selectedCountry) {
-                    setSelectedCountry(countryList[0]);
-                }
-            } catch (e) {
-                console.error('Error fetching global universities:', e);
-                setUniversities(unis);
-                const countryList = [...new Set(unis.map(uni => uni.country))].sort();
-                setCountries(countryList);
-                if (countryList.length > 0 && !selectedCountry) {
-                    setSelectedCountry(countryList[0]);
-                }
-            }
+            // Extract unique provinces (from region field)
+            const provinceList = [...new Set(unis.map(uni => uni.region))].filter(p => p).sort();
+            setProvinces(provinceList);
+            
+            console.log('Universities loaded:', unis.length, 'Provinces:', provinceList);
         } catch (error) {
             console.error('Error fetching universities:', error);
             setError('Failed to load universities. Please try again.');
@@ -57,13 +47,40 @@ function UniversitiesPage() {
         fetchUniversities();
     }, []);
 
-    // Filter universities by selected country and search query
+    // Filter universities by selected province and search query
     const filteredUniversities = universities.filter(uni => {
-        const matchesCountry = !selectedCountry || uni.country === selectedCountry;
+        // Province filter - must match exactly
+        const uniRegion = uni.region || '';
+        const matchesProvince = !selectedProvince || uniRegion === selectedProvince;
+        
+        // Search filter
         const matchesSearch = !searchQuery || 
             uni.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCountry && matchesSearch;
+        
+        return matchesProvince && matchesSearch;
     });
+    
+    // Debug log and announce filter results for screen reader
+    useEffect(() => {
+        if (selectedProvince || searchQuery) {
+            const announcement = selectedProvince 
+                ? `Showing ${filteredUniversities.length} universities from ${selectedProvince}`
+                : `Showing ${filteredUniversities.length} universities matching search`;
+            
+            // Only announce if different from last announcement
+            if (announcement !== lastAnnouncedRef.current) {
+                lastAnnouncedRef.current = announcement;
+                console.log('Filter:', selectedProvince || 'all', '- Found:', filteredUniversities.length);
+                
+                // Announce for blind users
+                if (screenReaderMode && speak) {
+                    speak(announcement);
+                } else if (directSpeak) {
+                    // Only use directSpeak if user has interacted with accessibility features
+                }
+            }
+        }
+    }, [selectedProvince, searchQuery, filteredUniversities.length, screenReaderMode, speak, directSpeak]);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#228B22] to-[#1a6b1a] py-12">
@@ -75,7 +92,7 @@ function UniversitiesPage() {
                         <h1 className="text-4xl font-bold text-white">Universities</h1>
                     </div>
                     <p className="text-white text-lg">
-                        Browse {universities.length} universities worldwide - Click any university to visit their official website
+                        Browse {universities.length} South African universities - Click any university to visit their official website
                     </p>
                 </div>
 
@@ -103,23 +120,24 @@ function UniversitiesPage() {
                             />
                         </div>
 
-                        {/* Country Selector */}
+                        {/* Province Selector */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 <FaUniversity className="inline mr-2" />
-                                Select Country
+                                Select Province
                             </label>
-                            <select
-                                value={selectedCountry || ''}
-                                onChange={(e) => setSelectedCountry(e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#228B22] focus:border-transparent bg-white text-black"
-                            >
-                                {countries.map((country) => (
-                                    <option key={country} value={country} className="bg-white text-black">
-                                        {country}
-                                    </option>
-                                ))}
-                            </select>
+                            <CustomSelectDropdown
+                                value={selectedProvince}
+                                onChange={(e) => setSelectedProvince(e.target.value)}
+                                options={[
+                                    { value: '', label: 'All Provinces' },
+                                    ...provinces.map((province) => ({
+                                        value: province,
+                                        label: province
+                                    }))
+                                ]}
+                                placeholder="All Provinces"
+                            />
                         </div>
                     </div>
                 </div>
@@ -163,7 +181,7 @@ function UniversitiesPage() {
 
                                         <div className="space-y-2 mb-4 text-sm text-gray-600">
                                             <p>
-                                                <span className="font-semibold">Country:</span> {uni.country}
+                                                <span className="font-semibold">Province:</span> {uni.region || uni.country}
                                             </p>
                                             {uni.type && (
                                                 <p>

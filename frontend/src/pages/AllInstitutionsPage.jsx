@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaUniversity, FaGraduationCap, FaFilter, FaSearch, FaExternalLinkAlt, FaBook } from 'react-icons/fa';
 import { cachedGet } from '../utils/apiClient';
 import BeginnerGuide from '../components/BeginnerGuide';
+import { API_BASE_URL } from '../config/api';
 
 function AllInstitutionsPage() {
     const [institutions, setInstitutions] = useState([]);
@@ -11,7 +12,7 @@ function AllInstitutionsPage() {
     const [selectedProvince, setSelectedProvince] = useState('all');
     const [filteredInstitutions, setFilteredInstitutions] = useState([]);
 
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = `${API_BASE_URL}/api`;
 
     useEffect(() => {
         fetchInstitutions();

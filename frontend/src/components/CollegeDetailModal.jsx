@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Heart, X, Globe, MapPin, Users, Star, Book } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 function CollegeDetailModal({ college, isOpen, onClose, isFavorite, onToggleFavorite }) {
     const [courses, setCourses] = useState([]);
@@ -18,7 +19,7 @@ function CollegeDetailModal({ college, isOpen, onClose, isFavorite, onToggleFavo
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:5000/api/colleges/${college.id}/courses`);
+            const response = await axios.get(`${API_BASE_URL}/api/colleges/${college.id}/courses`);
             setCourses(response.data.courses || []);
         } catch (err) {
             console.error('Error fetching courses:', err);

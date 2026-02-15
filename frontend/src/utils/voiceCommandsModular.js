@@ -15,6 +15,10 @@
  * - Extend functionality
  */
 
+import { API_BASE_URL } from '../config/api';
+
+const API_UNIVERSITIES = `${API_BASE_URL}/api/universities`;
+
 // ============================================
 // NAVIGATION COMMANDS
 // ============================================
@@ -114,7 +118,7 @@ export const UNIVERSITY_COMMANDS = [
     aliases: ['list universities', 'all universities'],
     action: async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/universities?limit=100');
+        const response = await fetch(`${API_UNIVERSITIES}?limit=100`);
         const data = await response.json();
         if (data.universities && data.universities.length > 0) {
           const universityList = data.universities.map(u => u.name).join(', ');
@@ -132,7 +136,7 @@ export const UNIVERSITY_COMMANDS = [
     aliases: ['info about *', 'university info *', 'about *'],
     action: async (universityName) => {
       try {
-        const response = await fetch('http://localhost:5000/api/universities?limit=100');
+        const response = await fetch(`${API_UNIVERSITIES}?limit=100`);
         const data = await response.json();
         const university = data.universities?.find(u =>
           u.name.toLowerCase().includes(universityName.toLowerCase())
@@ -159,7 +163,7 @@ export const UNIVERSITY_COMMANDS = [
     aliases: ['apply to * university', 'apply * university'],
     action: async (universityName) => {
       try {
-        const response = await fetch('http://localhost:5000/api/universities?limit=100');
+        const response = await fetch(`${API_UNIVERSITIES}?limit=100`);
         const data = await response.json();
         const university = data.universities?.find(u =>
           u.name.toLowerCase().includes(universityName.toLowerCase())
@@ -182,7 +186,7 @@ export const UNIVERSITY_COMMANDS = [
     aliases: ['find universities in *', 'universities in *'],
     action: async (location) => {
       try {
-        const response = await fetch('http://localhost:5000/api/universities?limit=100');
+        const response = await fetch(`${API_UNIVERSITIES}?limit=100`);
         const data = await response.json();
         const foundUniversities = data.universities?.filter(u =>
           (u.address?.city?.toLowerCase().includes(location.toLowerCase())) ||
@@ -206,7 +210,7 @@ export const UNIVERSITY_COMMANDS = [
     aliases: ['compare * with *', 'compare universities * and *'],
     action: async (uni1Name, uni2Name) => {
       try {
-        const response = await fetch('http://localhost:5000/api/universities?limit=100');
+        const response = await fetch(`${API_UNIVERSITIES}?limit=100`);
         const data = await response.json();
 
         const uni1 = data.universities?.find(u =>

@@ -65,6 +65,72 @@ export const mockUniversities = [
         email: 'admissions@unisa.ac.za',
         phone: '+27 12 429 3111',
         website: 'www.unisa.ac.za'
+    },
+    {
+        _id: '7',
+        code: 'DUT',
+        name: 'Durban University of Technology',
+        city: 'Durban',
+        province: 'KwaZulu-Natal',
+        campuses: ['Steve Biko', 'Ritson', 'City'],
+        email: 'admissions@dut.ac.za',
+        phone: '+27 31 373 2000',
+        website: 'www.dut.ac.za'
+    },
+    {
+        _id: '8',
+        code: 'MUT',
+        name: 'Mangosuthu University of Technology',
+        city: 'Durban',
+        province: 'KwaZulu-Natal',
+        campuses: ['Umlazi Campus'],
+        email: 'admissions@mut.ac.za',
+        phone: '+27 31 907 7000',
+        website: 'www.mut.ac.za'
+    },
+    {
+        _id: '9',
+        code: 'UNIZULU',
+        name: 'University of Zululand',
+        city: 'Richards Bay',
+        province: 'KwaZulu-Natal',
+        campuses: ['KwaDlangezwa', 'Richards Bay'],
+        email: 'admissions@unizulu.ac.za',
+        phone: '+27 35 902 6000',
+        website: 'www.unizulu.ac.za'
+    },
+    {
+        _id: '10',
+        code: 'NMMU',
+        name: 'Nelson Mandela University',
+        city: 'Port Elizabeth',
+        province: 'Eastern Cape',
+        campuses: ['South Campus', 'North Campus'],
+        email: 'admissions@mandela.ac.za',
+        phone: '+27 41 504 1111',
+        website: 'www.mandela.ac.za'
+    },
+    {
+        _id: '11',
+        code: 'UFS',
+        name: 'University of the Free State',
+        city: 'Bloemfontein',
+        province: 'Free State',
+        campuses: ['Main Campus', 'QwaQwa'],
+        email: 'admissions@ufs.ac.za',
+        phone: '+27 51 401 9111',
+        website: 'www.ufs.ac.za'
+    },
+    {
+        _id: '12',
+        code: 'NWU',
+        name: 'North-West University',
+        city: 'Potchefstroom',
+        province: 'North West',
+        campuses: ['Potchefstroom', 'Mahikeng', 'Vanderbijlpark'],
+        email: 'admissions@nwu.ac.za',
+        phone: '+27 18 299 1111',
+        website: 'www.nwu.ac.za'
     }
 ];
 
@@ -265,6 +331,190 @@ export const mockCourses = [
         entryRequirements: {
             minimumMatricScore: 65,
             requiredSubjects: ['Mathematics']
+        }
+    },
+    // KwaZulu-Natal Courses
+    {
+        _id: '112',
+        code: 'ENGB002',
+        name: 'Bachelor of Engineering (Electrical)',
+        university: '5',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 82000,
+        aps: {
+            minimumAPS: 24,
+            englishAPS: 4,
+            mathAPS: 5
+        },
+        entryRequirements: {
+            minimumMatricScore: 60,
+            requiredSubjects: ['Mathematics', 'Physical Science']
+        }
+    },
+    {
+        _id: '113',
+        code: 'MED002',
+        name: 'Bachelor of Medicine (MBChB)',
+        university: '5',
+        level: 'Undergraduate',
+        duration: '6 years',
+        tuitionFee: 115000,
+        aps: {
+            minimumAPS: 32,
+            englishAPS: 5,
+            mathAPS: 5
+        },
+        entryRequirements: {
+            minimumMatricScore: 75,
+            requiredSubjects: ['Mathematics', 'Physical Science', 'Life Sciences']
+        }
+    },
+    {
+        _id: '114',
+        code: 'BUS002',
+        name: 'Bachelor of Commerce',
+        university: '7',
+        level: 'Undergraduate',
+        duration: '3 years',
+        tuitionFee: 58000,
+        aps: {
+            minimumAPS: 18,
+            englishAPS: 3,
+            mathAPS: 3
+        },
+        entryRequirements: {
+            minimumMatricScore: 50,
+            requiredSubjects: ['Mathematics', 'English']
+        }
+    },
+    {
+        _id: '115',
+        code: 'IT001',
+        name: 'Diploma in Information Technology',
+        university: '7',
+        level: 'Diploma',
+        duration: '3 years',
+        tuitionFee: 45000,
+        aps: {
+            minimumAPS: 16,
+            englishAPS: 3,
+            mathAPS: 3
+        },
+        entryRequirements: {
+            minimumMatricScore: 45,
+            requiredSubjects: ['Mathematics']
+        }
+    },
+    {
+        _id: '116',
+        code: 'TOUR001',
+        name: 'National Diploma in Tourism Management',
+        university: '8',
+        level: 'Diploma',
+        duration: '3 years',
+        tuitionFee: 42000,
+        aps: {
+            minimumAPS: 15,
+            englishAPS: 3,
+            mathAPS: 2
+        },
+        entryRequirements: {
+            minimumMatricScore: 40,
+            requiredSubjects: ['English']
+        }
+    },
+    {
+        _id: '117',
+        code: 'AGR002',
+        name: 'Bachelor of Science in Agriculture',
+        university: '9',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 55000,
+        aps: {
+            minimumAPS: 17,
+            englishAPS: 3,
+            mathAPS: 3
+        },
+        entryRequirements: {
+            minimumMatricScore: 50,
+            requiredSubjects: ['Life Sciences', 'Agricultural Science']
+        }
+    },
+    {
+        _id: '118',
+        code: 'SOCW001',
+        name: 'Bachelor of Social Work',
+        university: '9',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 48000,
+        aps: {
+            minimumAPS: 16,
+            englishAPS: 4,
+            mathAPS: 2
+        },
+        entryRequirements: {
+            minimumMatricScore: 45,
+            requiredSubjects: ['English']
+        }
+    },
+    // Eastern Cape
+    {
+        _id: '119',
+        code: 'LAW002',
+        name: 'Bachelor of Laws (LLB)',
+        university: '10',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 72000,
+        aps: {
+            minimumAPS: 23,
+            englishAPS: 5,
+            mathAPS: 3
+        },
+        entryRequirements: {
+            minimumMatricScore: 62,
+            requiredSubjects: ['English']
+        }
+    },
+    // Free State
+    {
+        _id: '120',
+        code: 'PHARM001',
+        name: 'Bachelor of Pharmacy',
+        university: '11',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 85000,
+        aps: {
+            minimumAPS: 25,
+            englishAPS: 4,
+            mathAPS: 4
+        },
+        entryRequirements: {
+            minimumMatricScore: 65,
+            requiredSubjects: ['Mathematics', 'Physical Science', 'Life Sciences']
+        }
+    },
+    // North West
+    {
+        _id: '121',
+        code: 'TEACH002',
+        name: 'Bachelor of Education (Primary)',
+        university: '12',
+        level: 'Undergraduate',
+        duration: '4 years',
+        tuitionFee: 52000,
+        aps: {
+            minimumAPS: 16,
+            englishAPS: 3,
+            mathAPS: 3
+        },
+        entryRequirements: {
+            minimumMatricScore: 45,
+            requiredSubjects: ['English']
         }
     }
 ];

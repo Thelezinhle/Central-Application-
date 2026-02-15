@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaCalculator, FaPlus, FaTrash } from 'react-icons/fa';
+import { API_BASE_URL } from '../config/api';
 
 function APSCalculator() {
     const [subjects, setSubjects] = useState([
@@ -34,7 +35,7 @@ function APSCalculator() {
                 return;
             }
 
-            const response = await fetch('http://localhost:5000/api/courses/aps/calculate', {
+            const response = await fetch(`${API_BASE_URL}/api/courses/aps/calculate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ subjects: validSubjects })

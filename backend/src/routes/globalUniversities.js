@@ -1,17 +1,17 @@
 // src/routes/globalUniversities.js
-// This file defines routes for accessing global university data
+// This file defines routes for accessing South African university data
 
 import express from 'express';
 import {
     REAL_UNIVERSITIES,
     getUniversitiesByRegion,
-    getUniversitiesByCountry,
+    getUniversitiesByType,
     searchUniversities
 } from '../data/expandedUniversities.js';
 
 const router = express.Router();
 
-console.log('✅ Global Universities Router loaded with', REAL_UNIVERSITIES.length, 'universities');
+console.log('✅ South African Universities Router loaded with', REAL_UNIVERSITIES.length, 'universities');
 
 /**
  * GET /api/global-universities
@@ -153,21 +153,15 @@ router.get('/by-region/:region', (req, res) => {
 
 /**
  * GET /api/global-universities/by-country/:country
- * Get universities by country
+ * Get universities by type (public/private) - legacy route for compatibility
+ * Now returns all SA universities since country is always South Africa
  */
 router.get('/by-country/:country', (req, res) => {
     try {
-        const { country } = req.params;
         const { limit = 500, page = 1 } = req.query;
         
-        const universities = getUniversitiesByCountry(country);
-        
-        if (universities.length === 0) {
-            return res.status(404).json({
-                success: false,
-                error: `No universities found for country: ${country}`
-            });
-        }
+        // All universities are South African, return all
+        const universities = REAL_UNIVERSITIES;
         
         // Apply pagination
         const pageNum = parseInt(page);
@@ -183,12 +177,12 @@ router.get('/by-country/:country', (req, res) => {
             total: universities.length,
             page: pageNum,
             pages: Math.ceil(universities.length / limitNum),
-            country: country,
+            country: 'South Africa',
             universities: paginated
         });
         
     } catch (error) {
-        console.error('Error fetching universities by country:', error);
+        console.error('Error fetching universities:', error);
         res.status(500).json({
             success: false,
             error: error.message

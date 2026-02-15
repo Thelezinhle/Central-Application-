@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { FaUniversity, FaGlobe, FaMapMarkerAlt, FaBook } from 'react-icons/fa';
 import axios from 'axios';
 import { useVoiceNarration } from '../hooks/useVoiceNarration';
+import { API_BASE_URL } from '../config/api';
 
 function UniversitiesListPage() {
     const { speak, voiceEnabled } = useVoiceNarration();
@@ -13,7 +14,7 @@ function UniversitiesListPage() {
     const { data, isLoading, error, refetch } = useQuery(
         ['filteredUniversities', selectedCountry],
         async () => {
-            const response = await axios.get('http://localhost:5000/api/universities/filtered', {
+            const response = await axios.get(`${API_BASE_URL}/api/universities/filtered`, {
                 params: { country: selectedCountry, limit: 200 }
             });
             return response.data;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAccessibility } from '../context/AccessibilityContext';
-import { speak } from '../utils/accessibility';
+import { speak as directSpeak } from '../utils/accessibility';
 import VoiceRecognitionManager from '../utils/voiceRecognition';
 
 /**
@@ -9,6 +9,7 @@ import VoiceRecognitionManager from '../utils/voiceRecognition';
  * Asks if they are blind and enables voice mode
  */
 export function BlindUserOnboarding({ onComplete }) {
+    const { setScreenReaderMode } = useAccessibility();
     const [started, setStarted] = useState(false);
     const [isBlind, setIsBlind] = useState(null);
     const [isListening, setIsListening] = useState(false);
@@ -20,8 +21,8 @@ export function BlindUserOnboarding({ onComplete }) {
         // Auto-play the welcome message
         if (!started) {
             setTimeout(() => {
-                const welcomeMessage = 'Welcome to the University Application System. Can I help you? I can navigate this application using voice commands. Say yes if you would like voice help, or no if you prefer to navigate on your own.';
-                speak(welcomeMessage);
+                const welcomeMessage = 'Welcome to CAO South Africa. Can I help you? I can navigate this application using voice commands. Say yes if you would like voice help, or no if you prefer to navigate on your own.';
+                directSpeak(welcomeMessage);
                 setStarted(true);
             }, 500);
         }
@@ -41,13 +42,13 @@ export function BlindUserOnboarding({ onComplete }) {
                         handleBlindUserNo();
                     } else {
                         setMessage('I did not understand. Please say yes or no.');
-                        speak('I did not understand. Please say yes or no.');
+                        directSpeak('I did not understand. Please say yes or no.');
                         setIsListening(false);
                     }
                 },
                 (error) => {
                     setMessage(`Error: ${error.message}`);
-                    speak(`Error: ${error.message}`);
+                    directSpeak(`Error: ${error.message}`);
                     setIsListening(false);
                 }
             );
@@ -60,13 +61,14 @@ export function BlindUserOnboarding({ onComplete }) {
     };
 
     const handleBlindUserYes = () => {
-        const confirmMessage = 'Great! I will enable voice navigation mode for you. This application can now listen to your commands and speak everything to you.';
-        speak(confirmMessage);
-        setMessage('Voice mode enabled for blind users');
+        const confirmMessage = 'Great! I will enable screen reader mode for you. This application can now speak everything to you and listen to your voice commands.';
+        directSpeak(confirmMessage);
+        setMessage('Screen reader mode enabled for blind users');
 
-        // Store preference and complete onboarding
+        // Store preference and enable screen reader mode
         localStorage.setItem('blindUserMode', 'true');
         localStorage.setItem('voiceEnabled', 'true');
+        setScreenReaderMode(true);
 
         setTimeout(() => {
             onComplete(true);
@@ -75,7 +77,7 @@ export function BlindUserOnboarding({ onComplete }) {
 
     const handleBlindUserNo = () => {
         const message = 'Understood. You can still use keyboard navigation and accessibility features. Have a great experience!';
-        speak(message);
+        directSpeak(message);
         setMessage('Standard accessibility mode enabled');
 
         localStorage.setItem('blindUserMode', 'false');
@@ -86,7 +88,7 @@ export function BlindUserOnboarding({ onComplete }) {
     };
 
     const handleSkip = () => {
-        speak('Skipping blind user setup. You can enable voice mode anytime in settings.');
+        directSpeak('Skipping blind user setup. You can enable screen reader mode anytime in accessibility settings.');
         localStorage.setItem('blindUserSetupSkipped', 'true');
         onComplete(false);
     };

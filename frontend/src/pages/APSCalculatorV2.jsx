@@ -3,6 +3,7 @@ import { FaCalculator, FaPlus, FaTrash, FaArrowRight, FaCheckCircle, FaArrowLeft
 import { useNavigate } from 'react-router-dom';
 import { cachedGet, apiPost } from '../utils/apiClient';
 import { announceToScreenReader } from '../utils/accessibility';
+import { API_BASE_URL } from '../config/api';
 
 // APS Conversion Table (South African Standard)
 const APS_CONVERSION = {
@@ -124,7 +125,7 @@ function APSCalculatorV2() {
   const fetchMatchingCourses = async (apsScore) => {
     try {
       setLoadingCourses(true);
-      const data = await cachedGet(`http://localhost:5000/api/browse-courses?maxAPS=${apsScore}`);
+      const data = await cachedGet(`${API_BASE_URL}/api/browse-courses?maxAPS=${apsScore}`);
 
       if (data.success) {
         // Filter to only courses where user APS >= minimum required

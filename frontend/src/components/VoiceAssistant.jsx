@@ -2,13 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { speak } from '../utils/accessibility';
 import { processVoiceCommand, ICA_VOICE_COMMANDS } from '../utils/voiceCommands';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 const VoiceAssistant = () => {
+    const { screenReaderMode, directSpeak } = useAccessibility();
     const [isActive, setIsActive] = useState(false);
     const [conversation, setConversation] = useState([]);
     const [listeningTimeout, setListeningTimeout] = useState(null);
     const conversationEndRef = useRef(null);
     const [lastCommand, setLastCommand] = useState('');
+    const hasGreetedRef = useRef(false);
 
     const commands = [
         {
@@ -65,10 +68,13 @@ const VoiceAssistant = () => {
         conversationEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [conversation]);
 
-    // Initial greeting on mount
+    // Initial greeting on mount (only in screen reader mode)
     useEffect(() => {
+        if (!screenReaderMode || hasGreetedRef.current) return;
+        
+        hasGreetedRef.current = true;
         setTimeout(() => {
-            const greeting = "Hello! I'm your ICA voice assistant. Can I help you navigate the application? Say 'yes' to continue or 'no' to dismiss me.";
+            const greeting = "Hello! I'm your CAO voice assistant. Say 'help' for commands, or say what you want to do.";
             speak(greeting);
             setConversation([{
                 speaker: 'assistant',
@@ -77,17 +83,28 @@ const VoiceAssistant = () => {
             }]);
             setIsActive(true);
             startListening();
-        }, 500);
-    }, []);
-
-    // Handle transcript changes
+        }, 2000);
+    }, [screenReaderMode]);
+    
+    // Restart listening when it stops (for continuous listening)
     useEffect(() => {
-        if (transcript && listening === false && lastCommand !== transcript) {
+        if (isActive && !listening && screenReaderMode) {
+            const restartTimer = setTimeout(() => {
+                startListening();
+            }, 500);
+            return () => clearTimeout(restartTimer);
+        }
+    }, [listening, isActive, screenReaderMode]);
+
+    // Handle transcript changes - process when we have a final result
+    useEffect(() => {
+        if (transcript && lastCommand !== transcript) {
             setLastCommand(transcript);
             addUserMessage(transcript);
+            // Process immediately when we get transcript
             processCommand(transcript);
         }
-    }, [transcript, listening]);
+    }, [transcript]);
 
     const startListening = () => {
         SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
@@ -116,7 +133,7 @@ const VoiceAssistant = () => {
     };
 
     const processCommand = (input) => {
-        const lowerInput = input.toLowerCase();
+        const lowerInput = input.toLowerCase().trim();
 
         // Handle yes/no directly
         if (lowerInput.includes('yes')) {
@@ -128,66 +145,74 @@ const VoiceAssistant = () => {
             return;
         }
 
+        // Handle go to / navigate to commands
+        if (lowerInput.includes('go to') || lowerInput.includes('navigate to') || lowerInput.includes('take me to')) {
+            const pages = ['universities', 'courses', 'colleges', 'home', 'dashboard', 'recommendations', 'bursaries', 'calculator', 'aps'];
+            for (const page of pages) {
+                if (lowerInput.includes(page)) {
+                    navigateToPage(page);
+                    return;
+                }
+            }
+        }
+
         // Handle list/show universities
         if (lowerInput.includes('universities') || lowerInput.includes('university')) {
-            addAssistantMessage('Taking you to the universities page...');
-            setTimeout(() => {
-                navigateToPage('universities');
-            }, 500);
+            navigateToPage('universities');
+            return;
+        }
+
+        // Handle colleges
+        if (lowerInput.includes('colleges') || lowerInput.includes('college')) {
+            navigateToPage('colleges');
             return;
         }
 
         // Handle list/show courses
         if (lowerInput.includes('courses') || lowerInput.includes('course')) {
-            addAssistantMessage('Taking you to the courses page...');
-            setTimeout(() => {
-                navigateToPage('courses');
-            }, 500);
+            navigateToPage('courses');
+            return;
+        }
+        
+        // Handle bursaries
+        if (lowerInput.includes('bursaries') || lowerInput.includes('bursary') || lowerInput.includes('funding')) {
+            navigateToPage('bursaries');
+            return;
+        }
+        
+        // Handle APS calculator
+        if (lowerInput.includes('aps') || lowerInput.includes('calculator') || lowerInput.includes('calculate') || lowerInput.includes('points')) {
+            navigateToPage('aps');
+            return;
+        }
+        
+        // Handle recommendations
+        if (lowerInput.includes('recommend') || lowerInput.includes('suggestion')) {
+            navigateToPage('recommendations');
+            return;
+        }
+        
+        // Handle dashboard/applications
+        if (lowerInput.includes('dashboard') || lowerInput.includes('application') || lowerInput.includes('status')) {
+            navigateToPage('dashboard');
+            return;
+        }
+        
+        // Handle home
+        if (lowerInput.includes('home') || lowerInput.includes('main') || lowerInput.includes('start')) {
+            navigateToPage('home');
             return;
         }
 
         // Handle open page commands
         if (lowerInput.includes('open')) {
-            if (lowerInput.includes('courses')) {
-                addAssistantMessage('Opening courses page...');
-                setTimeout(() => navigateToPage('courses'), 500);
-                return;
-            }
-            if (lowerInput.includes('universities')) {
-                addAssistantMessage('Opening universities page...');
-                setTimeout(() => navigateToPage('universities'), 500);
-                return;
-            }
-            if (lowerInput.includes('dashboard') || lowerInput.includes('applications')) {
-                addAssistantMessage('Opening your applications...');
-                setTimeout(() => navigateToPage('dashboard'), 500);
-                return;
-            }
-            if (lowerInput.includes('home')) {
-                addAssistantMessage('Going to home page...');
-                setTimeout(() => navigateToPage('home'), 500);
-                return;
-            }
-            if (lowerInput.includes('recommendations')) {
-                addAssistantMessage('Opening recommendations...');
-                setTimeout(() => navigateToPage('recommendations'), 500);
-                return;
-            }
-        }
-
-        // Handle show/filter by category
-        if (lowerInput.includes('show') && (lowerInput.includes('courses') || lowerInput.includes('course'))) {
-            const categories = ['science', 'engineering', 'business', 'arts', 'medicine', 'law', 'technology', 'computer'];
-            for (let cat of categories) {
-                if (lowerInput.includes(cat)) {
-                    addAssistantMessage(`Showing ${cat} courses...`);
-                    setTimeout(() => navigateToPage('courses'), 500);
+            const pages = ['courses', 'universities', 'colleges', 'dashboard', 'home', 'recommendations', 'bursaries'];
+            for (const page of pages) {
+                if (lowerInput.includes(page)) {
+                    navigateToPage(page);
                     return;
                 }
             }
-            addAssistantMessage('Opening courses page...');
-            setTimeout(() => navigateToPage('courses'), 500);
-            return;
         }
 
         // Handle search commands
@@ -275,17 +300,27 @@ const VoiceAssistant = () => {
             'courses': '/courses',
             'applications': '/dashboard',
             'universities': '/universities',
+            'colleges': '/colleges',
             'profile': '/dashboard',
             'dashboard': '/dashboard',
             'recommendations': '/recommendations',
-            'calculator': '/recommendations',
-            'track': '/track-status'
+            'calculator': '/aps-calculator',
+            'aps': '/aps-calculator',
+            'track': '/track-status',
+            'bursaries': '/bursaries',
+            'login': '/login',
+            'register': '/register'
         };
 
-        const route = pages[page] || '/';
-        if (route !== '/') {
-            window.location.href = route;
-            addAssistantMessage(`Navigating to ${page}`);
+        const route = pages[page.toLowerCase()] || null;
+        if (route) {
+            addAssistantMessage(`Taking you to ${page}...`);
+            // Use setTimeout to allow speech to start before navigation
+            setTimeout(() => {
+                window.location.href = route;
+            }, 800);
+        } else {
+            addAssistantMessage(`I don't know the ${page} page. Try saying: universities, courses, colleges, recommendations, or dashboard.`);
         }
     };
 
@@ -304,7 +339,7 @@ const VoiceAssistant = () => {
     };
 
     const showHelp = () => {
-        const helpText = "Here's what I can help you with: Say 'open courses' to view courses. Say 'show science courses' to filter. Say 'check deadline' for deadlines. Say 'search for' plus a course name. Say 'help' anytime for this list.";
+        const helpText = "I can help you navigate! Say: universities, courses, colleges, bursaries, recommendations, dashboard, or APS calculator. Say 'go to' followed by the page name. Say 'stop' to pause, or 'help' to hear this again.";
         addAssistantMessage(helpText);
     };
 

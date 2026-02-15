@@ -3,7 +3,33 @@ import { cachedGet } from '../utils/apiClient';
 import CollegeCard from '../components/CollegeCard';
 import CollegeDetailModal from '../components/CollegeDetailModal';
 import CollegeComparisonModal from '../components/CollegeComparisonModal';
+import CustomSelectDropdown from '../components/CustomSelectDropdown';
 import { Bookmark, ExternalLink } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
+
+// Helper to extract province from location string
+const extractProvince = (location) => {
+    if (!location) return 'Unknown';
+    const parts = location.split(',').map(p => p.trim());
+    if (parts.length >= 2) {
+        // Normalize province names
+        const province = parts[parts.length - 1];
+        const normalizedProvinces = {
+            'KZN': 'KwaZulu-Natal',
+            'KwaZulu-Natal': 'KwaZulu-Natal',
+            'Gauteng': 'Gauteng',
+            'Western Cape': 'Western Cape',
+            'Eastern Cape': 'Eastern Cape',
+            'Free State': 'Free State',
+            'Limpopo': 'Limpopo',
+            'Mpumalanga': 'Mpumalanga',
+            'North West': 'North West',
+            'Northern Cape': 'Northern Cape'
+        };
+        return normalizedProvinces[province] || province;
+    }
+    return 'Unknown';
+};
 
 function CollegesPage() {
     const [colleges, setColleges] = useState([]);
@@ -11,7 +37,7 @@ function CollegesPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState('');
-    const [country, setCountry] = useState('South Africa');
+    const [selectedProvince, setSelectedProvince] = useState('');
     const [category, setCategory] = useState('');
     const [minAPS, setMinAPS] = useState('');
     const [displayMode, setDisplayMode] = useState('cards'); // 'cards' or 'list'
@@ -28,8 +54,8 @@ function CollegesPage() {
         return saved ? JSON.parse(saved) : [];
     });
     
-    // Available countries from colleges data
-    const [availableCountries, setAvailableCountries] = useState([]);
+    // Available provinces from colleges data
+    const [availableProvinces, setAvailableProvinces] = useState([]);
 
     useEffect(() => {
         fetchAllColleges();
@@ -37,14 +63,16 @@ function CollegesPage() {
 
     useEffect(() => {
         if (colleges.length > 0) {
-            const countries = [...new Set(colleges.map(c => c.country))].sort();
-            setAvailableCountries(countries);
+            const provinces = [...new Set(colleges.map(c => extractProvince(c.location)))]
+                .filter(p => p !== 'Unknown')
+                .sort();
+            setAvailableProvinces(provinces);
         }
     }, [colleges]);
 
     useEffect(() => {
         filterColleges();
-    }, [colleges, search, minAPS, country, category]);
+    }, [colleges, search, minAPS, selectedProvince, category]);
 
     useEffect(() => {
         localStorage.setItem('favoriteColleges', JSON.stringify(favorites));
@@ -55,7 +83,7 @@ function CollegesPage() {
             setLoading(true);
             setError(null);
             
-            const data = await cachedGet('http://localhost:5000/api/colleges');
+            const data = await cachedGet(`${API_BASE_URL}/api/colleges`);
             setColleges(data.colleges || []);
             setFilteredColleges(data.colleges || []);
         } catch (err) {
@@ -71,11 +99,12 @@ function CollegesPage() {
     const filterColleges = () => {
         let filtered = [...colleges];
         
-        // Country filter
-        if (country) {
-            filtered = filtered.filter(college =>
-                college.country?.toLowerCase() === country.toLowerCase()
-            );
+        // Province filter
+        if (selectedProvince) {
+            filtered = filtered.filter(college => {
+                const collegeProvince = extractProvince(college.location);
+                return collegeProvince.toLowerCase() === selectedProvince.toLowerCase();
+            });
         }
         
         // Category filter
@@ -99,7 +128,7 @@ function CollegesPage() {
 
     const handleClearFilters = () => {
         setSearch('');
-        setCountry('South Africa');
+        setSelectedProvince('');
         setCategory('');
         setMinAPS('');
     };
@@ -161,35 +190,37 @@ function CollegesPage() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
-                            value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                        >
-                            <option value="" className="bg-white text-black">All Countries</option>
-                            {availableCountries.map(c => (
-                                <option key={c} value={c} className="bg-white text-black">{c}</option>
-                            ))}
-                        </select>
-                        <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
+                        <CustomSelectDropdown
+                            className="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            value={selectedProvince}
+                            onChange={(e) => setSelectedProvince(e.target.value)}
+                            options={[
+                                { value: '', label: 'All Provinces' },
+                                ...availableProvinces.map(p => ({ value: p, label: p }))
+                            ]}
+                            placeholder="All Provinces"
+                        />
+                        <CustomSelectDropdown
+                            className="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                        >
-                            <option value="" className="bg-white text-black">All Types</option>
-                            <option value="public" className="bg-white text-black">Public Colleges</option>
-                            <option value="private" className="bg-white text-black">Private Colleges</option>
-                            <option value="international" className="bg-white text-black">International</option>
-                            <option value="african" className="bg-white text-black">African Colleges</option>
-                        </select>
-                        <select
-                            className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-black"
+                            options={[
+                                { value: '', label: 'All Types' },
+                                { value: 'public', label: 'Public TVET' },
+                                { value: 'private', label: 'Private Colleges' }
+                            ]}
+                            placeholder="All Types"
+                        />
+                        <CustomSelectDropdown
+                            className="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                             value={displayMode}
                             onChange={(e) => setDisplayMode(e.target.value)}
-                        >
-                            <option value="cards" className="bg-white text-black">Card View</option>
-                            <option value="list" className="bg-white text-black">List View</option>
-                        </select>
+                            options={[
+                                { value: 'cards', label: 'Card View' },
+                                { value: 'list', label: 'List View' }
+                            ]}
+                            placeholder="Display Mode"
+                        />
                         <button
                             onClick={handleClearFilters}
                             className="bg-gray-200 text-gray-800 rounded-lg p-3 hover:bg-gray-300 transition-colors font-medium"

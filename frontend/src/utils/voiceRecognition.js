@@ -8,6 +8,16 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
 
 export class VoiceRecognitionManager {
     constructor(onResult, onError) {
+        // Check if SpeechRecognition is available
+        if (!SpeechRecognition) {
+            console.warn('Speech recognition is not supported in this browser');
+            this.isListening = false;
+            this.onResult = onResult;
+            this.onError = onError;
+            this.recognition = null;
+            return;
+        }
+
         this.recognition = new SpeechRecognition();
         this.isListening = false;
         this.onResult = onResult;
@@ -56,16 +66,22 @@ export class VoiceRecognitionManager {
     }
 
     start() {
+        if (!this.recognition) {
+            this.onError({ error: 'not-supported', message: 'Speech recognition is not supported in this browser' });
+            return;
+        }
         this.isListening = true;
         this.recognition.start();
     }
 
     stop() {
+        if (!this.recognition) return;
         this.isListening = false;
         this.recognition.stop();
     }
 
     abort() {
+        if (!this.recognition) return;
         this.isListening = false;
         this.recognition.abort();
     }
@@ -84,7 +100,7 @@ export class VoiceRecognitionManager {
     }
 
     isAvailable() {
-        return !!SpeechRecognition;
+        return !!this.recognition;
     }
 }
 

@@ -9,37 +9,66 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const VOICE_COMMANDS = {
-  // Navigation Commands
+  // Navigation Commands - Multiple variations for natural speech
   'navigate home': { action: 'navigate', target: '/', label: 'Go to Home' },
   'go home': { action: 'navigate', target: '/', label: 'Go to Home' },
   'open home': { action: 'navigate', target: '/', label: 'Go to Home' },
+  'home': { action: 'navigate', target: '/', label: 'Go to Home' },
+  'home page': { action: 'navigate', target: '/', label: 'Go to Home' },
   
   'navigate universities': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
   'open universities': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
   'show universities': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
+  'universities': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
+  'university': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
+  'go to universities': { action: 'navigate', target: '/universities', label: 'Go to Universities' },
   
   'navigate courses': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
   'open courses': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
   'show courses': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
+  'courses': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
+  'course': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
+  'go to courses': { action: 'navigate', target: '/courses', label: 'Go to Courses' },
   
   'navigate colleges': { action: 'navigate', target: '/colleges', label: 'Go to Colleges' },
   'open colleges': { action: 'navigate', target: '/colleges', label: 'Go to Colleges' },
+  'colleges': { action: 'navigate', target: '/colleges', label: 'Go to Colleges' },
+  'college': { action: 'navigate', target: '/colleges', label: 'Go to Colleges' },
+  'go to colleges': { action: 'navigate', target: '/colleges', label: 'Go to Colleges' },
   
   'navigate recommendations': { action: 'navigate', target: '/recommendations', label: 'Go to Recommendations' },
   'open recommendations': { action: 'navigate', target: '/recommendations', label: 'Get Recommendations' },
+  'recommendations': { action: 'navigate', target: '/recommendations', label: 'Go to Recommendations' },
+  'recommend': { action: 'navigate', target: '/recommendations', label: 'Go to Recommendations' },
+  'go to recommendations': { action: 'navigate', target: '/recommendations', label: 'Go to Recommendations' },
   
   'navigate applications': { action: 'navigate', target: '/dashboard', label: 'Go to Applications' },
   'check applications': { action: 'navigate', target: '/dashboard', label: 'Go to Applications' },
   'open dashboard': { action: 'navigate', target: '/dashboard', label: 'Go to Dashboard' },
+  'dashboard': { action: 'navigate', target: '/dashboard', label: 'Go to Dashboard' },
+  'applications': { action: 'navigate', target: '/dashboard', label: 'Go to Dashboard' },
+  'go to dashboard': { action: 'navigate', target: '/dashboard', label: 'Go to Dashboard' },
   
   'navigate calculator': { action: 'navigate', target: '/aps-calculator', label: 'Go to APS Calculator' },
   'calculate aps': { action: 'navigate', target: '/aps-calculator', label: 'Go to APS Calculator' },
+  'aps calculator': { action: 'navigate', target: '/aps-calculator', label: 'Go to APS Calculator' },
+  'calculate points': { action: 'navigate', target: '/aps-calculator', label: 'Go to APS Calculator' },
+  'aps': { action: 'navigate', target: '/aps-calculator', label: 'Go to APS Calculator' },
+  
+  'navigate bursaries': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
+  'open bursaries': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
+  'bursaries': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
+  'bursary': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
+  'funding': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
+  'go to bursaries': { action: 'navigate', target: '/bursaries', label: 'Go to Bursaries' },
   
   // Page Control Commands
   'scroll down': { action: 'scroll', direction: 'down', distance: 300, label: 'Scroll Down' },
   'scroll up': { action: 'scroll', direction: 'up', distance: 300, label: 'Scroll Up' },
   'scroll top': { action: 'scroll', direction: 'top', label: 'Scroll to Top' },
   'scroll bottom': { action: 'scroll', direction: 'bottom', label: 'Scroll to Bottom' },
+  'go up': { action: 'scroll', direction: 'up', distance: 300, label: 'Scroll Up' },
+  'go down': { action: 'scroll', direction: 'down', distance: 300, label: 'Scroll Down' },
   
   'go back': { action: 'navigate', target: 'back', label: 'Go Back' },
   'back': { action: 'navigate', target: 'back', label: 'Go Back' },
@@ -48,6 +77,7 @@ const VOICE_COMMANDS = {
   'help': { action: 'help', label: 'Show Help' },
   'what can you do': { action: 'help', label: 'Show Help' },
   'commands': { action: 'help', label: 'Show Help' },
+  'what can i say': { action: 'help', label: 'Show Help' },
   
   'stop listening': { action: 'stop', label: 'Stop Listening' },
   'stop': { action: 'stop', label: 'Stop Listening' },

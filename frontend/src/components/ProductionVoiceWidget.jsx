@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProductionVoiceSystem } from '../hooks/useProductionVoiceSystem';
 import { useNavigate } from 'react-router-dom';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 /**
  * Production-Grade Voice Widget
@@ -17,6 +18,16 @@ export function ProductionVoiceWidget() {
   const navigate = useNavigate();
   const [showPanel, setShowPanel] = useState(false);
   const [announcement, setAnnouncement] = useState('');
+  const { speak, directSpeak } = useAccessibility();
+  
+  // Helper to speak feedback
+  const speakFeedback = (message) => {
+    if (directSpeak) {
+      directSpeak(message);
+    } else if (speak) {
+      speak(message);
+    }
+  };
   
   const {
     isListening,
@@ -30,20 +41,38 @@ export function ProductionVoiceWidget() {
     stopListening,
     toggleListening,
   } = useProductionVoiceSystem({
-    onNavigate: (target) => navigate(target),
+    onNavigate: (target) => {
+      speakFeedback(`Taking you to ${target.replace('/', '') || 'home'}`);
+      setTimeout(() => navigate(target), 500);
+    },
     onCommandExecuted: (command) => {
       if (command.type === 'help') {
         setAnnouncement(command.message);
+        speakFeedback('Say: universities, courses, colleges, bursaries, recommendations, dashboard, or scroll commands');
       } else if (command.type === 'unrecognized') {
         setAnnouncement(command.message);
+        speakFeedback(command.message);
       } else {
-        setAnnouncement(`Executing: ${command.label || 'Command'}`);
+        const msg = `${command.label || 'Command executed'}`;
+        setAnnouncement(msg);
+        // Don't speak navigation commands since onNavigate already speaks
+        if (command.action !== 'navigate') {
+          speakFeedback(msg);
+        }
       }
     },
     onError: (errorMsg) => {
       setAnnouncement(`Error: ${errorMsg}`);
+      speakFeedback(errorMsg);
     }
   });
+  
+  // Speak when listening starts/stops
+  useEffect(() => {
+    if (isListening) {
+      speakFeedback('Listening. Say a command like universities, courses, or help.');
+    }
+  }, [isListening]);
 
   if (!isSupported) {
     return (
