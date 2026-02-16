@@ -402,7 +402,7 @@ const VoiceAssistant = () => {
             {isActive && (
                 <div className="voice-assistant-panel">
                     <div className="voice-assistant-header">
-                        <h3>ICA Voice Assistant</h3>
+                        <h3>StudyLink SA Voice Assistant</h3>
                         <div className="flex items-center space-x-2">
                             <div className={`listening-indicator ${listening ? 'listening' : ''}`}>
                                 <span className="pulse"></span>

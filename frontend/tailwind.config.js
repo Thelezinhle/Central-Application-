@@ -6,8 +6,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'ica-green': '#228B22',
-                'ica-dark': '#1a6b1a',
+                'studylink-green': '#228B22',
+                'studylink-dark': '#1a6b1a',
                 primary: '#228B22',
                 secondary: '#f5f5f5'
             }
