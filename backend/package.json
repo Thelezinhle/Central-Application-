@@ -1,7 +1,7 @@
 {
-    "name": "ica-backend",
+    "name": "studylink-sa-backend",
     "version": "2.0.0",
-    "description": "International Central Application Backend - Node.js with Express & Global Universities API",
+    "description": "StudyLink SA Backend - Node.js with Express & Global Universities API",
     "main": "src/index.js",
     "type": "module",
     "scripts": {

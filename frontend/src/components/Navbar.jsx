@@ -14,7 +14,7 @@ function Navbar() {
                         alt="CAO Logo"
                         className="h-14 w-14"
                     />
-                    <span className="text-2xl font-bold text-green-700">CAO South Africa</span>
+                    <span className="text-2xl font-bold text-green-700">StudyLink SA</span>
                 </Link>
 
                 <div className="hidden md:flex space-x-6">

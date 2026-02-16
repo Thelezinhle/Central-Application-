@@ -1,4 +1,4 @@
-# Central Application Platform
+# StudyLink SA
 
 ## Project Overview
 
@@ -18,13 +18,13 @@ A **production-ready, full-stack admissions management platform** serving educat
 - **API Design:** RESTful endpoints with authentication, caching, and error handling
 
 ### Advanced Features Built
-✅ **Voice-First Interface** - Web Speech API integration with <200ms latency  
-✅ **WCAG 2.1 AA Accessibility** - Full compliance for screen readers and keyboard navigation  
-✅ **Real-time Search** - Instant filtering across 700+ programmes with intelligent ranking  
-✅ **User Management** - JWT authentication, role-based access, secure sessions  
-✅ **Data Export** - CSV/JSON export with bulk processing capabilities  
-✅ **Responsive Design** - Mobile-first approach working on all devices  
-✅ **Performance Optimized** - Caching strategies, lazy loading, optimized queries
+- **Voice-First Interface** - Web Speech API integration with <200ms latency  
+- **WCAG 2.1 AA Accessibility** - Full compliance for screen readers and keyboard navigation  
+- **Real-time Search** - Instant filtering across 700+ programmes with intelligent ranking  
+- **User Management** - JWT authentication, role-based access, secure sessions  
+- **Data Export** - CSV/JSON export with bulk processing capabilities  
+- **Responsive Design** - Mobile-first approach working on all devices  
+- **Performance Optimized** - Caching strategies, lazy loading, optimized queries
 
 ---
 
@@ -161,9 +161,9 @@ This project demonstrates **full-stack capability** with attention to:
 
 ## Project Status
 
-✅ **Production Ready**  
-📦 **Fully Tested & Documented**  
-🚀 **Ready for Enterprise Deployment**
+**Production Ready**  
+**Fully Tested & Documented**  
+**Ready for Enterprise Deployment**
 
 ---
 

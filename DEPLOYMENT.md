@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide explains how to prepare and deploy the CAO Voice Platform to production.
+This guide explains how to prepare and deploy the StudyLink SA Platform to production.
 
 ## Pre-Deployment Checklist
 
@@ -19,7 +19,7 @@ VITE_ENABLE_VOICE_COMMANDS=true
 ```bash
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/cao
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/studylink
 FRONTEND_URL=https://your-domain.com
 CORS_ORIGIN=https://your-domain.com
 JWT_SECRET=generate-a-strong-secret-key
@@ -83,7 +83,7 @@ cd frontend
 vercel --prod
 
 # Add environment variables in Vercel Dashboard
-VITE_API_URL=https://cao-backend.herokuapp.com
+VITE_API_URL=https://studylink-sa-backend.herokuapp.com
 ```
 
 **Backend on Heroku:**
@@ -95,7 +95,7 @@ npm install -g heroku
 heroku login
 
 # Create app
-heroku create cao-backend
+heroku create studylink-sa-backend
 
 # Add MongoDB
 heroku addons:create mongolab:sandbox

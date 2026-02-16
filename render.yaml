@@ -1,7 +1,7 @@
 services:
   # Backend API Service (Node.js)
   - type: web
-    name: cao-backend
+    name: studylink-sa-backend
     runtime: node
     rootDir: backend
     buildCommand: npm install
@@ -18,7 +18,7 @@ services:
 
   # Frontend Static Site (React/Vite)
   - type: web
-    name: cao-frontend
+    name: studylink-sa-frontend
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build

@@ -15,7 +15,7 @@ export function ScreenReader() {
 
     // Page descriptions for navigation
     const pageDescriptions = {
-        '/': 'Home page. Welcome to CAO South Africa. Your path to university success. Use tab to navigate through the menu. Press buttons to explore universities, colleges, calculate APS, or find bursaries.',
+        '/': 'Home page. Welcome to StudyLink SA. Your path to university success. Use tab to navigate through the menu. Press buttons to explore universities, colleges, calculate APS, or find bursaries.',
         '/universities': 'Universities page. Browse all 26 South African universities. Use the dropdown to filter by province. Each university can be clicked to visit their website.',
         '/colleges': 'Colleges page. Browse South African TVET colleges. Use the province dropdown to filter. Click any college to see details.',
         '/cao-programmes': 'CAO Programmes page. View university codes and available courses.',
@@ -152,7 +152,7 @@ export function ScreenReader() {
         if (screenReaderMode && !hasAnnouncedRef.current) {
             hasAnnouncedRef.current = true;
             setTimeout(() => {
-                const welcomeMsg = 'Welcome to CAO South Africa. Screen reader active. Press Alt H for keyboard shortcuts.';
+                const welcomeMsg = 'Welcome to StudyLink SA. Screen reader active. Press Alt H for keyboard shortcuts.';
                 if (directSpeak) {
                     directSpeak(welcomeMsg);
                 } else {

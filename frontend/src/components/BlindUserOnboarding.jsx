@@ -21,7 +21,7 @@ export function BlindUserOnboarding({ onComplete }) {
         // Auto-play the welcome message
         if (!started) {
             setTimeout(() => {
-                const welcomeMessage = 'Welcome to CAO South Africa. Can I help you? I can navigate this application using voice commands. Say yes if you would like voice help, or no if you prefer to navigate on your own.';
+                const welcomeMessage = 'Welcome to StudyLink SA. Can I help you? I can navigate this application using voice commands. Say yes if you would like voice help, or no if you prefer to navigate on your own.';
                 directSpeak(welcomeMessage);
                 setStarted(true);
             }, 500);

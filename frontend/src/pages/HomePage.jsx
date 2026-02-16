@@ -10,7 +10,7 @@ function HomePage() {
     // Announce page on load
     useEffect(() => {
         if (voiceEnabled) {
-            speak('Welcome to CAO South Africa. Simplified university admissions with clear entry requirements and course listings. Browse courses, get recommendations, track your application status.');
+            speak('Welcome to StudyLink SA. Simplified university admissions with clear entry requirements and course listings. Browse courses, get recommendations, track your application status.');
         }
     }, [voiceEnabled, speak]);
     return (
@@ -25,7 +25,7 @@ function HomePage() {
                                 Your Path to <span className="text-[#228B22]">University Success</span>
                             </h2>
                             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                                CAO South Africa simplifies university admissions. Get smart recommendations, apply to multiple programmes, and track your progress in real-time.
+                                StudyLink SA simplifies university admissions. Get smart recommendations, apply to multiple programmes, and track your progress in real-time.
                             </p>
                             <div className="flex gap-4 flex-wrap">
                                 <Link 

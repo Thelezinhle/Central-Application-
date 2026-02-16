@@ -7,7 +7,7 @@
 
 export const colors = {
   // Primary Brand Colors
-  primary: '#228B22',      // CAO Green
+  primary: '#228B22',      // StudyLink Green
   primaryDark: '#1a6b1a',  // Darker shade for hover
   primaryLight: '#3aa83a', // Lighter shade for backgrounds
   

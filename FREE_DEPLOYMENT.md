@@ -1,6 +1,6 @@
 # FREE Deployment Guide - Zero Cost
 
-This guide deploys your Central Application Platform completely FREE using Vercel, Render, and MongoDB Atlas.
+This guide deploys your StudyLink SA Platform completely FREE using Vercel, Render, and MongoDB Atlas.
 
 ## Total Cost: $0 ✅
 
@@ -25,7 +25,7 @@ This guide deploys your Central Application Platform completely FREE using Verce
 
 **Your MongoDB Connection String will look like:**
 ```
-mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/cao?retryWrites=true&w=majority
+mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/studylink?retryWrites=true&w=majority
 ```
 
 ---
@@ -68,7 +68,7 @@ This creates a `dist` folder ready for deployment.
 4. Select "Web Service"
 5. Connect your GitHub repository
 6. Fill in details:
-   - **Name:** cao-backend
+   - **Name:** studylink-sa-backend
    - **Environment:** Node
    - **Build Command:** `npm install`
    - **Start Command:** `node src/index.js`
@@ -86,7 +86,7 @@ This creates a `dist` folder ready for deployment.
 
 9. Click "Create Web Service"
 10. Wait 5-10 minutes for deployment
-11. You'll get a URL like `https://cao-backend.onrender.com`
+11. You'll get a URL like `https://studylink-sa-backend.onrender.com`
 
 ---
 
@@ -97,7 +97,7 @@ In your Vercel dashboard:
 2. Click "Environment Variables"
 3. Add:
    - **Name:** `VITE_API_URL`
-   - **Value:** `https://cao-backend.onrender.com` (your Render backend URL)
+   - **Value:** `https://studylink-sa-backend.onrender.com` (your Render backend URL)
 
 ---
 
